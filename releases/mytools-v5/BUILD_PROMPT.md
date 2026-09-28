@@ -8,8 +8,8 @@
 
 ## 読む順番と固定版
 
-1. この文書と同じ `releases/mytools-v5/` の `README.md`、`index.html`、`styles.css`、`app.js`、`assets/terakoya-logo.jpg` を実際に取得してください。取得できなければ読んだふりをせず、どのファイルが読めなかったか報告してください。
-2. 同フォルダの画面と登録動作を基準にします。HTML/CSS/JSを一から再設計しないでください。必要なサーバー側の本人認証・永続保存だけ接続します。見た目はv4のロゴ、紺と金、明朝見出しを引き継ぎます。
+1. この文書と同じ `releases/mytools-v5/` の `README.md`、`index.html`、`styles.css`、`app.js`、`assets/terakoya-logo.jpg` と、`plugins/terakoya-ai-creative/skills/terakoya-web-design/SKILL.md` を実際に取得してください。ChatGPT Work / Sitesで制作する場合は同スキルの `references/work-sites-guidance.md` も読みます。取得できなければ読んだふりをせず、どのファイルが読めなかったか報告してください。
+2. 同フォルダの画面と登録動作を基準にします。デザインスキルは読みやすさ・操作・検証に適用し、採用済みのHTML/CSS/JSを一から再設計しません。必要なサーバー側の本人認証・永続保存だけ接続します。見た目はv4のロゴ、紺と金、明朝見出しを引き継ぎます。
 3. 次回講座は公式サイトの `https://terakoya-ai.vercel.app/api/next-workshop` から取得します。取得する公開項目はタイトル・内容・開催日時です。運営が反映した公開データだけを表示し、未公開・取得失敗なら古い講座情報を代わりに出しません。任意URLを代理取得するAPIは作りません。旧 `announcements.json` のデモは表示しません。
 
 参照元リポジトリ: `https://github.com/kaerukadate1/terakoya-ai-kit`。制作時はスタータープロンプトが指す同じコミット・タグ・ブランチのファイルをそろえて使用してください。GitHub上のファイルを取得できない場合、ファイルの中身を推測で再現しないでください。
