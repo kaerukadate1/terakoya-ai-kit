@@ -1,5 +1,9 @@
 # 寺子屋AI 制作キット
 
+## マイサイト固定版 v4
+
+寺子屋AIのデザインを備えた本人用マイサイトの固定版は [releases/mytools-v4/](releases/mytools-v4/) にあります。ワークショップで渡す短い文は [START_HERE.txt](releases/mytools-v4/START_HERE.txt)、Workが読む詳細指示は [WORKSHOP_PROMPT.md](releases/mytools-v4/WORKSHOP_PROMPT.md) です。旧マイツール仕様は履歴として残しています。固定版をローカル表示しただけでは本人限定認証やサーバー保存は成立しません。
+
 ChatGPTのワークとSitesで、自分専用の「マイツール」と「セミナーまるっと用意くん」を作り、セミナーの告知文・LP・画像まで用意するための共通仕様です。
 
 ## 全体像

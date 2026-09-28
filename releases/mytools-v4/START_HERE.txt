@@ -1,0 +1,2 @@
+寺子屋AIのマイサイトを、私だけが開けるChatGPT Workのサイトとして完成させてください。次のGitHub制作指示と固定ファイルを読み、本人限定の保存・表示確認・サイトURLの返却まで進めてください。回答待ちで制作を止めず、ZIPや手動設定を私に求めないでください。
+https://raw.githubusercontent.com/kaerukadate1/terakoya-ai-kit/mytools-v4.0.0/releases/mytools-v4/WORKSHOP_PROMPT.md

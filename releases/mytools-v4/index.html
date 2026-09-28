@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <title>寺子屋AI マイサイト</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app">
+    <aside class="rail" aria-label="メニュー">
+      <div class="brand"><img src="assets/terakoya-logo.jpg" alt="寺子屋AI"><div><strong>寺子屋AI</strong><span>マイサイト</span></div></div>
+      <nav class="nav" aria-label="ページ">
+        <button type="button" class="nav-button active" data-view="tools">マイツール</button>
+        <button type="button" class="nav-button" data-view="profile">事業プロフィール</button>
+        <button type="button" class="nav-button" data-view="settings">設定</button>
+      </nav>
+      <div class="announcements" id="announcements" aria-live="polite" hidden></div>
+      <p class="rail-foot">小さな仕事場を、自分の手で。</p>
+    </aside>
+    <main class="content">
+      <header class="topline"><span id="page-crumb">マイツール</span><span class="save-state" id="save-state" role="status"></span></header>
+      <section class="view" id="view-tools">
+        <div class="page-heading"><div><p class="eyebrow">MY WORKSPACE</p><h1 id="site-heading">マイツール</h1><p id="business-intro">事業プロフィールを登録すると、ここに紹介文が表示されます。</p></div><div class="heading-actions"><button type="button" class="subtle-button" id="copy-profile">事業紹介をコピー</button><button type="button" class="subtle-button" data-jump="profile">プロフィールを編集</button></div></div>
+        <section class="work-section"><div class="section-head"><div><h2>AIツール</h2><p>作ったツールを、ここからすぐ開けます。</p></div><button type="button" class="primary-button" id="add-tool">＋ ツールを追加</button></div><div id="tool-list" class="tool-grid"></div><div id="tool-empty" class="empty-state" hidden><h3>まだAIツールがありません</h3><p>作ったツールのURLから追加できます。</p><button type="button" class="subtle-button" id="empty-add-tool">ツールを追加</button></div></section>
+      </section>
+      <section class="view" id="view-profile" hidden>
+        <div class="page-heading"><div><p class="eyebrow">YOUR BUSINESS</p><h1>事業プロフィール</h1><p>AIに事業を伝えるときに使う情報をまとめます。</p></div></div>
+        <form id="profile-form" class="editor">
+          <label>事業名<input name="businessName" maxlength="120" autocomplete="organization"></label>
+          <label>事業・サービス内容<textarea name="businessDescription" rows="5" maxlength="3000" placeholder="誰に、何を提供しているか"></textarea></label>
+          <details><summary>詳しい情報を追加</summary><div class="optional-fields">
+            <label>名前・呼び名<input name="displayName" maxlength="120"></label>
+            <label>強み<textarea name="strengths" rows="3" maxlength="1000"></textarea></label>
+            <label>料金・提供形式<textarea name="pricing" rows="3" maxlength="1000"></textarea></label>
+            <label>活動範囲<input name="serviceArea" maxlength="200"></label>
+            <label>リンク<input name="links" maxlength="1000"></label>
+            <label>希望する文体<input name="tone" maxlength="300"></label>
+            <label>避けたい表現<input name="avoid" maxlength="300"></label>
+          </div></details>
+          <div class="form-actions"><button type="submit" class="primary-button">保存する</button><button type="button" class="subtle-button" id="profile-copy-again">事業紹介をコピー</button></div>
+        </form>
+      </section>
+      <section class="view" id="view-settings" hidden>
+        <div class="page-heading"><div><p class="eyebrow">PREFERENCES</p><h1>設定</h1><p>自分の仕事場に合わせて見た目を整えます。</p></div></div>
+        <form id="settings-form" class="editor">
+          <label>サイト名<input name="siteName" maxlength="120"></label>
+          <fieldset><legend>表示テーマ</legend><div class="segmented"><label><input type="radio" name="theme" value="light">ライト</label><label><input type="radio" name="theme" value="dark">ダーク</label><label><input type="radio" name="theme" value="system">端末に合わせる</label></div></fieldset>
+          <div class="color-fields"><label>メインカラー<input type="color" name="primaryColor"></label><label>サブカラー<input type="color" name="secondaryColor"></label></div>
+          <label>自分のロゴ（PNG・JPEG・WebP）<input type="file" id="logo-file" accept="image/png,image/jpeg,image/webp"></label>
+          <div class="form-actions"><button type="submit" class="primary-button">保存する</button><button type="button" class="subtle-button" id="reset-design">初期配色に戻す</button><button type="button" class="subtle-button" id="remove-logo">ロゴを外す</button></div>
+        </form>
+      </section>
+      <section class="mobile-announcements" aria-label="寺子屋AIからのお知らせ"><div id="announcements-mobile"></div></section>
+    </main>
+  </div>
+  <dialog id="tool-dialog"><form id="tool-form" method="dialog"><div class="dialog-top"><h2 id="tool-dialog-title">ツールを追加</h2><button type="button" class="icon-button" id="close-tool" aria-label="閉じる">×</button></div><input type="hidden" name="id"><label>ツールURL <span class="required">必須</span><input name="url" type="url" required placeholder="https://"></label><label>名称 <span class="required">必須</span><input name="name" required maxlength="120"></label><label>説明<textarea name="description" maxlength="500" rows="3"></textarea></label><label>使い方・作り方のメモ<textarea name="memo" maxlength="2000" rows="3"></textarea></label><label>説明ページのURL<input name="guideUrl" type="url" placeholder="https://"></label><label>アイコン（PNG・JPEG・WebP）<input name="icon" type="file" accept="image/png,image/jpeg,image/webp"></label><p class="field-error" id="tool-error" role="alert"></p><div class="form-actions"><button type="submit" class="primary-button">保存する</button><button type="button" class="subtle-button" id="cancel-tool">キャンセル</button></div></form></dialog>
+  <dialog id="copy-dialog"><div class="dialog-top"><h2>事業紹介</h2><button type="button" class="icon-button" id="close-copy" aria-label="閉じる">×</button></div><p>コピーできない場合は、以下を選択してください。</p><textarea id="copy-text" rows="10" readonly></textarea></dialog>
+  <script src="app.js" defer></script>
+</body>
+</html>
