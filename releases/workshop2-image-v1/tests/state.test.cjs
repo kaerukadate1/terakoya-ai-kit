@@ -27,3 +27,13 @@ test("medium composition only hides selected flyer content", () => {
   assert.equal(State.snsSupport(raw, settings), "10月");
   assert.equal(raw.date, "10月", "original input is not changed");
 });
+
+test("nine layouts and independent custom colors survive normalization", () => {
+  assert.equal(State.LAYOUTS.length, 9);
+  const value = State.normalize({ designs: [{ layout: 8, palette: "gold", bg: "#123456", accent: "#Ff0088" }] });
+  assert.equal(value.designs[0].layout, 8);
+  assert.equal(value.designs[0].bg, "#123456");
+  assert.equal(value.designs[0].accent, "#ff0088");
+  assert.equal(State.palette(value.designs[0]).ink, "#ffffff");
+  assert.equal(State.normalize({ designs: [{ bg: "red", accent: "javascript:1" }] }).designs[0].bg, State.PALETTES.coral.bg);
+});

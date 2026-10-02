@@ -9,8 +9,13 @@
 <body>
   <header class="app-header">
     <div class="identity"><span class="identity-mark" aria-hidden="true">寺</span><strong>寺子屋AI チラシ・SNS告知画像制作ツール</strong></div>
-    <div class="header-actions"><span id="save-status" role="status">この端末に自動保存</span><button id="reset" class="subtle-button" type="button">新しい案件</button></div>
+    <div class="header-actions"><span id="save-status" role="status">この端末に自動保存</span><button id="theme-toggle" class="subtle-button" type="button" aria-controls="theme-panel" aria-expanded="false">外観設定</button><button id="reset" class="subtle-button" type="button">新しい案件</button></div>
   </header>
+  <section id="theme-panel" class="theme-panel" hidden aria-label="ツールの外観設定">
+    <label>表示<select id="theme-mode"><option value="system">システム</option><option value="light">ライト</option><option value="dark">ダーク</option></select></label>
+    <label>メインカラー<input id="theme-main" type="color" value="#086c7e"></label>
+    <label>サブカラー<input id="theme-sub" type="color" value="#b78b3c"></label>
+  </section>
 
   <div class="app-shell">
     <nav class="steps" aria-label="制作の流れ">
@@ -18,7 +23,8 @@
       <button class="step" data-step="structure"><span>02</span>構成を決める</button>
       <button class="step" data-step="design"><span>03</span>デザインを選ぶ</button>
       <button class="step" data-step="preview"><span>04</span>画像を比べる</button>
-      <button class="step" data-step="library"><span>05</span>完成画像</button>
+      <button class="step" data-step="generate"><span>05</span>画像を仕上げる</button>
+      <button class="step" data-step="library"><span>06</span>完成画像</button>
       <p class="steps-foot">入力内容はこの端末に保存されます。</p>
     </nav>
 
@@ -75,13 +81,21 @@
       </section>
 
       <section id="preview" class="panel" aria-labelledby="preview-title">
-        <div class="panel-head"><div><p class="eyebrow">04 / COMPARE</p><h1 id="preview-title">チラシとSNS画像を比べる</h1></div><p id="export-status" role="status" aria-live="polite"></p></div>
+        <div class="panel-head"><div><p class="eyebrow">04 / COMPARE</p><h1 id="preview-title">構成の下見を比べる</h1><p class="sub">ここはレイアウトの下見です。仕上がった画像は次の工程で生成します。</p></div><p id="export-status" role="status" aria-live="polite"></p></div>
         <div id="designs" class="designs"></div>
+        <div class="bottom-actions"><button class="primary-button next-step" data-next="generate" type="button">画像を仕上げる</button></div>
+      </section>
+
+      <section id="generate" class="panel" aria-labelledby="generate-title">
+        <div class="panel-head"><div><p class="eyebrow">05 / GENERATE</p><h1 id="generate-title">ChatGPTで画像を仕上げる</h1></div></div>
+        <p class="sub">3案のチラシとSNS画像を生成します。写真を使う場合は、開いた会話に写真を添付してください。</p>
+        <div class="generate-actions"><button id="open-work" class="primary-button" type="button">ChatGPTで6枚を生成</button><button id="copy-work" class="subtle-button" type="button">依頼文をコピー</button></div>
+        <p id="work-status" role="status" aria-live="polite"></p>
         <div class="bottom-actions"><button class="primary-button next-step" data-next="library" type="button">完成画像を見る</button></div>
       </section>
 
       <section id="library" class="panel" aria-labelledby="library-title">
-        <div class="panel-head"><div><p class="eyebrow">05 / LIBRARY</p><h1 id="library-title">完成画像</h1><p class="sub">ここで保存した画像は、このブラウザ内に残ります。別の端末やサイトには自動共有されません。</p></div><button id="refresh-library" class="subtle-button" type="button">一覧を更新</button></div>
+        <div class="panel-head"><div><p class="eyebrow">06 / LIBRARY</p><h1 id="library-title">完成画像</h1><p class="sub">Workが同じサイトに保存した完成画像を表示します。以前このブラウザに保存した画像も残ります。</p></div><div class="head-actions"><button id="restore-hidden" class="subtle-button" type="button">一覧表示を戻す</button><button id="refresh-library" class="subtle-button" type="button">一覧を更新</button></div></div>
         <p id="library-status" role="status" aria-live="polite"></p>
         <div id="library-list" class="library-list"></div>
       </section>
@@ -90,6 +104,7 @@
   <script src="consult.js"></script>
   <script src="state.js"></script>
   <script src="library.js"></script>
+  <script src="work.js"></script>
   <script src="app.js"></script>
 </body>
 </html>
