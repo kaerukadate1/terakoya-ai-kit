@@ -47,11 +47,24 @@ const previews = Array.from({ length: 3 }, (_, concept) => [
 const designs = {
   innerHTML: "",
   querySelectorAll() { return previews; },
+  querySelector(selector) {
+    const [, concept, medium] = selector.match(/data-concept="(\d+)"\]\[data-medium="(\w+)"/) || [];
+    return previews.find(item => item.dataset.concept === concept && item.dataset.medium === medium);
+  },
   addEventListener(type, fn) { listeners[`designs:${type}`] = fn; }
 };
+const checkboxNodes = Object.fromEntries(["description", "benefits", "details", "url"].map(key => [key, { checked: true }]));
+const libraryCards = [];
+const saved = [];
 const nodes = {
   "#brief-form": form,
   "#designs": designs,
+  "#design-settings": { innerHTML: "", addEventListener(type, fn) { listeners[`design-settings:${type}`] = fn; } },
+  ".structure-list": { querySelector(selector) { return checkboxNodes[selector.match(/name="(\w+)"/)[1]]; }, addEventListener(type, fn) { listeners[`structure:${type}`] = fn; } },
+  "#sns-support": { value: "none", addEventListener(type, fn) { listeners[`sns-support:${type}`] = fn; } },
+  "#library-list": { replaceChildren() { libraryCards.length = 0; }, append(card) { libraryCards.push(card); } },
+  "#library-status": { textContent: "" },
+  "#refresh-library": { addEventListener(type, fn) { listeners[`refresh-library:${type}`] = fn; } },
   "#photo": { files: [], value: "", addEventListener(type, fn) { listeners[`photo:${type}`] = fn; } },
   "#photo-name": { textContent: "" },
   "#clear-photo": { hidden: true, addEventListener(type, fn) { listeners[`clear:${type}`] = fn; } },
@@ -70,10 +83,15 @@ const nodes = {
 const document = {
   body: { append() {} },
   querySelector(selector) { assert.ok(nodes[selector], selector); return nodes[selector]; },
+  querySelectorAll(selector) {
+    if (selector === ".panel") return ["info", "structure", "design", "preview", "library"].map(id => ({ id, classList: { toggle() {} } }));
+    if (selector === ".step" || selector === ".next-step") return ["info", "structure", "design", "preview", "library"].map(step => ({ dataset: { step, next: step }, classList: { toggle() {} }, setAttribute() {}, removeAttribute() {}, addEventListener(type, fn) { listeners[`${selector}:${step}:${type}`] = fn; } }));
+    throw new Error(selector);
+  },
   createElement(tag) {
     if (tag === "canvas") return canvas(0, 0);
     if (tag === "a") return { click() { opened.push(this.href); }, remove() {}, href: "", download: "" };
-    throw new Error(tag);
+    return { className: "", textContent: "", append() {}, addEventListener() {}, src: "", alt: "" };
   }
 };
 const storage = new Map();
@@ -91,35 +109,54 @@ const sandbox = {
   Image: class {}
 };
 vm.runInNewContext(fs.readFileSync(path.join(root, "consult.js"), "utf8"), sandbox);
+vm.runInNewContext(fs.readFileSync(path.join(root, "state.js"), "utf8"), sandbox);
+sandbox.ImageLibrary = { async save(entry) { saved.push(entry); }, async list() { return saved; } };
+sandbox.window = { scrollTo() {} };
 vm.runInNewContext(fs.readFileSync(path.join(root, "app.js"), "utf8"), sandbox);
 assert.equal(previews.length, 6);
 assert.ok(drawCalls.length > 0);
 assert.match(designs.innerHTML, /チラシ A4/);
 assert.match(designs.innerHTML, /SNS投稿 4:5/);
-const click = (concept, medium) => listeners["designs:click"]({ target: { closest: () => ({ dataset: { concept: String(concept), medium } }) } });
-click(0, "flyer");
-assert.equal(downloads.length, 0, "incomplete form must not export");
-
-fields.name.value = "講座";
-fields.headline.value = "自分のサービスを伝える";
-fields.cta.value = "詳細を見る";
-listeners["form:input"]();
-listeners["consult:click"]();
-assert.equal(nodes["#consult-panel"].hidden, false);
-assert.match(opened[0], /^https:\/\/chatgpt\.com\/\?prompt=/);
-assert.match(decodeURIComponent(opened[0]), /講座/);
-nodes["#consult-answer"].value = '```json\n{"fields":{"name":"別名","audience":"初心者","benefit1":"持ち帰り資料"}}\n```';
-listeners["apply-consult:click"]();
-assert.equal(fields.name.value, "講座", "existing inputs remain unless overwrite is checked");
-assert.equal(fields.audience.value, "初心者");
-assert.equal(fields.benefit1.value, "持ち帰り資料");
-assert.equal(nodes["#consult-panel"].hidden, true);
-assert.equal(JSON.parse(storage.get("terakoya-workshop2-image-v1")).audience, "初心者");
-for (let concept = 0; concept < 3; concept++) {
-  click(concept, "flyer");
-  click(concept, "sns");
+const click = (concept, medium, action = "download") => listeners["designs:click"]({ target: { closest: () => ({ dataset: { concept: String(concept), medium, action }, disabled: false }) } });
+async function run() {
+  await click(0, "flyer");
+  assert.equal(downloads.length, 0, "incomplete form must not export");
+  fields.name.value = "講座";
+  fields.headline.value = "自分のサービスを伝える";
+  fields.cta.value = "詳細を見る";
+  listeners["form:input"]();
+  listeners["consult:click"]();
+  assert.equal(nodes["#consult-panel"].hidden, false);
+  assert.match(opened[0], /^https:\/\/chatgpt\.com\/\?prompt=/);
+  assert.match(decodeURIComponent(opened[0]), /講座/);
+  nodes["#consult-answer"].value = '```json\n{"fields":{"name":"別名","audience":"初心者","benefit1":"持ち帰り資料"}}\n```';
+  listeners["apply-consult:click"]();
+  assert.equal(fields.name.value, "講座", "existing inputs remain unless overwrite is checked");
+  assert.equal(fields.audience.value, "初心者");
+  assert.equal(fields.benefit1.value, "持ち帰り資料");
+  assert.equal(nodes["#consult-panel"].hidden, true);
+  assert.equal(JSON.parse(storage.get("terakoya-workshop2-image-v1")).audience, "初心者");
+  listeners["structure:change"]({ target: { name: "benefits", checked: false } });
+  assert.equal(JSON.parse(storage.get("terakoya-workshop2-image-settings-v1")).flyer.benefits, false);
+  listeners["design-settings:change"]({ target: { dataset: { slot: "0" }, value: "2", matches: selector => selector === "select" } });
+  assert.equal(JSON.parse(storage.get("terakoya-workshop2-image-settings-v1")).designs[0].layout, 2);
+  assert.match(designs.innerHTML, /タイポグラフィ/);
+  for (let concept = 0; concept < 3; concept++) {
+    await click(concept, "flyer");
+    await click(concept, "sns");
+  }
+  assert.equal(downloads.length, 6);
+  assert.equal(downloads.filter(([w, h]) => w === 2480 && h === 3508).length, 3);
+  assert.equal(downloads.filter(([w, h]) => w === 1080 && h === 1350).length, 3);
+  await click(0, "flyer", "save");
+  assert.equal(saved.length, 1);
+  assert.equal(saved[0].fields.name, "講座");
+  assert.equal(saved[0].settings.flyer.benefits, false);
+  assert.equal(saved[0].settings.designs[0].layout, 2);
+  assert.equal(saved[0].imageBlob.size, 1);
+  listeners[".step:library:click"]();
+  await new Promise(resolve => setImmediate(resolve));
+  assert.equal(libraryCards.length, 1);
+  console.log("Smoke test passed: 5 steps, 3 designs, 6 exports, and completed-image save.");
 }
-assert.equal(downloads.length, 6);
-assert.deepEqual(downloads.filter(([w, h]) => w === 2480 && h === 3508).length, 3);
-assert.deepEqual(downloads.filter(([w, h]) => w === 1080 && h === 1350).length, 3);
-console.log("Smoke test passed: 3 designs, 6 previews, 6 PNG exports.");
+run().catch(error => { console.error(error); process.exitCode = 1; });
