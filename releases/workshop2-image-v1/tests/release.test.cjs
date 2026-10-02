@@ -15,6 +15,10 @@ test("starter points to this release and every fixed file exists", () => {
   assert.match(fs.readFileSync(path.join(release, "UPDATE_EXISTING_SITE_PROMPT.md"), "utf8"), /現在のWorkサイトURL/);
   assert.ok(starter.includes(name));
   assert.ok(build.includes(name));
+  assert.match(build, /05で毎回.*design\/SKILL\.md/);
+  const skill = fs.readFileSync(path.join(release, "design/SKILL.md"), "utf8");
+  assert.match(skill, /^---\nname: terakoya-flyer-sns-design/m);
+  assert.match(skill, /納品前の画像チェック/);
   for (const file of files.slice(0, 7)) assert.ok(build.includes(file), file);
   assert.match(fs.readFileSync(path.join(release, "index.html"), "utf8"), /<script src="consult\.js"><\/script>/);
   assert.match(fs.readFileSync(path.join(release, "index.html"), "utf8"), /<script src="state\.js"><\/script>\s*<script src="library\.js"><\/script>\s*<script src="work\.js"><\/script>/);

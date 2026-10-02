@@ -141,24 +141,24 @@
     }
     return lines;
   }
-  function drawText(ctx, text, x, y, width, height, startSize, color, weight = 700, minSize = 25) {
+  function drawText(ctx, text, x, y, width, height, startSize, color, weight = 700, minSize = 25, maxLines = Infinity) {
     text = String(text || "").trim();
     if (!text) return y;
     let size = startSize, lines = [];
-    while (size >= minSize) {
+    while (size >= 16) {
       setFont(ctx, size, weight);
       lines = breakLines(ctx, text, width);
-      if (lines.length * size * 1.32 <= height) break;
+      if ((lines.length <= maxLines || size < minSize) && lines.length * size * 1.32 <= height) break;
       size -= 2;
     }
     ctx.fillStyle = color;
     ctx.textBaseline = "top";
     ctx.save();
     ctx.beginPath(); ctx.rect(x, y, width, height); ctx.clip();
-    const maxLines = Math.floor(height / (size * 1.32));
-    for (let i = 0; i < Math.min(lines.length, maxLines); i++) ctx.fillText(lines[i], x, y + i * size * 1.32);
+    const visibleLines = Math.floor(height / (size * 1.32));
+    for (let i = 0; i < Math.min(lines.length, visibleLines); i++) ctx.fillText(lines[i], x, y + i * size * 1.32);
     ctx.restore();
-    return y + Math.min(lines.length, maxLines) * size * 1.32;
+    return y + Math.min(lines.length, visibleLines) * size * 1.32;
   }
   function fill(ctx, color, x, y, w, h) { ctx.fillStyle = color; ctx.fillRect(x, y, w, h); }
   function imageCover(ctx, image, x, y, w, h) {
@@ -188,16 +188,13 @@
     fill(ctx, palette.bg, 0, 0, 1000, H);
 
     if (concept === 0) {
-      fill(ctx, palette.accent, 0, 0, 1000, 14);
-      drawText(ctx, name, 66, 58, 870, 70, 36, palette.ink);
-      line(ctx, 66, 143, 868, "#8ca4a5", 2);
-      drawText(ctx, headline, 66, 195, 870, isFlyer ? 360 : 470, isFlyer ? 95 : 112, palette.ink, 800, 42);
-      if (image) imageCover(ctx, image, 66, isFlyer ? 580 : 710, 868, isFlyer ? 345 : 300);
-      else {
-        fill(ctx, palette.soft, 66, isFlyer ? 580 : 710, 868, isFlyer ? 345 : 300);
-        if (data.audience) drawText(ctx, data.audience, 102, isFlyer ? 665 : 788, 790, 180, 49, palette.softInk);
-      }
       if (isFlyer) {
+        fill(ctx, palette.accent, 0, 0, 1000, 10);
+        drawText(ctx, name, 66, 58, 870, 70, 35, palette.ink);
+        line(ctx, 66, 143, 868, palette.accent, 2);
+        drawText(ctx, headline, 66, 195, 870, 360, 87, palette.ink, 800, 36);
+        if (image) imageCover(ctx, image, 66, 580, 868, 345);
+        else fill(ctx, palette.soft, 66, 580, 868, 345);
         drawText(ctx, summary, 66, 956, 868, 104, 34, palette.ink, 500);
         let y = 1070;
         for (const item of list.slice(0, 3)) { fill(ctx, palette.accent, 66, y + 14, 10, 10); drawText(ctx, item, 94, y, 840, 54, 29, palette.ink, 600); y += 51; }
@@ -206,9 +203,13 @@
         drawText(ctx, cta, 66, 1330, 530, 55, 31, palette.ink);
         drawText(ctx, data.url || "", 600, 1319, 334, 75, 19, palette.ink, 500, 16);
       } else {
-        drawText(ctx, support, 66, 1020, 868, 43, 29, palette.ink, 600, 22);
-        fill(ctx, palette.accent, 66, 1070, 868, 98);
-        drawText(ctx, cta, 96, 1088, 810, 65, 42, palette.ink);
+        drawText(ctx, name, 66, 56, 868, 66, 31, palette.ink, 700);
+        line(ctx, 66, 145, 98, palette.accent, 5);
+        drawText(ctx, headline, 66, 202, 868, 255, 82, palette.ink, 700, 34, 2);
+        if (image) imageCover(ctx, image, 66, 492, 868, 505);
+        else fill(ctx, palette.soft, 66, 492, 868, 505);
+        drawText(ctx, support, 66, 1028, 868, 62, 30, palette.ink, 500, 22);
+        drawText(ctx, `${cta}  →`, 66, 1130, 868, 73, 34, palette.ink, 700, 24);
       }
     } else if (concept === 1) {
       const photoH = isFlyer ? 690 : 700;
@@ -229,8 +230,8 @@
         drawText(ctx, data.url || "", 600, 1319, 340, 75, 18, palette.ink, 500, 16);
       } else {
         drawText(ctx, support, 58, 1035, 884, 43, 29, palette.ink, 600, 22);
-        fill(ctx, palette.accent, 58, 1090, 884, 96);
-        drawText(ctx, cta, 88, 1108, 824, 66, 42, palette.onAccent);
+        line(ctx, 58, 1100, 96, palette.accent, 5);
+        drawText(ctx, `${cta}  →`, 58, 1125, 884, 65, 35, palette.ink);
       }
     } else if (concept === 2) {
       fill(ctx, palette.accent, 0, 0, 1000, isFlyer ? 260 : 295);
@@ -248,8 +249,8 @@
         drawText(ctx, data.url || "", 600, 1319, 345, 75, 18, palette.ink, 500, 16);
       } else {
         if (image) imageCover(ctx, image, 50, 1005, 290, 175);
-        fill(ctx, palette.ink, image ? 370 : 50, 1020, image ? 580 : 900, 155);
-        drawText(ctx, cta, image ? 402 : 82, 1050, image ? 514 : 836, 95, 42, palette.bg);
+        line(ctx, image ? 370 : 50, 1030, 85, palette.accent, 5);
+        drawText(ctx, `${cta}  →`, image ? 370 : 50, 1070, image ? 580 : 900, 70, 36, palette.ink);
         drawText(ctx, support, 50, 940, 900, 43, 29, palette.ink, 600, 22);
       }
     } else if (concept === 3) {
@@ -269,7 +270,7 @@
       else fill(ctx, palette.soft, 56, isFlyer ? 645 : 780, 430, isFlyer ? 450 : 310);
       drawText(ctx, isFlyer ? summary : support, 520, isFlyer ? 672 : 812, 410, 200, 36, palette.ink, 600);
       if (isFlyer) { let y = 898; for (const item of list) { drawText(ctx, item, 520, y, 410, 62, 27, palette.ink); y += 68; } drawText(ctx, details, 56, 1165, 880, 80, 24, palette.ink); }
-      fill(ctx, palette.ink, 56, H - 130, 888, 90); drawText(ctx, cta, 90, H - 111, 820, 60, 38, palette.bg);
+      line(ctx, 56, H - 125, 110, palette.accent, 5); drawText(ctx, `${cta}  →`, 56, H - 101, 888, 72, 36, palette.ink);
     } else if (concept === 5) {
       if (image) imageCover(ctx, image, 0, 0, 1000, isFlyer ? 790 : 800);
       else fill(ctx, palette.soft, 0, 0, 1000, isFlyer ? 790 : 800);
@@ -317,7 +318,8 @@
     for (const canvas of designs.querySelectorAll("canvas")) {
       render(canvas.getContext("2d"), data, Number(canvas.dataset.concept), canvas.dataset.medium, photo);
     }
-    status.textContent = valid(data) ? "" : "必須項目を入れると画像を保存できます";
+    status.textContent = !valid(data) ? "必須項目を入れると画像を保存できます" :
+      Array.from(String(data.headline || "")).length > 38 ? "見出しが長めです。完成画像では改行と文字の収まりを確認してください" : "";
   }
   function blobFrom(canvas) {
     return new Promise((resolve, reject) => canvas.toBlob(blob => blob ? resolve(blob) : reject(new Error("PNGを作成できませんでした")), "image/png"));

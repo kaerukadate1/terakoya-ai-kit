@@ -20,6 +20,10 @@ test("generation brief distinguishes previews and finished images", () => {
   assert.match(text, /構成下見/);
   assert.match(text, /実際の画像を生成/);
   assert.match(text, /completed-images.json/);
+  assert.match(text, /design\/SKILL.md/);
+  assert.match(text, /実際に取得して読み/);
+  assert.match(text, /完成サイズと縮小表示/);
+  assert.match(text, /汎用的な全幅ボタン/);
   assert.match(text, /#ff0088/);
   assert.match(text, /自動反映できなかった/);
 });
