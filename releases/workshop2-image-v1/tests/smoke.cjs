@@ -168,6 +168,10 @@ async function run() {
   listeners[".step:library:click"]();
   await new Promise(resolve => setImmediate(resolve));
   assert.equal(libraryCards.length, 1);
+  sandbox.ImageLibrary.list = async () => { throw new Error("storage unavailable"); };
+  listeners["refresh-library:click"]();
+  await new Promise(resolve => setImmediate(resolve));
+  assert.equal(libraryCards.length, 1, "remote Work images remain visible when local storage fails");
   console.log("Smoke test passed: 6 steps, 9 layouts, 6 previews, Work handoff, and completed-image manifest.");
 }
 run().catch(error => { console.error(error); process.exitCode = 1; });

@@ -344,8 +344,9 @@
     const message = document.querySelector("#library-status");
     message.textContent = "完成画像を確認中";
     try {
-      const local = await ImageLibrary.list();
-      let remote = [], remoteError = "";
+      let local = [], remote = [], remoteError = "", localError = "";
+      try { local = await ImageLibrary.list(); }
+      catch { localError = "旧版の端末保存画像を開けません"; }
       if (ImageWork.toolUrl(location.href)) {
         try {
           const response = await fetch(`completed-images.json?ts=${Date.now()}`, { cache: "no-store", credentials: "same-origin" });
@@ -359,7 +360,7 @@
       for (const url of libraryUrls) URL.revokeObjectURL(url);
       libraryUrls = [];
       libraryList.replaceChildren();
-      if (!entries.length) { message.textContent = remoteError || "完成画像はまだありません。画像を仕上げる画面から生成してください。"; return; }
+      if (!entries.length) { message.textContent = remoteError || localError || "完成画像はまだありません。画像を仕上げる画面から生成してください。"; return; }
       for (const entry of entries) {
         const card = document.createElement("article"); card.className = "library-card";
         const frame = document.createElement("div"); frame.className = "library-image";
@@ -387,7 +388,7 @@
         }));
         body.append(title, meta, actions); card.append(frame, body); libraryList.append(card);
       }
-      message.textContent = `${entries.length}件を表示中${remoteError ? `。${remoteError}` : ""}`;
+      message.textContent = `${entries.length}件を表示中${remoteError ? `。${remoteError}` : ""}${localError ? `。${localError}` : ""}`;
     } catch (error) { message.textContent = error.message || "画像一覧を開けませんでした"; }
   }
   function makeDesigns() {
