@@ -18,7 +18,16 @@
 
   <main class="workspace">
     <aside class="editor" aria-label="制作情報">
-      <div class="section-heading"><span>01 / INPUT</span><h1>内容を入力</h1></div>
+      <div class="input-heading"><div class="section-heading"><span>01 / INPUT</span><h1>内容を入力</h1></div><button id="consult" class="consult-button" type="button" aria-controls="consult-panel" aria-expanded="false">ChatGPTに相談</button></div>
+      <section id="consult-panel" class="consult-panel" hidden aria-labelledby="consult-title">
+        <h2 id="consult-title">ChatGPTから入力案を受け取る</h2>
+        <p>新しいタブで相談し、返ってきたJSONを貼り付けてください。未確認の情報は空欄のままにします。</p>
+        <label for="consult-answer">ChatGPTの回答</label>
+        <textarea id="consult-answer" rows="6" placeholder='{"fields":{"name":"...","audience":"..."}}'></textarea>
+        <label class="consult-overwrite"><input id="consult-overwrite" type="checkbox">入力済みの項目も置き換える</label>
+        <div class="consult-actions"><button id="apply-consult" class="consult-primary" type="button">入力案を反映</button><button id="close-consult" class="quiet" type="button">閉じる</button></div>
+        <p id="consult-status" class="consult-status" role="status" aria-live="polite"></p>
+      </section>
       <form id="brief-form">
         <label>サービス・イベント名 <b>必須</b><input name="name" maxlength="70" autocomplete="off" required placeholder="例：はじめてのAI画像講座"></label>
         <label>対象者<input name="audience" maxlength="90" placeholder="例：自分のお店を紹介したい方"></label>
@@ -51,6 +60,7 @@
     </section>
   </main>
 
+  <script src="consult.js"></script>
   <script src="app.js"></script>
 </body>
 </html>

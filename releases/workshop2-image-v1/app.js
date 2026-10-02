@@ -9,6 +9,9 @@
   const photoName = document.querySelector("#photo-name");
   const clearPhoto = document.querySelector("#clear-photo");
   const status = document.querySelector("#export-status");
+  const consultPanel = document.querySelector("#consult-panel");
+  const consultButton = document.querySelector("#consult");
+  const consultStatus = document.querySelector("#consult-status");
   let photo = null;
   let photoUrl = null;
   let debounce;
@@ -19,6 +22,36 @@
   function safeStore(data) {
     try { localStorage.setItem(KEY, JSON.stringify(data)); document.querySelector("#save-status").textContent = "この端末に保存済み"; }
     catch { document.querySelector("#save-status").textContent = "保存不可"; }
+  }
+  function setConsultOpen(open) {
+    consultPanel.hidden = !open;
+    consultButton.setAttribute("aria-expanded", String(open));
+  }
+  function applyConsult(answer, overwrite = false) {
+    const result = ImageConsult.applyFields(read(), answer, overwrite);
+    if (!result.applied) { consultStatus.textContent = "反映できる入力案がありませんでした"; return; }
+    for (const key of ImageConsult.KEYS) form.elements[key].value = result.fields[key] || "";
+    safeStore(read()); repaint(); setConsultOpen(false);
+    status.textContent = `${result.applied}項目を反映しました`;
+    consultStatus.textContent = "";
+  }
+  function receiveConsultLink() {
+    if (!location.hash.startsWith("#image-intake=")) return;
+    const encoded = location.hash.slice("#image-intake=".length);
+    try { history.replaceState(null, "", location.pathname + location.search); } catch { /* File URLs may refuse history changes. */ }
+    try {
+      if (!/^[A-Za-z0-9_-]{1,40000}$/.test(encoded)) throw new Error("入力案のリンクが無効です");
+      const base64 = encoded.replace(/-/g, "+").replace(/_/g, "/");
+      const bytes = Uint8Array.from(atob(base64), char => char.charCodeAt(0));
+      applyConsult(JSON.parse(new TextDecoder().decode(bytes)));
+    } catch { setConsultOpen(true); consultStatus.textContent = "入力案のリンクを読み込めませんでした。JSONを貼り付けてください"; }
+  }
+  function openWithPrompt(prompt) {
+    const link = document.createElement("a");
+    link.href = `https://chatgpt.com/?prompt=${encodeURIComponent(prompt)}`;
+    link.target = "_blank"; link.rel = "noopener noreferrer"; link.referrerPolicy = "no-referrer";
+    document.body.append(link); link.click(); link.remove();
+    consultStatus.textContent = "新しいタブの依頼文を確認して送信してください";
   }
   function restore() {
     try {
@@ -228,5 +261,15 @@
     if (!confirm("入力内容を消して新規作成しますか？")) return;
     form.reset(); clearPhoto.click(); safeStore(read()); repaint();
   });
-  restore(); makeDesigns(); repaint();
+  consultButton.addEventListener("click", () => {
+    setConsultOpen(true);
+    const origin = /^https?:$/.test(location.protocol) ? location.origin + "/" : "";
+    openWithPrompt(ImageConsult.buildPrompt(read(), origin));
+  });
+  document.querySelector("#apply-consult").addEventListener("click", () => {
+    try { applyConsult(ImageConsult.parseAnswer(document.querySelector("#consult-answer").value), document.querySelector("#consult-overwrite").checked); }
+    catch (error) { consultStatus.textContent = error.message || "入力案を読み込めませんでした"; }
+  });
+  document.querySelector("#close-consult").addEventListener("click", () => setConsultOpen(false));
+  restore(); makeDesigns(); repaint(); receiveConsultLink();
 })();

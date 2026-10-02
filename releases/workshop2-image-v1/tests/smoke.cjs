@@ -22,6 +22,7 @@ const form = {
 };
 const drawCalls = [];
 const downloads = [];
+const opened = [];
 function canvas(width, height, dataset = {}) {
   const item = {
     width, height, dataset,
@@ -56,14 +57,22 @@ const nodes = {
   "#clear-photo": { hidden: true, addEventListener(type, fn) { listeners[`clear:${type}`] = fn; } },
   "#export-status": { textContent: "" },
   "#save-status": { textContent: "" },
+  "#consult": { addEventListener(type, fn) { listeners[`consult:${type}`] = fn; }, setAttribute() {} },
+  "#consult-panel": { hidden: true },
+  "#consult-answer": { value: "" },
+  "#consult-overwrite": { checked: false },
+  "#consult-status": { textContent: "" },
+  "#apply-consult": { addEventListener(type, fn) { listeners[`apply-consult:${type}`] = fn; } },
+  "#close-consult": { addEventListener(type, fn) { listeners[`close-consult:${type}`] = fn; } },
   "#load-sample": { addEventListener(type, fn) { listeners[`sample:${type}`] = fn; } },
   "#reset": { addEventListener(type, fn) { listeners[`reset:${type}`] = fn; } }
 };
 const document = {
+  body: { append() {} },
   querySelector(selector) { assert.ok(nodes[selector], selector); return nodes[selector]; },
   createElement(tag) {
     if (tag === "canvas") return canvas(0, 0);
-    if (tag === "a") return { click() {}, href: "", download: "" };
+    if (tag === "a") return { click() { opened.push(this.href); }, remove() {}, href: "", download: "" };
     throw new Error(tag);
   }
 };
@@ -72,12 +81,16 @@ const sandbox = {
   document,
   localStorage: { getItem: key => storage.get(key) || null, setItem: (key, value) => storage.set(key, value) },
   FormData: class { constructor() {} entries() { return Object.entries(fields).map(([key, node]) => [key, node.value]); } },
-  URL: { createObjectURL: () => "blob:smoke", revokeObjectURL() {} },
+  URL: class extends URL { static createObjectURL() { return "blob:smoke"; } static revokeObjectURL() {} },
+  location: { protocol: "file:", origin: "null", hash: "", pathname: "/test", search: "" },
+  history: { replaceState() {} },
+  Uint8Array, atob, TextDecoder,
   setTimeout: fn => { fn(); return 1; },
   clearTimeout() {},
   confirm: () => true,
   Image: class {}
 };
+vm.runInNewContext(fs.readFileSync(path.join(root, "consult.js"), "utf8"), sandbox);
 vm.runInNewContext(fs.readFileSync(path.join(root, "app.js"), "utf8"), sandbox);
 assert.equal(previews.length, 6);
 assert.ok(drawCalls.length > 0);
@@ -91,6 +104,17 @@ fields.name.value = "講座";
 fields.headline.value = "自分のサービスを伝える";
 fields.cta.value = "詳細を見る";
 listeners["form:input"]();
+listeners["consult:click"]();
+assert.equal(nodes["#consult-panel"].hidden, false);
+assert.match(opened[0], /^https:\/\/chatgpt\.com\/\?prompt=/);
+assert.match(decodeURIComponent(opened[0]), /講座/);
+nodes["#consult-answer"].value = '```json\n{"fields":{"name":"別名","audience":"初心者","benefit1":"持ち帰り資料"}}\n```';
+listeners["apply-consult:click"]();
+assert.equal(fields.name.value, "講座", "existing inputs remain unless overwrite is checked");
+assert.equal(fields.audience.value, "初心者");
+assert.equal(fields.benefit1.value, "持ち帰り資料");
+assert.equal(nodes["#consult-panel"].hidden, true);
+assert.equal(JSON.parse(storage.get("terakoya-workshop2-image-v1")).audience, "初心者");
 for (let concept = 0; concept < 3; concept++) {
   click(concept, "flyer");
   click(concept, "sns");
