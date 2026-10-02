@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>寺子屋AI チラシ・SNS告知画像制作ツール</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand"><span class="brand-mark" aria-hidden="true">寺</span><strong>寺子屋AI <span>チラシ・SNS告知画像制作ツール</span></strong></div>
+    <div class="top-actions">
+      <span id="save-status" role="status">この端末に保存</span>
+      <button id="load-sample" class="quiet" type="button">記入例</button>
+      <button id="reset" class="quiet" type="button">新規作成</button>
+    </div>
+  </header>
+
+  <main class="workspace">
+    <aside class="editor" aria-label="制作情報">
+      <div class="section-heading"><span>01 / INPUT</span><h1>内容を入力</h1></div>
+      <form id="brief-form">
+        <label>サービス・イベント名 <b>必須</b><input name="name" maxlength="70" autocomplete="off" required placeholder="例：はじめてのAI画像講座"></label>
+        <label>対象者<input name="audience" maxlength="90" placeholder="例：自分のお店を紹介したい方"></label>
+        <label>メインのひとこと <b>必須</b><textarea name="headline" rows="2" maxlength="100" required placeholder="例：あなたのサービスを、ひと目で伝える。"></textarea></label>
+        <label>内容<textarea name="description" rows="3" maxlength="90" placeholder="どんな体験やサービスか"></textarea></label>
+        <label>伝えたいこと 1<input name="benefit1" maxlength="45" placeholder="例：初めてでも参加しやすい"></label>
+        <label>伝えたいこと 2<input name="benefit2" maxlength="45"></label>
+        <label>伝えたいこと 3<input name="benefit3" maxlength="45"></label>
+        <div class="field-pair">
+          <label>日時<input name="date" maxlength="32" placeholder="決まっている場合"></label>
+          <label>場所・形式<input name="place" maxlength="32" placeholder="決まっている場合"></label>
+        </div>
+        <label>料金<input name="price" maxlength="32" placeholder="決まっている場合"></label>
+        <label>呼びかけ <b>必須</b><input name="cta" maxlength="25" required placeholder="例：詳細を見る"></label>
+        <label>申込先URL<input name="url" maxlength="80" type="url" placeholder="https://..."></label>
+        <div class="photo-field">
+          <label for="photo">写真・画像</label>
+          <div class="photo-row"><input id="photo" type="file" accept="image/png,image/jpeg,image/webp"><button id="clear-photo" class="quiet" type="button" hidden>外す</button></div>
+          <span id="photo-name">未選択</span>
+        </div>
+      </form>
+    </aside>
+
+    <section class="results" aria-labelledby="results-title">
+      <div class="results-head">
+        <div class="section-heading"><span>02 / DESIGN</span><h2 id="results-title">デザインを比較</h2></div>
+        <p id="export-status" role="status" aria-live="polite"></p>
+      </div>
+      <div id="designs" class="designs"></div>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
