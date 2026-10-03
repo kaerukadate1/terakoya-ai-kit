@@ -1,7 +1,8 @@
 (() => {
   'use strict';
-  const KEY = 'terakoya-mytools-v5';
-  const LEGACY_KEY = 'terakoya-mytools-v4';
+  const siteId = document.querySelector('meta[name="terakoya-site-id"]')?.content.trim() || `${location.origin}${location.pathname}`;
+  const KEY = `terakoya-mytools-v5:${siteId}`;
+  const IMPORT_KEY = document.querySelector('meta[name="terakoya-import-storage-key"]')?.content.trim();
   const defaults = { siteName: '', theme: 'light', primaryColor: '#0c3452', secondaryColor: '#b38a43', logo: '', profile: {}, tools: [] };
   const toolTypes = {
     web: { label: 'Web', targetLabel: 'URL', hint: 'http または https のURLを登録します。', action: '開く' },
@@ -20,7 +21,8 @@
 
   function loadState() {
     try {
-      const saved = JSON.parse(localStorage.getItem(KEY) || localStorage.getItem(LEGACY_KEY) || '{}');
+      const raw = localStorage.getItem(KEY) ?? (IMPORT_KEY ? localStorage.getItem(IMPORT_KEY) : null);
+      const saved = JSON.parse(raw || '{}');
       const tools = Array.isArray(saved.tools) ? saved.tools.map(tool => ({ ...tool, type: toolTypes[tool.type] ? tool.type : 'web', target: tool.target ?? tool.url ?? '' })) : [];
       return { ...defaults, ...saved, profile: saved.profile && typeof saved.profile === 'object' ? saved.profile : {}, tools };
     } catch { return structuredClone(defaults); }

@@ -1,3 +1,3 @@
 寺子屋AIのマイサイトを作成または更新してください。GitHubのビルドプロンプト（BUILD_PROMPT.md）と同じ版の固定ファイルを実際に読み、指示に従ってください。既存データを守り、Web・ファイル/バッチ・スキル・プロンプト等を登録できる本人専用サイトにします。読めない資料や実装できない機能は推測で済ませず、その点を報告してください。
-https://raw.githubusercontent.com/kaerukadate1/terakoya-ai-kit/mytools-v5-20261003-access/releases/mytools-v5/BUILD_PROMPT.md
+https://raw.githubusercontent.com/kaerukadate1/terakoya-ai-kit/mytools-v5-20261003-fresh/releases/mytools-v5/BUILD_PROMPT.md
 

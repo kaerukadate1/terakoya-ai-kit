@@ -29,11 +29,14 @@ async function addItem(page, type, target, name) {
       }) }));
       const response = await page.goto(url);
       assert.equal(response.status(), 200);
-      await page.evaluate(() => localStorage.setItem('terakoya-mytools-v4', JSON.stringify({ tools: [{ id: 'old-web', url: 'https://example.com/old', name: '以前のツール' }] })));
+      await page.evaluate(() => {
+        localStorage.setItem('terakoya-mytools-v4', JSON.stringify({ tools: [{ id: 'old-web', url: 'https://example.com/old', name: '以前のツール' }] }));
+        localStorage.setItem('terakoya-mytools-v5', JSON.stringify({ tools: [{ id: 'other-web', target: 'https://example.com/other', name: '別サイトのツール' }] }));
+      });
       await page.reload();
       await page.locator('#site-heading').waitFor();
-      assert.equal(await page.locator('.tool-card').count(), 1);
-      assert.equal(await page.locator('.tool-card a.primary-action').getAttribute('href'), 'https://example.com/old');
+      assert.equal(await page.locator('.tool-card').count(), 0);
+      assert.equal(await page.locator('#tool-empty-title').textContent(), 'まだ登録がありません');
       assert.ok(await page.getByText('制作ワークショップ').count() > 0);
       assert.equal(await page.getByText('デモ', { exact: true }).count(), 0);
 
@@ -48,7 +51,7 @@ async function addItem(page, type, target, name) {
       await addItem(page, 'skill', 'https://github.com/example/skill', '構成スキル');
       await addItem(page, 'prompt', '原稿を3案作ってください。\n事実確認を忘れずに。', '原稿プロンプト');
       await addItem(page, 'other', '案件Aの参照メモ', '業務メモ');
-      assert.equal(await page.locator('.tool-card').count(), 5);
+      assert.equal(await page.locator('.tool-card').count(), 4);
       assert.equal(await page.locator('.tool-card').filter({ hasText: '作業バッチ' }).locator('a.primary-action').count(), 0);
       assert.equal(await page.locator('.tool-card').filter({ hasText: '作業バッチ' }).getByRole('button', { name: '場所をコピー' }).count(), 1);
       assert.equal(await page.locator('.tool-card').filter({ hasText: '原稿プロンプト' }).getByRole('button', { name: '本文をコピー' }).count(), 1);
@@ -61,16 +64,37 @@ async function addItem(page, type, target, name) {
       assert.equal(await page.locator('.tool-card').count(), 1);
       await page.locator('#type-filter').selectOption('all');
       await page.reload();
-      assert.equal(await page.locator('.tool-card').count(), 5);
-      const saved = await page.evaluate(() => JSON.parse(localStorage.getItem('terakoya-mytools-v5')));
+      assert.equal(await page.locator('.tool-card').count(), 4);
+      const saved = await page.evaluate(() => JSON.parse(localStorage.getItem(`terakoya-mytools-v5:${location.origin}${location.pathname}`)));
       assert.ok(saved.tools.some(tool => tool.type === 'prompt' && tool.target.includes('事実確認')));
-      assert.ok(saved.tools.some(tool => tool.type === 'web' && tool.target === 'https://example.com/old'));
+      assert.ok(!saved.tools.some(tool => tool.type === 'web'));
       assert.equal(await page.evaluate(() => JSON.parse(localStorage.getItem('terakoya-mytools-v4')).tools.length), 1);
+      const existingPage = await context.newPage();
+      await existingPage.route(url, async route => {
+        const response = await route.fetch();
+        const body = (await response.text())
+          .replace('name="terakoya-site-id" content=""', 'name="terakoya-site-id" content="existing-site"')
+          .replace('name="terakoya-import-storage-key" content=""', 'name="terakoya-import-storage-key" content="terakoya-mytools-v4"');
+        await route.fulfill({ response, body });
+      });
+      await existingPage.goto(url);
+      assert.equal(await existingPage.locator('.tool-card').count(), 1);
+      assert.equal(await existingPage.locator('.tool-card a.primary-action').getAttribute('href'), 'https://example.com/old');
+      const otherPage = await context.newPage();
+      await otherPage.route(url, async route => {
+        const response = await route.fetch();
+        const body = (await response.text()).replace('name="terakoya-site-id" content=""', 'name="terakoya-site-id" content="other-new-site"');
+        await route.fulfill({ response, body });
+      });
+      await otherPage.goto(url);
+      assert.equal(await otherPage.locator('.tool-card').count(), 0);
+      await existingPage.close();
+      await otherPage.close();
       assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);
       assert.deepEqual(errors, []);
       await page.screenshot({ path: path.join(output, `${viewport.width}-tools.png`), fullPage: true });
       await context.close();
     }
-    console.log('PASS: desktop/mobile, v4 migration, five types, validation, filtering, persistence, no overflow/pageerror');
+    console.log('PASS: desktop/mobile, empty new site, explicit v4 migration, site isolation, five types, validation, filtering, persistence, no overflow/pageerror');
   } finally { await browser.close(); }
 })().catch(error => { console.error(error); process.exitCode = 1; });
