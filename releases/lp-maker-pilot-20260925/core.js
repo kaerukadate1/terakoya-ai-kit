@@ -29,6 +29,17 @@
     connection: { label: "つながり", description: "写真から会話へ進む左右の流れ", bg: "#f9f8f8", ink: "#2c3034", accent: "#437b83", soft: "#f5e9e8", heading: "Georgia, 'Yu Mincho', serif" }
   };
 
+  const SAMPLE_FIELDS = {
+    title: "スマホで撮る 商品写真ミニ講座", purpose: "講座の参加案内",
+    audience: "自分の商品を販売していて、スマホ撮影に慣れていない方",
+    outcome: "自分で撮影した商品写真1枚と、撮影手順のチェックリスト",
+    offer: "自分の商品をスマートフォンで撮るときの光の使い方と背景の整え方を学び、講座中に商品写真を1枚撮影します。",
+    details: "窓の近くでの光の使い方、身近な物で作る背景、撮影実習、参加者の写真への簡単なフィードバック。",
+    place: "オンライン", application: "受付準備中",
+    faq: "専用カメラは必要ですか？\n不要です。",
+    notes: "初心者が安心できる、丁寧で堅すぎない文章。成果保証はしない。残席数は不明。"
+  };
+
   function blankProject() {
     return {
       version: 1,
@@ -117,12 +128,22 @@
     return project;
   }
 
-  function buildConsultPrompt(rawProject, toolUrl = "") {
+  function prepareConsultProject(rawProject) {
     const project = normalizeProject(rawProject);
+    if (!project.sample) return project;
+    const clean = blankProject();
+    for (const key of FIELD_KEYS) {
+      if (project.fields[key] !== SAMPLE_FIELDS[key]) clean.fields[key] = project.fields[key];
+    }
+    return clean;
+  }
+
+  function buildConsultPrompt(rawProject, toolUrl = "") {
+    const project = prepareConsultProject(rawProject);
     const currentFields = Object.fromEntries(FIELD_KEYS.filter((key) => text(project.fields[key])).map((key) => [key, project.fields[key]]));
     const returnUrl = /^https:\/\/[^/]+\.chatgpt\.site\/?$/.test(toolUrl) || /^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?\/?$/.test(toolUrl) ? toolUrl.replace(/\/$/, "") : "";
     return [
-      "寺子屋AI LP制作ツールの『01 素材を入れる』を埋める相談です。参照できる本人の過去チャット、同じプロジェクトの資料、利用可能なメモリから、この本人の事業に関する確かな情報だけを拾ってください。参照できない履歴を読めたように装わないでください。",
+      "寺子屋AI LP制作ツールの『01 素材を入れる』を埋める相談です。参照できる本人の過去チャット、同じプロジェクトの資料、利用可能なメモリから、この本人の事業や検討中のアイデアに関する確かな情報だけを拾ってください。サンプル・記入例を本人の事業として使わず、基本は空欄から入力案を作ってください。履歴から根拠が見つからない項目は空欄にし、事業の根拠自体がなければfieldsは空のオブジェクトにしてください。参照できない履歴を読めたように装わないでください。",
       "対象の事業が複数あり特定できない場合は混ぜずに確認してください。現在の入力があれば、その事業を優先してください。顧客・第三者の個人情報、認証情報、内部の秘密は含めないでください。日時、価格、実績、口コミ、申込先など、確定していない項目は空欄にしてください。",
       `結果は次のキーだけを使ったJSONコードブロックで返してください。分からないキーは省略してください: ${FIELD_KEYS.join(", ")}。形式: {"fields":{"title":"...","audience":"..."}}。JSONの後に、参照できた根拠と未確認点を短く書いてください。`,
       returnUrl ? `可能なら、そのJSONをUTF-8でbase64urlエンコードし、${returnUrl}/#lp-intake=<エンコード文字列> という『入力案を反映』リンクも返してください。リンクを作れない場合はJSONだけで構いません。リンク先では未入力欄だけが埋まります。` : "リンクを作れない場合はJSONだけで返してください。",
@@ -131,7 +152,7 @@
   }
 
   function applyConsultFields(rawProject, answer, overwrite = false) {
-    const project = normalizeProject(rawProject);
+    const project = prepareConsultProject(rawProject);
     const fields = answer?.fields;
     if (!fields || typeof fields !== "object" || Array.isArray(fields)) throw new Error("入力案の形式が違います");
     let applied = 0;
@@ -312,5 +333,5 @@ body[data-design="connection"] .hero{grid-template-columns:.95fr 1.05fr;gap:50px
     return [...byId.values()].sort((a, b) => (b.updatedAt || "").localeCompare(a.updatedAt || "")).slice(0, HISTORY_LIMIT);
   }
 
-  return { FIELD_KEYS, SECTIONS, PRESETS, HISTORY_LIMIT, blankProject, normalizeProject, snapshotForLibrary, buildConsultPrompt, applyConsultFields, imageBriefFor, validHttpUrl, issues, buildHtml, buildWorkPrompt, normalizeHistory, pushHistory, mergeHistory, historyIdFor, contentFor };
+  return { FIELD_KEYS, SECTIONS, PRESETS, SAMPLE_FIELDS, HISTORY_LIMIT, blankProject, normalizeProject, snapshotForLibrary, prepareConsultProject, buildConsultPrompt, applyConsultFields, imageBriefFor, validHttpUrl, issues, buildHtml, buildWorkPrompt, normalizeHistory, pushHistory, mergeHistory, historyIdFor, contentFor };
 });

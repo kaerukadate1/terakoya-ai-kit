@@ -220,3 +220,24 @@ test("three design-specific image directions survive saving and enter one Work r
   assert.match(prompt, /選択した案それぞれに生成/);
   assert.equal((prompt.match(/"imageDirection":/g) || []).length, 3);
 });
+
+
+test("consultation excludes a restored sample while preserving personal edits", () => {
+  const project = Core.blankProject();
+  project.sample = true;
+  Object.assign(project.fields, Core.SAMPLE_FIELDS);
+  project.fields.host = "本人の屋号";
+  project.extraSections = [{ title: "持ち物", content: "サンプルの持ち物" }];
+  const prompt = Core.buildConsultPrompt(project);
+  assert.doesNotMatch(prompt, /スマホで撮る|商品写真1枚|撮影手順/);
+  assert.match(prompt, /本人の屋号/);
+  assert.match(prompt, /過去チャット/);
+  const clean = Core.prepareConsultProject(project);
+  assert.equal(clean.fields.title, "");
+  assert.equal(clean.fields.host, "本人の屋号");
+  assert.deepEqual(clean.extraSections, []);
+  const result = Core.applyConsultFields(project, { fields: { title: "本人の講座" } });
+  assert.equal(result.project.fields.title, "本人の講座");
+  assert.equal(result.project.fields.audience, "");
+  assert.equal(project.sample, true);
+});

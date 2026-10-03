@@ -127,6 +127,15 @@ assert.equal(document.documentElement.dataset.theme, "dark");
 assert.equal(JSON.parse(storage.get("terakoya-workshop2-image-theme-v1")).mode, "dark");
 async function run() {
   assert.equal(downloads.length, 0, "incomplete form must not export");
+  listeners["sample:click"]();
+  assert.equal(fields.name.value, "はじめてのAI画像講座");
+  fields.date.value = "本人の開催日";
+  listeners["consult:click"]();
+  const sampleConsult = decodeURIComponent(opened.pop());
+  assert.doesNotMatch(sampleConsult, /はじめてのAI画像講座|自分のお店を紹介したい方/);
+  assert.equal(fields.name.value, "");
+  assert.equal(fields.headline.value, "");
+  assert.equal(fields.date.value, "本人の開催日");
   fields.name.value = "講座";
   fields.headline.value = "自分のサービスを伝える";
   fields.cta.value = "詳細を見る";

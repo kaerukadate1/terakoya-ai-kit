@@ -345,16 +345,7 @@
   }
   function sample() {
     const next = Core.blankProject();
-    Object.assign(next.fields, {
-      title: "スマホで撮る 商品写真ミニ講座", purpose: "講座の参加案内",
-      audience: "自分の商品を販売していて、スマホ撮影に慣れていない方",
-      outcome: "自分で撮影した商品写真1枚と、撮影手順のチェックリスト",
-      offer: "自分の商品をスマートフォンで撮るときの光の使い方と背景の整え方を学び、講座中に商品写真を1枚撮影します。",
-      details: "窓の近くでの光の使い方、身近な物で作る背景、撮影実習、参加者の写真への簡単なフィードバック。",
-      place: "オンライン", application: "受付準備中",
-      faq: "専用カメラは必要ですか？\n不要です。",
-      notes: "初心者が安心できる、丁寧で堅すぎない文章。成果保証はしない。残席数は不明。"
-    });
+    Object.assign(next.fields, Core.SAMPLE_FIELDS);
     next.sections.faq = "include";
     next.extraSections = [
       { title: "持ち物", content: "スマートフォン、撮影する商品1点、白い紙または白い布" },
@@ -400,6 +391,13 @@
   document.querySelectorAll(".next-step").forEach((button) => button.addEventListener("click", () => go(button.dataset.next)));
   $("load-sample").addEventListener("click", () => { if (Object.values(project.fields).some((v) => v.trim()) && !confirm("今の入力をサンプルに置き換えますか？ 置き換える前に履歴にも残します。")) return; checkpointHistory(); sample(); });
   $("consult").addEventListener("click", () => {
+    if (project.sample) {
+      checkpointHistory();
+      project = Core.prepareConsultProject(project);
+      persist(); renderAll();
+    }
+    $("consult-answer").value = "";
+    $("consult-overwrite").checked = false;
     $("consult-panel").hidden = false;
     openWithPrompt(Core.buildConsultPrompt(project, location.origin + "/"));
   });

@@ -444,8 +444,7 @@
   });
   document.querySelector("#load-sample").addEventListener("click", () => {
     if (Object.values(read()).some(value => String(value).trim()) && !confirm("今の入力を記入例に置き換えますか？")) return;
-    const sample = { name: "はじめてのAI画像講座", audience: "自分のお店を紹介したい方", headline: "あなたのサービスを、ひと目で伝える。", description: "身近な仕事の課題を題材に、伝わる画像づくりを一緒に体験します。", benefit1: "自分のサービスに合う見せ方を考える", benefit2: "チラシとSNSの違いを学ぶ", benefit3: "持ち帰れる画像を作る", date: "", place: "", price: "", cta: "内容を見る", url: "" };
-    for (const [key, value] of Object.entries(sample)) form.elements[key].value = value;
+    for (const [key, value] of Object.entries(ImageConsult.SAMPLE_FIELDS)) form.elements[key].value = value;
     safeStore(read()); repaint();
   });
   document.querySelector("#reset").addEventListener("click", () => {
@@ -454,6 +453,11 @@
     safeStore(read()); storeSettings(); renderStructureSettings(); renderDesignSettings(); repaint(); go("info");
   });
   consultButton.addEventListener("click", () => {
+    const fields = ImageConsult.prepareFields(read());
+    for (const [key, value] of Object.entries(fields)) form.elements[key].value = value;
+    safeStore(read()); repaint();
+    document.querySelector("#consult-answer").value = "";
+    document.querySelector("#consult-overwrite").checked = false;
     setConsultOpen(true);
     const origin = /^https?:$/.test(location.protocol) ? location.origin + "/" : "";
     openWithPrompt(ImageConsult.buildPrompt(read(), origin));

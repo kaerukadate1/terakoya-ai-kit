@@ -31,3 +31,16 @@ test("invalid and oversized answers are rejected", () => {
   assert.equal(result.fields.url, "https://example.com/");
   assert.equal(Consult.applyFields({}, { fields: { url: `https://example.com/${"x".repeat(100)}` } }).applied, 0);
 });
+
+
+test("consultation omits saved sample values and retains personal input", () => {
+  const fields = { ...Consult.SAMPLE_FIELDS, date: "本人が決めた日時" };
+  const prompt = Consult.buildPrompt(fields);
+  assert.doesNotMatch(prompt, /はじめてのAI画像講座|自分のお店を紹介したい方/);
+  assert.match(prompt, /本人が決めた日時/);
+  const result = Consult.applyFields(fields, { fields: { name: "本人のサービス" } });
+  assert.equal(result.fields.name, "本人のサービス");
+  assert.equal(result.fields.headline, "");
+  assert.equal(result.fields.date, "本人が決めた日時");
+  assert.equal(Consult.prepareFields({ name: "本人の講座", cta: "内容を見る" }).cta, "内容を見る");
+});
