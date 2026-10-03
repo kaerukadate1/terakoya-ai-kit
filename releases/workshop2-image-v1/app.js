@@ -5,14 +5,13 @@
   const THEME_KEY = "terakoya-workshop2-image-theme-v1";
   const HIDDEN_KEY = "terakoya-workshop2-image-hidden-v1";
   const form = document.querySelector("#brief-form");
-  const designs = document.querySelector("#designs");
   const designSettings = document.querySelector("#design-settings");
   const structureFields = document.querySelector(".structure-list");
-  const libraryList = document.querySelector("#library-list");
+  const libraryGroups = { flyer: document.querySelector("#library-flyer"), sns: document.querySelector("#library-sns") };
   const photoInput = document.querySelector("#photo");
   const photoName = document.querySelector("#photo-name");
   const clearPhoto = document.querySelector("#clear-photo");
-  const status = document.querySelector("#export-status");
+  const status = document.querySelector("#work-status");
   const consultPanel = document.querySelector("#consult-panel");
   const consultButton = document.querySelector("#consult");
   const consultStatus = document.querySelector("#consult-status");
@@ -75,7 +74,6 @@
       if (active) button.setAttribute("aria-current", "step");
       else button.removeAttribute("aria-current");
     }
-    if (step === "preview") repaint();
     if (step === "library") refreshLibrary();
     if (typeof window !== "undefined") window.scrollTo({ top: 0, behavior: "instant" });
   }
@@ -315,11 +313,8 @@
   }
   function repaint() {
     const data = read();
-    for (const canvas of designs.querySelectorAll("canvas")) {
-      render(canvas.getContext("2d"), data, Number(canvas.dataset.concept), canvas.dataset.medium, photo);
-    }
-    status.textContent = !valid(data) ? "必須項目を入れると画像を保存できます" :
-      Array.from(String(data.headline || "")).length > 38 ? "見出しが長めです。完成画像では改行と文字の収まりを確認してください" : "";
+    status.textContent = !valid(data) ? "必須項目を入れると生成できます" :
+      Array.from(String(data.headline || "")).length > 38 ? "見出しが長めです。生成時に改行と文字の収まりを確認してください" : "";
   }
   function blobFrom(canvas) {
     return new Promise((resolve, reject) => canvas.toBlob(blob => blob ? resolve(blob) : reject(new Error("PNGを作成できませんでした")), "image/png"));
@@ -334,7 +329,7 @@
     if (!confirm("今の入力を保存画像の設定に置き換えますか？ 写真は再選択が必要です。")) return;
     for (const key of ImageConsult.KEYS) form.elements[key].value = typeof entry.fields?.[key] === "string" ? entry.fields[key] : "";
     clearPhoto.click(); settings = ImageState.normalize(entry.settings);
-    renderStructureSettings(); renderDesignSettings(); makeDesigns();
+    renderStructureSettings(); renderDesignSettings();
     safeStore(read()); storeSettings(); go("info");
     document.querySelector("#save-status").textContent = "設定を読み込みました。写真は再選択してください";
   }
@@ -361,8 +356,8 @@
         .sort((a, b) => String(b.createdAt).localeCompare(String(a.createdAt)));
       for (const url of libraryUrls) URL.revokeObjectURL(url);
       libraryUrls = [];
-      libraryList.replaceChildren();
-      if (!entries.length) { message.textContent = remoteError || localError || "完成画像はまだありません。画像を仕上げる画面から生成してください。"; return; }
+      for (const group of Object.values(libraryGroups)) group.replaceChildren();
+      if (!entries.length) { message.textContent = remoteError || localError || "完成画像はまだありません。画像を仕上げる画面から生成してください。"; }
       for (const entry of entries) {
         const card = document.createElement("article"); card.className = "library-card";
         const frame = document.createElement("div"); frame.className = "library-image";
@@ -388,41 +383,16 @@
           if (!confirm(`「${entry.name}」を一覧から削除しますか？\n画像ファイル自体は削除されません。\nこの端末の一覧からのみ外れます。`)) return;
           hideEntry(`${entry.source}:${entry.id}`); refreshLibrary();
         }));
-        body.append(title, meta, actions); card.append(frame, body); libraryList.append(card);
+        body.append(title, meta, actions); card.append(frame, body); libraryGroups[entry.medium === "flyer" ? "flyer" : "sns"].append(card);
       }
-      message.textContent = `${entries.length}件を表示中${remoteError ? `。${remoteError}` : ""}${localError ? `。${localError}` : ""}`;
+      for (const [medium, group] of Object.entries(libraryGroups)) {
+        if (!entries.some(entry => entry.medium === medium)) {
+          const empty = document.createElement("p"); empty.className = "library-empty"; empty.textContent = "まだ完成画像はありません"; group.append(empty);
+        }
+      }
+      if (entries.length) message.textContent = `${entries.length}件を表示中${remoteError ? `。${remoteError}` : ""}${localError ? `。${localError}` : ""}`;
     } catch (error) { message.textContent = error.message || "画像一覧を開けませんでした"; }
   }
-  function makeDesigns() {
-    designs.innerHTML = settings.designs.map((design, i) => `
-      <section class="design-section" aria-label="デザイン${i + 1}">
-        <div class="design-top"><span class="number">0${i + 1}</span><h3>${ImageState.LAYOUTS[design.layout]}</h3><p>${ImageState.NOTES[design.layout]}</p></div>
-        <div class="output-pair">
-          <div class="output"><div class="output-head"><strong>チラシ A4</strong><div class="output-actions"><button class="subtle-button" type="button" data-action="download" data-concept="${i}" data-medium="flyer">下見PNGを保存</button></div></div><div class="canvas-wrap"><canvas width="420" height="594" data-concept="${i}" data-medium="flyer" aria-label="デザイン${i + 1}のチラシ構成下見"></canvas></div><small>構成下見 / 2480 × 3508 px</small></div>
-          <div class="output"><div class="output-head"><strong>SNS投稿 4:5</strong><div class="output-actions"><button class="subtle-button" type="button" data-action="download" data-concept="${i}" data-medium="sns">下見PNGを保存</button></div></div><div class="canvas-wrap"><canvas width="420" height="525" data-concept="${i}" data-medium="sns" aria-label="デザイン${i + 1}のSNS構成下見"></canvas></div><small>構成下見 / 1080 × 1350 px</small></div>
-        </div>
-      </section>`).join("");
-  }
-  designs.addEventListener("click", async event => {
-    const button = event.target.closest("button[data-medium]");
-    if (!button) return;
-    const data = read();
-    if (!valid(data) || !form.reportValidity()) { status.textContent = "必須項目とURL形式を確認してください"; return; }
-    const medium = button.dataset.medium;
-    const slot = Number(button.dataset.concept);
-    const filename = `terakoya_preview_${medium}_design0${slot + 1}.png`;
-    button.disabled = true;
-    try {
-      const canvas = document.createElement("canvas");
-      canvas.width = medium === "flyer" ? 2480 : 1080;
-      canvas.height = medium === "flyer" ? 3508 : 1350;
-      render(canvas.getContext("2d"), data, slot, medium, photo);
-      const imageBlob = await blobFrom(canvas);
-      downloadBlob(imageBlob, filename);
-      status.textContent = "構成下見のPNGを保存しました。完成画像は次の工程で生成します";
-    } catch (error) { status.textContent = error.name === "QuotaExceededError" ? "保存容量が不足しています。PNG保存をお試しください" : error.message || "画像を保存できませんでした。PNG保存をお試しください"; }
-    finally { button.disabled = false; }
-  });
   form.addEventListener("input", () => {
     document.querySelector("#save-status").textContent = "保存中";
     clearTimeout(debounce);
@@ -444,7 +414,7 @@
     if (!Number.isInteger(slot) || slot < 0 || slot > 2) return;
     if (event.target.matches("select[data-layout]")) settings.designs[slot].layout = Number(event.target.value);
     else if (event.target.matches("input[data-color]")) settings.designs[slot][event.target.dataset.color] = event.target.value;
-    settings = ImageState.normalize(settings); storeSettings(); renderDesignSettings(); makeDesigns(); repaint();
+    settings = ImageState.normalize(settings); storeSettings(); renderDesignSettings(); repaint();
   });
   designSettings.addEventListener("click", event => {
     const button = event.target.closest("button[data-preset]");
@@ -453,7 +423,7 @@
     const preset = ImageState.PALETTES[key];
     if (!preset || !Number.isInteger(slot) || slot < 0 || slot > 2) return;
     settings.designs[slot] = { ...settings.designs[slot], palette: key, bg: preset.bg, accent: preset.accent };
-    settings = ImageState.normalize(settings); storeSettings(); renderDesignSettings(); makeDesigns(); repaint();
+    settings = ImageState.normalize(settings); storeSettings(); renderDesignSettings(); repaint();
   });
   photoInput.addEventListener("change", async () => {
     const file = photoInput.files[0];
@@ -481,7 +451,7 @@
   document.querySelector("#reset").addEventListener("click", () => {
     if (!confirm("入力内容と設定を新しい案件に置き換えますか？ 完成画像の一覧は残ります。")) return;
     form.reset(); clearPhoto.click(); settings = ImageState.normalize(null);
-    safeStore(read()); storeSettings(); renderStructureSettings(); renderDesignSettings(); makeDesigns(); repaint(); go("info");
+    safeStore(read()); storeSettings(); renderStructureSettings(); renderDesignSettings(); repaint(); go("info");
   });
   consultButton.addEventListener("click", () => {
     setConsultOpen(true);
@@ -521,5 +491,5 @@
   document.querySelectorAll(".step").forEach(button => button.addEventListener("click", () => go(button.dataset.step)));
   document.querySelectorAll(".next-step").forEach(button => button.addEventListener("click", () => go(button.dataset.next)));
   document.querySelector("#refresh-library").addEventListener("click", refreshLibrary);
-  restore(); restoreSettings(); restoreHidden(); theme(); renderStructureSettings(); renderDesignSettings(); makeDesigns(); repaint(); receiveConsultLink();
+  restore(); restoreSettings(); restoreHidden(); theme(); renderStructureSettings(); renderDesignSettings(); repaint(); receiveConsultLink();
 })();
