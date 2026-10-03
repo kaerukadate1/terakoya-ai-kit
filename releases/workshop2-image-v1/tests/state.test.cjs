@@ -30,6 +30,7 @@ test("medium composition only hides selected flyer content", () => {
 
 test("nine layouts and independent custom colors survive normalization", () => {
   assert.equal(State.LAYOUTS.length, 9);
+  assert.deepEqual(State.LAYOUTS, ["洗練", "ナチュラル", "インパクト", "親しみ", "信頼感", "華やか", "シンプル", "上品", "クール"]);
   const value = State.normalize({ designs: [{ layout: 8, palette: "gold", bg: "#123456", accent: "#Ff0088" }] });
   assert.equal(value.designs[0].layout, 8);
   assert.equal(value.designs[0].bg, "#123456");

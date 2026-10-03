@@ -127,6 +127,16 @@ sandbox.window = { scrollTo() {} };
 vm.runInNewContext(fs.readFileSync(path.join(root, "app.js"), "utf8"), sandbox);
 assert.equal(previews.length, 6);
 assert.ok(drawCalls.length > 0);
+assert.match(nodes["#design-settings"].innerHTML, /デザインの雰囲気/);
+assert.match(nodes["#design-settings"].innerHTML, /クール/);
+assert.match(nodes["#design-settings"].innerHTML, /背景色/);
+assert.ok(listeners["theme-toggle:click"]);
+listeners["theme-toggle:click"]();
+assert.equal(nodes["#theme-panel"].hidden, false);
+nodes["#theme-mode"].value = "dark";
+listeners["theme-mode:change"]();
+assert.equal(document.documentElement.dataset.theme, "dark");
+assert.equal(JSON.parse(storage.get("terakoya-workshop2-image-theme-v1")).mode, "dark");
 assert.match(designs.innerHTML, /チラシ A4/);
 assert.match(designs.innerHTML, /SNS投稿 4:5/);
 const click = (concept, medium, action = "download") => listeners["designs:click"]({ target: { closest: () => ({ dataset: { concept: String(concept), medium, action }, disabled: false }) } });
@@ -152,7 +162,7 @@ async function run() {
   assert.equal(JSON.parse(storage.get("terakoya-workshop2-image-settings-v1")).flyer.benefits, false);
   listeners["design-settings:change"]({ target: { dataset: { slot: "0" }, value: "8", matches: selector => selector === "select[data-layout]" } });
   assert.equal(JSON.parse(storage.get("terakoya-workshop2-image-settings-v1")).designs[0].layout, 8);
-  assert.match(designs.innerHTML, /フレーム/);
+  assert.match(designs.innerHTML, /クール/);
   for (let layout = 0; layout < 9; layout++) listeners["design-settings:change"]({ target: { dataset: { slot: "0" }, value: String(layout), matches: selector => selector === "select[data-layout]" } });
   assert.equal(JSON.parse(storage.get("terakoya-workshop2-image-settings-v1")).designs[0].layout, 8);
   for (let concept = 0; concept < 3; concept++) {

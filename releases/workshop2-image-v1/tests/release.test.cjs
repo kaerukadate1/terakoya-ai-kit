@@ -21,5 +21,7 @@ test("starter points to this release and every fixed file exists", () => {
   assert.match(skill, /納品前の画像チェック/);
   for (const file of files.slice(0, 7)) assert.ok(build.includes(file), file);
   assert.match(fs.readFileSync(path.join(release, "index.html"), "utf8"), /<script src="consult\.js"><\/script>/);
+  assert.match(fs.readFileSync(path.join(release, "index.html"), "utf8"), /画面の見た目/);
+  assert.match(fs.readFileSync(path.join(release, "index.html"), "utf8"), /システムに合わせる/);
   assert.match(fs.readFileSync(path.join(release, "index.html"), "utf8"), /<script src="state\.js"><\/script>\s*<script src="library\.js"><\/script>\s*<script src="work\.js"><\/script>/);
 });

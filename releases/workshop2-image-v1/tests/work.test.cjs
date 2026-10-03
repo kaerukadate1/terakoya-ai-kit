@@ -25,6 +25,7 @@ test("generation brief distinguishes previews and finished images", () => {
   assert.match(text, /完成サイズと縮小表示/);
   assert.match(text, /汎用的な全幅ボタン/);
   assert.match(text, /#ff0088/);
+  assert.match(text, /"direction": "クール"/);
   assert.match(text, /自動反映できなかった/);
 });
 
