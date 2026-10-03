@@ -80,7 +80,7 @@
   }
   function toolButton(label, title, action) {
     const node = el('button', '', label);
-    node.type = 'button'; node.title = title; node.addEventListener('click', action);
+    node.type = 'button'; node.title = title; node.setAttribute('aria-label', title); node.addEventListener('click', action);
     return node;
   }
   function renderTools() {
@@ -90,7 +90,7 @@
     $('#tool-empty').hidden = visible.length > 0;
     $('#tool-empty-title').textContent = state.tools.length ? 'この種類の登録はありません' : 'まだ登録がありません';
     $('#tool-empty-description').textContent = state.tools.length ? '別の種類を選ぶか、新しく追加してください。' : '仕事に使うものを追加できます。';
-    visible.forEach(({ tool, index }) => {
+    visible.forEach(({ tool, index }, visibleIndex) => {
       const card = el('article', 'tool-card');
       const top = el('div', 'tool-card-top');
       if (tool.icon) { const icon = el('img', 'tool-icon'); icon.src = tool.icon; icon.alt = ''; top.append(icon); }
@@ -99,32 +99,43 @@
       top.append(heading); card.append(top);
       card.append(el('p', '', tool.description || '説明はまだありません。'));
       const actions = el('div', 'card-actions');
+      const primaryActions = el('div', 'primary-actions');
       const openable = (tool.type === 'web' || tool.type === 'skill') && isHttpUrl(tool.target);
       if (openable) {
-        const open = el('a', 'primary-action', toolTypes[tool.type].action); open.href = tool.target; open.target = '_blank'; open.rel = 'noopener noreferrer'; actions.append(open);
+        const open = el('a', 'primary-action', toolTypes[tool.type].action); open.href = tool.target; open.target = '_blank'; open.rel = 'noopener noreferrer'; primaryActions.append(open);
       } else {
         const action = tool.type === 'web' ? 'URLを修正' : toolTypes[tool.type].action;
         const copy = toolButton(action, action, () => tool.type === 'web' ? openTool(index) : copyContent(tool.target, toolTypes[tool.type].targetLabel));
-        copy.classList.add('primary-action'); actions.append(copy);
+        copy.classList.add('primary-action'); primaryActions.append(copy);
       }
-      actions.append(toolButton('編集', '登録情報を編集', () => openTool(index)));
-      if (filter === 'all') {
-        actions.append(toolButton('↑', '前へ移動', () => moveTool(index, -1)));
-        actions.append(toolButton('↓', '後ろへ移動', () => moveTool(index, 1)));
-      }
-      actions.append(toolButton('×', '一覧から外す', () => removeTool(index)));
-      if (isHttpUrl(tool.guideUrl)) { const guide = el('a', 'guide-link', '使い方'); guide.href = tool.guideUrl; guide.target = '_blank'; guide.rel = 'noopener noreferrer'; actions.append(guide); }
+      if (isHttpUrl(tool.guideUrl)) { const guide = el('a', 'guide-link', '使い方'); guide.href = tool.guideUrl; guide.target = '_blank'; guide.rel = 'noopener noreferrer'; primaryActions.append(guide); }
+      const managementActions = el('div', 'management-actions');
+      managementActions.append(toolButton('編集', '登録情報を編集', () => openTool(index)));
+      const previous = visible[visibleIndex - 1]?.index;
+      const next = visible[visibleIndex + 1]?.index;
+      const moveUp = toolButton('↑', '前へ移動', () => moveTool(index, previous));
+      const moveDown = toolButton('↓', '後ろへ移動', () => moveTool(index, next));
+      moveUp.disabled = previous === undefined;
+      moveDown.disabled = next === undefined;
+      managementActions.append(moveUp, moveDown);
+      const remove = toolButton('一覧から外す', '一覧から外す（元のファイルやツールは削除しません）', () => removeTool(index));
+      remove.classList.add('remove-action');
+      managementActions.append(remove);
+      actions.append(primaryActions, managementActions);
       card.append(actions); root.append(card);
     });
   }
-  function moveTool(index, delta) {
-    const next = index + delta; if (next < 0 || next >= state.tools.length) return;
-    [state.tools[index], state.tools[next]] = [state.tools[next], state.tools[index]];
+  function moveTool(index, targetIndex) {
+    if (targetIndex === undefined) return;
+    [state.tools[index], state.tools[targetIndex]] = [state.tools[targetIndex], state.tools[index]];
     if (saveState()) renderTools();
+    else [state.tools[index], state.tools[targetIndex]] = [state.tools[targetIndex], state.tools[index]];
   }
   function removeTool(index) {
     if (!confirm('一覧から外すだけで、元のファイルやツールは削除されません。外しますか？')) return;
-    state.tools.splice(index, 1); if (saveState()) renderTools();
+    const [removed] = state.tools.splice(index, 1);
+    if (saveState()) renderTools();
+    else state.tools.splice(index, 0, removed);
   }
   function openTool(index = -1) {
     const form = $('#tool-form'); form.reset(); $('#tool-error').textContent = '';

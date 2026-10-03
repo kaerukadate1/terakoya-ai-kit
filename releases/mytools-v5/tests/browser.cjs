@@ -51,6 +51,24 @@ async function addItem(page, type, target, name) {
       await addItem(page, 'skill', 'https://github.com/example/skill', '構成スキル');
       await addItem(page, 'prompt', '原稿を3案作ってください。\n事実確認を忘れずに。', '原稿プロンプト');
       await addItem(page, 'other', '案件Aの参照メモ', '業務メモ');
+      await addItem(page, 'skill', 'https://github.com/example/skill-two', '比較スキル');
+      await page.locator('#type-filter').selectOption('skill');
+      assert.equal(await page.locator('.tool-card').count(), 2);
+      assert.equal(await page.locator('.tool-card').first().locator('h3').textContent(), '構成スキル');
+      await page.locator('.tool-card').first().getByRole('button', { name: '後ろへ移動' }).click();
+      assert.equal(await page.locator('.tool-card').first().locator('h3').textContent(), '比較スキル');
+      assert.equal(await page.locator('.tool-card').last().getByRole('button', { name: '後ろへ移動' }).isDisabled(), true);
+      await page.reload();
+      await page.locator('#type-filter').selectOption('skill');
+      assert.equal(await page.locator('.tool-card').first().locator('h3').textContent(), '比較スキル');
+      page.once('dialog', dialog => { assert.match(dialog.message(), /元のファイルやツールは削除されません/); dialog.accept(); });
+      await page.locator('.tool-card').first().getByRole('button', { name: /一覧から外す/ }).click();
+      assert.equal(await page.locator('.tool-card').count(), 1);
+      await page.reload();
+      await page.locator('#type-filter').selectOption('skill');
+      assert.equal(await page.locator('.tool-card').count(), 1);
+      assert.equal(await page.locator('.tool-card').first().locator('h3').textContent(), '構成スキル');
+      await page.locator('#type-filter').selectOption('all');
       assert.equal(await page.locator('.tool-card').count(), 4);
       assert.equal(await page.locator('.tool-card').filter({ hasText: '作業バッチ' }).locator('a.primary-action').count(), 0);
       assert.equal(await page.locator('.tool-card').filter({ hasText: '作業バッチ' }).getByRole('button', { name: '場所をコピー' }).count(), 1);
@@ -95,6 +113,6 @@ async function addItem(page, type, target, name) {
       await page.screenshot({ path: path.join(output, `${viewport.width}-tools.png`), fullPage: true });
       await context.close();
     }
-    console.log('PASS: desktop/mobile, empty new site, explicit v4 migration, site isolation, five types, validation, filtering, persistence, no overflow/pageerror');
+    console.log('PASS: desktop/mobile, empty new site, explicit v4 migration, site isolation, filtered reorder and unregister persistence, five types, validation, no overflow/pageerror');
   } finally { await browser.close(); }
 })().catch(error => { console.error(error); process.exitCode = 1; });
