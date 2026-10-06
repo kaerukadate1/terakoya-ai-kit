@@ -16,8 +16,8 @@
 2. 5段階: 内容入力、媒体ごとの構成、3案のデザイン選択、ChatGPTによる画像生成、媒体別の完成画像一覧。固定レイアウトの画像下見は行わない。
 3. 3案それぞれで9種類の分かりやすいデザイン方向（洗練・ナチュラル・インパクト・親しみ・信頼感・華やか・シンプル・上品・クール）から選べる。配色例は近道として残し、背景色とアクセント色を自由に指定できる。ヘッダーの「画面の見た目」からツール画面のシステム/ライト/ダーク、画面のメインカラーとサブカラーを別に指定できる。画像の色設定と画面の見た目を混同しない。
 4. 04の依頼文を本人が確認してChatGPTで送信する。生成時に毎回、このリリースの `design/SKILL.md`、`design/FLYER_SKILL.md`、`design/SNS_SKILL.md` をGitHubから取得・読了して適用し、1つでも取得失敗なら制作を止める。ビルド時に読んだだけで画像生成へ引き継いだとみなさない。チラシとSNSは同じ画像のリサイズや減字ではなく、情報設計・構図・写真の扱いを別々に考える。添付した写真以外を元写真として扱わず、未入力の事実を捏造しない。
-5. ChatGPTが画像を生成でき、同じ本人限定Workサイトを更新できる場合のみ、生成したPNGを `completed-images/<一意のID>/` に新規保存する。サイト直下の `completed-images.json` の既存 `entries` を残したまま追記する。各項目は `id/name/medium/slot/url/thumbnail/createdAt/fields/settings`。`url` と `thumbnail` は同じサイト内の画像URL。A4は2480 x 3508、SNSは1080 x 1350。写真・日本語・日時・URL・価格の表示を点検する。
-6. 05の一覧は同じサイトの `completed-images.json` を再読込し、チラシ A4とSNS投稿画像 4:5を別見出し・別一覧に表示する。以前ブラウザ内に保存した画像も媒体別に表示する。完成画像を開き、入力設定を復元し、修正をChatGPTへ依頼できる。修正版は旧画像を残して新しいIDで追加する。「一覧から削除」はこの端末の表示から外すだけで、画像自体・公開サイト・manifestを削除しない。非表示は戻せる。
+5. ChatGPTが画像を生成でき、同じ本人限定Workサイトを更新できる場合のみ、生成したPNGを `completed-images/<一意のID>/` に新規保存する。サイト直下の `completed-images.json` の既存 `entries` を残したまま追記する。各項目は `id/name/medium/slot/url/thumbnail/createdAt/fields/settings`。`url` と `thumbnail` は同じサイト内の画像URL。A4は2480 x 3508、SNSは選択した4:5なら1080 x 1350、16:9なら1920 x 1080。写真・日本語・日時・URL・価格の表示を点検する。
+6. 05の一覧は同じサイトの `completed-images.json` を再読込し、チラシ A4とSNS投稿画像を別見出し・別一覧に表示し、各SNS画像に保存時の比率を示す。以前ブラウザ内に保存した画像も媒体別に表示する。完成画像を開き、入力設定を復元し、修正をChatGPTへ依頼できる。修正版は旧画像を残して新しいIDで追加する。「一覧から削除」はこの端末の表示から外すだけで、画像自体・公開サイト・manifestを削除しない。非表示は戻せる。
 7. Workサイトの保存・更新ができない場合は自動反映を偽らない。実際に生成した画像と、反映できなかった理由を報告する。サイトが保存される前に、単なる回答テキストを完成画像一覧に見せかけない。
 8. 「ChatGPTに相談」はLP制作ツール同様、現在入力を踏まえた入力案だけを本人確認後に反映する。外部の過去チャットをサイトが勝手に読めると説明しない。
 
@@ -30,7 +30,7 @@
 - 同じWorkサイトへの画像保存が実行できた場合に限り、再読込後に完成画像が見える。修正、新バージョン、一覧からの非表示と復元を確認する。
 - 新規/更新、画像生成、Workへの保存、一覧表示について、実施済み/未検証を分けて報告する。本人限定を維持し、一般公開や追加課金の設定はしない。
 
-## Current release requirements (overrides older fixed 4:5 and nine-palette wording above)
+## Current release requirements
 
 - Preserve the existing Site URL, owner-only access, saved input, and all completed-image entries when updating a Site.
 - Offer ten palette presets plus free background and accent colors for each of three designs. Keep the screen theme controls separate from image colors.
