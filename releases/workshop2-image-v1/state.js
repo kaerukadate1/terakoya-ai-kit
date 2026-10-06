@@ -11,11 +11,18 @@
     coral: { label: "コーラル", bg: "#f7f7f4", ink: "#20363c", accent: "#bf523e", soft: "#e1edea", softInk: "#20363c", onAccent: "#ffffff" },
     gold: { label: "ゴールド", bg: "#1b3237", ink: "#ffffff", accent: "#e8b46a", soft: "#e8eeeb", softInk: "#20363c", onAccent: "#1b3237" },
     green: { label: "グリーン", bg: "#d8e8ce", ink: "#162b33", accent: "#d4543c", soft: "#ffffff", softInk: "#162b33", onAccent: "#ffffff" },
-    blue: { label: "ブルー", bg: "#e9f2f6", ink: "#142a3a", accent: "#216a86", soft: "#ffffff", softInk: "#142a3a", onAccent: "#ffffff" }
+    blue: { label: "ブルー", bg: "#e9f2f6", ink: "#142a3a", accent: "#216a86", soft: "#ffffff", softInk: "#142a3a", onAccent: "#ffffff" },
+    lavender: { label: "ラベンダー", bg: "#f1edfa", ink: "#29233d", accent: "#7154a6", soft: "#ffffff", softInk: "#29233d", onAccent: "#ffffff" },
+    rose: { label: "ローズ", bg: "#fff0f2", ink: "#4c2430", accent: "#b83f61", soft: "#ffffff", softInk: "#4c2430", onAccent: "#ffffff" },
+    citrus: { label: "シトラス", bg: "#fff8d8", ink: "#30311c", accent: "#d27a16", soft: "#ffffff", softInk: "#30311c", onAccent: "#ffffff" },
+    sky: { label: "スカイ", bg: "#e8f7fb", ink: "#17343c", accent: "#1689a7", soft: "#ffffff", softInk: "#17343c", onAccent: "#ffffff" },
+    charcoal: { label: "チャコール", bg: "#25282c", ink: "#ffffff", accent: "#66c7bc", soft: "#f2f5f5", softInk: "#1d292b", onAccent: "#132426" },
+    terracotta: { label: "テラコッタ", bg: "#f7eee8", ink: "#432b24", accent: "#b85d3d", soft: "#ffffff", softInk: "#432b24", onAccent: "#ffffff" }
   };
   const DEFAULT = {
     flyer: { description: true, benefits: true, details: true, url: true },
     snsSupport: "none",
+    snsAspect: "4:5",
     designs: [{ layout: 0, palette: "coral" }, { layout: 1, palette: "gold" }, { layout: 2, palette: "green" }]
   };
   function color(value, fallback) { return typeof value === "string" && /^#[0-9a-fA-F]{6}$/.test(value) ? value.toLowerCase() : fallback; }
@@ -32,13 +39,14 @@
   function normalize(input) {
     const flyer = Object.fromEntries(Object.keys(DEFAULT.flyer).map(key => [key, typeof input?.flyer?.[key] === "boolean" ? input.flyer[key] : true]));
     const snsSupport = ["none", "audience", "benefit1", "date"].includes(input?.snsSupport) ? input.snsSupport : "none";
+    const snsAspect = ["4:5", "16:9"].includes(input?.snsAspect) ? input.snsAspect : "4:5";
     const designs = DEFAULT.designs.map((fallback, index) => {
       const item = input?.designs?.[index];
       const selected = Object.hasOwn(PALETTES, item?.palette) ? item.palette : fallback.palette;
       return { layout: Number.isInteger(item?.layout) && item.layout >= 0 && item.layout < LAYOUTS.length ? item.layout : fallback.layout,
         palette: selected, bg: color(item?.bg, PALETTES[selected].bg), accent: color(item?.accent, PALETTES[selected].accent) };
     });
-    return { flyer, snsSupport, designs };
+    return { flyer, snsSupport, snsAspect, designs };
   }
   function displayData(raw, medium, rawSettings) {
     const settings = normalize(rawSettings);

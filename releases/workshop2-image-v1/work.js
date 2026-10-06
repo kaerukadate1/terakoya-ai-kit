@@ -59,10 +59,14 @@
   }
   function prompt(fields, settings, url, revision = null) {
     const site = toolUrl(url);
+    const snsAspect = settings?.snsAspect === "16:9" ? "16:9 (1920x1080)" : "4:5 (1080x1350)";
+    const convertAspect = revision?.convertAspect === "16:9" ? "16:9 (1920x1080)" : revision?.convertAspect === "4:5" ? "4:5 (1080x1350)" : "";
+    const lpUrl = String(fields.lpUrl || "").trim();
     const facts = Object.fromEntries(Object.entries(fields).filter(([, value]) => typeof value === "string").map(([key, value]) => [key, value.slice(0, 300)]));
     const designDirections = (settings.designs || []).map((item, index) => ({ slot: index + 1, direction: STYLE_LABELS[item.layout] || "要確認" }));
     const payload = { facts, mediaBriefs: mediumBriefs(facts, settings), settings, designDirections, targetSite: site || "要確認", manifest: "completed-images.json", revision: revision ? { id: revision.id, url: revision.url, medium: revision.medium, slot: revision.slot } : null };
-    const scope = revision
+    const workflowRules = `\n\nNON-NEGOTIABLE CURRENT WORKFLOW (this overrides any older fixed-layout or separate-text instruction above):\n- Make each deliverable as one cohesive, high-quality image design: typography, decorative elements, whitespace, and visual direction belong together. Do not force a generic font overlay or a Canvas template. Verify factual text after generation and correct only errors.\n- Flyer: A4 2480x3508, self-contained: what, who, benefits, confirmed practical details, and the next action in one printed sheet.\n- SNS: ${snsAspect}; thumbnail-first. Use only title, subtitle if needed, and one optional support line. Do not reuse flyer detail blocks or merely resize the flyer.\n- If a source LP URL is supplied (${lpUrl || "none"}), open it and use only readable content and visual cues. If access fails or details are missing, ask for the fact; never invent it.\n- ${convertAspect ? `Create one NEW ${convertAspect} version from the existing SNS image. Keep the original. Recompose it so subject, text, and mood survive; never crop, stretch, or merely pad it.` : "Create three flyer/SNS pairs; SNS uses the selected aspect above."}\n- Before saving, inspect full size and a phone-size view. Reject clipped text, inaccurate facts, unreadable contrast, generic boxed CTA buttons, or weak image/text integration.\n`;
+    let scope = revision
       ? `既存画像 ${revision.url} の修正です。対象はデザイン${revision.slot + 1}の${revision.medium === "flyer" ? "A4チラシ(2480x3508)" : "SNS投稿4:5(1080x1350)"}1枚だけです。まず私に修正したい点を聞き、その内容に沿って編集してください。他の5枚は作り直さないでください。`
       : "3つの雰囲気から、それぞれA4チラシ(2480x3508)とSNS投稿画像4:5(1080x1350)を独立に設計し、計6枚を生成してください。色やブランドの一貫性は保ちつつ、同じ構図のリサイズ・トリミング・文字削減だけで2媒体にしないでください。";
     return `寺子屋AIのチラシ・SNS告知画像を制作してください。最初に次のGitHubの共通・チラシ・SNSの3つの制作スキルを実際に取得して読み、各媒体の制作と検品へ適用してください。1つでも取得できなければ制作を止め、取得できないURLを報告してください。\n${DESIGN_SKILL_URLS.join("\n")}\n\n添付JSONが唯一の事実情報です。${scope}
@@ -77,5 +81,21 @@
 
 制作データ:\n${JSON.stringify(payload, null, 2)}`;
   }
-  return { toolUrl, sameSiteImage, parseManifest, prompt };
+  function promptWithRules(fields, settings, url, revision) {
+    const text = prompt(fields, settings, url, revision);
+    const aspect = settings?.snsAspect === "16:9" ? "16:9 (1920x1080)" : "4:5 (1080x1350)";
+    const target = revision?.convertAspect === "16:9" ? "16:9 (1920x1080)" : revision?.convertAspect === "4:5" ? "4:5 (1080x1350)" : "";
+    const lpUrl = String(fields?.lpUrl || "").trim();
+    return `${text}\n\nCURRENT WORKFLOW — THIS OVERRIDES ANY OLDER INSTRUCTION ABOVE THAT REQUIRES FIXED CANVAS LAYOUTS OR SEPARATE TEXT OVERLAYS.\nCreate each deliverable as one cohesive, high-quality image design: typography, decoration, whitespace, and visual direction belong together. Never force a generic font overlay or a Canvas template. Verify factual text after generation and correct errors.\n\nFlyer: A4 2480x3508, self-contained: what, who, benefits, confirmed practical details, and the next action in one printed sheet.\nSNS: ${aspect}; thumbnail-first. Use title, subtitle only if needed, and at most one support line. Never reuse flyer detail blocks or simply resize the flyer.\n${lpUrl ? `Source LP: ${lpUrl}. Open it and use only information and visual cues actually readable there. If access fails or a detail is missing, ask; never invent it.` : "No LP URL was supplied."}\n${target ? `Create ONE NEW ${target} version from the existing SNS image. Keep the original. Recompose so the subject, text, and mood survive. Never crop, stretch, or merely pad the original.` : "Create three flyer/SNS pairs using the SNS aspect above."}\nBefore saving, inspect full size and a phone-size view. Reject clipped text, inaccurate facts, unreadable contrast, generic boxed CTA buttons, or weak image/text integration.`;
+  }
+  function promptWithRulesBeforePayload(fields, settings, url, revision) {
+    const combined = promptWithRules(fields, settings, url, revision);
+    const ruleStart = combined.indexOf("\n\nCURRENT WORKFLOW");
+    if (ruleStart < 0) return combined;
+    const base = combined.slice(0, ruleStart);
+    const rules = combined.slice(ruleStart);
+    const payloadStart = base.lastIndexOf("\n\n");
+    return payloadStart < 0 ? combined : `${base.slice(0, payloadStart)}${rules}${base.slice(payloadStart)}`;
+  }
+  return { toolUrl, sameSiteImage, parseManifest, prompt: promptWithRulesBeforePayload };
 });

@@ -5,6 +5,15 @@
   const THEME_KEY = "terakoya-workshop2-image-theme-v1";
   const HIDDEN_KEY = "terakoya-workshop2-image-hidden-v1";
   const form = document.querySelector("#brief-form");
+  const lpUrlInput = (() => {
+    const existing = form.elements.lpUrl;
+    if (existing) return existing;
+    const label = document.createElement("label"); label.className = "field-wide"; label.textContent = "LPから作る（任意）";
+    const input = document.createElement("input"); input.name = "lpUrl"; input.type = "url"; input.maxLength = 300;
+    input.placeholder = "https://...（読めない情報は推測せず、ChatGPTで確認します）";
+    if (typeof form.append !== "function") return { value: "", addEventListener() {} };
+    label.append(input); form.append(label); return input;
+  })();
   const designSettings = document.querySelector("#design-settings");
   const structureFields = document.querySelector(".structure-list");
   const libraryGroups = { flyer: document.querySelector("#library-flyer"), sns: document.querySelector("#library-sns") };
@@ -15,6 +24,18 @@
   const consultPanel = document.querySelector("#consult-panel");
   const consultButton = document.querySelector("#consult");
   const consultStatus = document.querySelector("#consult-status");
+  const snsAspectSelect = (() => {
+    let existing = null;
+    try { existing = document.querySelector("#sns-aspect"); } catch { /* test DOM may not expose the optional control */ }
+    if (existing) return existing;
+    const label = document.createElement("label"); label.className = "support-select"; label.textContent = "生成する比率 ";
+    const select = document.createElement("select"); select.id = "sns-aspect";
+    select.innerHTML = '<option value="4:5">縦長 4:5（1080 × 1350）</option><option value="16:9">横長 16:9（1920 × 1080）</option>';
+    const fieldset = document.querySelector("#sns-support").closest?.("fieldset");
+    if (!fieldset?.prepend) return { value: "4:5", addEventListener() {} };
+    label.append(select); fieldset.prepend(label);
+    return select;
+  })();
   let settings = ImageState.normalize(null);
   let photo = null;
   let photoUrl = null;
@@ -80,6 +101,7 @@
   function renderStructureSettings() {
     for (const key of Object.keys(settings.flyer)) structureFields.querySelector(`[name="${key}"]`).checked = settings.flyer[key];
     document.querySelector("#sns-support").value = settings.snsSupport;
+    snsAspectSelect.value = settings.snsAspect;
   }
   function renderDesignSettings() {
     designSettings.innerHTML = settings.designs.map((design, index) => {
@@ -383,6 +405,12 @@
           if (!confirm(`「${entry.name}」を一覧から削除しますか？\n画像ファイル自体は削除されません。\nこの端末の一覧からのみ外れます。`)) return;
           hideEntry(`${entry.source}:${entry.id}`); refreshLibrary();
         }));
+        if (entry.source === "work" && entry.medium === "sns") actions.append(action("別比率版を依頼", "subtle-button", () => {
+          if (!entry.settings || !Object.keys(entry.fields).length) { message.textContent = "この画像の入力情報がありません。設定を開いて確認してください。"; return; }
+          const targetAspect = entry.settings?.snsAspect === "16:9" ? "4:5" : "16:9";
+          openWithPrompt(ImageWork.prompt(entry.fields, ImageState.normalize(entry.settings), location.href, { ...entry, convertAspect: targetAspect }));
+          message.textContent = "元画像は残したまま、切り抜き・引き伸ばしではない別比率版をChatGPTへ依頼します。元画像も会話に添付してください。";
+        }));
         body.append(title, meta, actions); card.append(frame, body); libraryGroups[entry.medium === "flyer" ? "flyer" : "sns"].append(card);
       }
       for (const [medium, group] of Object.entries(libraryGroups)) {
@@ -408,6 +436,10 @@
   document.querySelector("#sns-support").addEventListener("change", event => {
     settings.snsSupport = event.target.value;
     settings = ImageState.normalize(settings); storeSettings(); repaint();
+  });
+  snsAspectSelect.addEventListener("change", event => {
+    settings.snsAspect = event.target.value;
+    settings = ImageState.normalize(settings); storeSettings();
   });
   designSettings.addEventListener("change", event => {
     const slot = Number(event.target.dataset.slot);
