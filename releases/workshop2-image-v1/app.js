@@ -23,6 +23,7 @@
   const status = document.querySelector("#work-status");
   const consultPanel = document.querySelector("#consult-panel");
   const consultButton = document.querySelector("#consult");
+  const lpImportButton = (() => { try { return document.querySelector("#lp-import"); } catch { return null; } })();
   const consultStatus = document.querySelector("#consult-status");
   const snsAspectSelect = (() => {
     let existing = null;
@@ -494,6 +495,12 @@
     const origin = /^https?:$/.test(location.protocol) ? location.origin + "/" : "";
     openWithPrompt(ImageConsult.buildPrompt(read(), origin));
     consultStatus.textContent = "新しいタブの依頼文を確認して送信してください";
+  });
+  if (lpImportButton) lpImportButton.addEventListener("click", () => {
+    setConsultOpen(true);
+    const origin = /^https?:$/.test(location.protocol) ? location.origin + "/" : "";
+    openWithPrompt(ImageConsult.buildPrompt(read(), origin));
+    consultStatus.textContent = "LPの事実を別会話で確認し、戻りリンクまたはJSONを反映してください。既存入力は上書きしません。";
   });
   function workPrompt() {
     if (!valid(read()) || !form.reportValidity()) { document.querySelector("#work-status").textContent = "必須項目とURL形式を確認してください"; return ""; }
