@@ -4,7 +4,7 @@
   root.ImageWork = api;
 })(typeof globalThis !== "undefined" ? globalThis : window, function () {
   "use strict";
-  const DESIGN_SKILL_BASE = "https://raw.githubusercontent.com/kaerukadate1/terakoya-ai-kit/main/releases/workshop2-image-v1/design/";
+  const DESIGN_SKILL_BASE = "https://raw.githubusercontent.com/kaerukadate1/terakoya-ai-kit/feature/workshop2-image-v1/releases/workshop2-image-v1/design/";
   const DESIGN_SKILL_URLS = ["SKILL.md", "FLYER_SKILL.md", "SNS_SKILL.md"].map(file => DESIGN_SKILL_BASE + file);
   const STYLE_LABELS = ["洗練", "ナチュラル", "インパクト", "親しみ", "信頼感", "華やか", "シンプル", "上品", "クール"];
 
