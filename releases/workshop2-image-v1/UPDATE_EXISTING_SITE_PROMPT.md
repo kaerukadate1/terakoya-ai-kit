@@ -2,4 +2,4 @@
 
 以下のビルドプロンプトを読み、同じリリースの固定ファイルと共通・チラシ・SNSの3スキルを実際に取得して適用してください。04はChatGPTへの画像生成依頼、05は生成した完成画像の媒体別一覧です。固定レイアウトの画像下見は不要です。生成時は毎回GitHubの3スキルを読み、チラシとSNS投稿画像を別構図に設計し、見出しの改行・文字の収まり・写真との一体感・CTAを実寸と縮小表示で検品してください。3案それぞれで洗練・親しみ・クールなど9種類のデザイン方向、画像の自由配色、ヘッダーの「画面の見た目」からツール画面のシステム/ライト/ダークとメイン/サブカラーを変更できることを確認してください。完成画像の修正依頼と一覧からの非表示・復元まで確認してください。旧データの移行や保存ができない場合は上書きせず、何が保持できないかを先に報告してください。完成画像の自動反映ができたかどうかは、同じサイトの一覧を再読み込みして実際に確認し、未確認なら未確認と答えてください。
 
-https://raw.githubusercontent.com/kaerukadate1/terakoya-ai-kit/main/releases/workshop2-image-v1/BUILD_PROMPT.md
+https://raw.githubusercontent.com/kaerukadate1/terakoya-ai-kit/feature/workshop2-image-v1/releases/workshop2-image-v1/BUILD_PROMPT.md

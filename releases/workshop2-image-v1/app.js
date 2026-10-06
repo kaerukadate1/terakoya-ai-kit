@@ -391,7 +391,9 @@
         frame.append(img);
         const body = document.createElement("div"); body.className = "library-body";
         const title = document.createElement("h2"); title.textContent = entry.name || "名称未設定";
-        const meta = document.createElement("p"); meta.textContent = `${entry.medium === "flyer" ? "チラシ A4" : "SNS投稿 4:5"} / デザイン ${entry.slot + 1} / ${entry.createdAt ? new Date(entry.createdAt).toLocaleString("ja-JP") : "日時未記録"}${entry.source === "local" ? " / 旧版の端末保存" : ""}`;
+        const meta = document.createElement("p");
+        const mediumLabel = entry.medium === "flyer" ? "チラシ A4" : `SNS投稿 ${entry.settings?.snsAspect === "16:9" ? "16:9" : "4:5"}`;
+        meta.textContent = `${mediumLabel} / デザイン ${entry.slot + 1} / ${entry.createdAt ? new Date(entry.createdAt).toLocaleString("ja-JP") : "日時未記録"}${entry.source === "local" ? " / 旧版の端末保存" : ""}`;
         const actions = document.createElement("div"); actions.className = "library-actions";
         if (entry.source === "local") actions.append(action("PNG保存", "primary-button", () => downloadBlob(entry.imageBlob, entry.filename)));
         else actions.append(action("画像を開く", "primary-button", () => { const link = document.createElement("a"); link.href = entry.url; link.target = "_blank"; link.rel = "noopener noreferrer"; link.click(); }));

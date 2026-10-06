@@ -8,7 +8,7 @@
 
 この文書と同じリリースの `index.html`、`styles.css`、`app.js`、`consult.js`、`state.js`、`library.js`、`work.js`、`design/SKILL.md`、`design/FLYER_SKILL.md`、`design/SNS_SKILL.md` をすべて実際に取得する。異なるリリースのファイルを混ぜない。
 
-基点URL: `https://raw.githubusercontent.com/kaerukadate1/terakoya-ai-kit/main/releases/workshop2-image-v1/`
+基点URL: `https://raw.githubusercontent.com/kaerukadate1/terakoya-ai-kit/feature/workshop2-image-v1/releases/workshop2-image-v1/`
 
 ## 作るもの
 
@@ -29,3 +29,13 @@
 - 生成依頼文が現在の入力と媒体別の掲載情報、GitHub上の共通・チラシ・SNSスキルURLを渡し、本人が確認してから送信できる。完成画像を実寸と縮小表示で検品し、文字組み・写真との一体感・CTAの質に問題があれば修正してから保存する。
 - 同じWorkサイトへの画像保存が実行できた場合に限り、再読込後に完成画像が見える。修正、新バージョン、一覧からの非表示と復元を確認する。
 - 新規/更新、画像生成、Workへの保存、一覧表示について、実施済み/未検証を分けて報告する。本人限定を維持し、一般公開や追加課金の設定はしない。
+
+## Current release requirements (overrides older fixed 4:5 and nine-palette wording above)
+
+- Preserve the existing Site URL, owner-only access, saved input, and all completed-image entries when updating a Site.
+- Offer ten palette presets plus free background and accent colors for each of three designs. Keep the screen theme controls separate from image colors.
+- Let the user choose SNS 4:5 (1080x1350) or 16:9 (1920x1080). Show the selected ratio accurately throughout the workflow and saved-image list. A different-ratio request creates only one new composition and keeps its source image.
+- Accept an optional LP URL. Read it only when accessible, distinguish confirmed facts from missing facts, and never invent missing dates, venue, prices, application destination, people, results, or effects.
+- Generate an A4 flyer at exactly 2480x3508 pixels and SNS at exactly the selected dimensions. Inspect the actual final pixels and a 375px-wide phone view. Reject low contrast, clipped or inaccurate Japanese text, and especially red text on a dark background.
+- Do not call an event image distribution-ready until the date, venue, and application destination are supplied and visible. Do not draw a CTA with no destination as though it were actionable.
+- Keep saved PNGs and manifest entries additive. Verify the refreshed completed-image screen after saving, and state clearly when automatic Site reflection could not be completed.
