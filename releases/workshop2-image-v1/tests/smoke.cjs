@@ -127,6 +127,10 @@ assert.equal(document.documentElement.dataset.theme, "dark");
 assert.equal(JSON.parse(storage.get("terakoya-workshop2-image-theme-v1")).mode, "dark");
 async function run() {
   assert.equal(downloads.length, 0, "incomplete form must not export");
+  listeners["open-work:click"]();
+  assert.match(nodes["#work-status"].textContent, /name/);
+  assert.match(nodes["#work-status"].textContent, /headline/);
+  assert.match(nodes["#work-status"].textContent, /cta/);
   fields.name.value = "講座";
   fields.headline.value = "自分のサービスを伝える";
   fields.cta.value = "詳細を見る";

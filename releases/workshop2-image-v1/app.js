@@ -503,7 +503,9 @@
     consultStatus.textContent = "LPの事実を別会話で確認し、戻りリンクまたはJSONを反映してください。既存入力は上書きしません。";
   });
   function workPrompt() {
-    if (!valid(read()) || !form.reportValidity()) { document.querySelector("#work-status").textContent = "必須項目とURL形式を確認してください"; return ""; }
+    const data = read();
+    const missing = ["name", "headline", "cta"].filter(key => !String(data[key] || "").trim());
+    if (missing.length || !form.reportValidity()) { document.querySelector("#work-status").textContent = `不足項目: ${missing.join(", ") || "URL形式"}。01の「内容を入れる」に戻って修正してください`; go("info"); return ""; }
     return ImageWork.prompt(read(), ImageState.normalize(settings), location.href);
   }
   document.querySelector("#open-work").addEventListener("click", () => {
