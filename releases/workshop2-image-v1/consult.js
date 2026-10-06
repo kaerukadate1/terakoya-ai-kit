@@ -23,10 +23,13 @@
     const returnUrl = /^https:\/\/[^/]+\.chatgpt\.site\/?$/.test(toolUrl) || /^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?\/?$/.test(toolUrl)
       ? toolUrl.replace(/\/$/, "") : "";
     const lpUrl = String(rawFields?.lpUrl || "").trim();
-    const readableLp = validHttpUrl(lpUrl) ? lpUrl : "";
+    const placeholderLp = /^(https?:\/\/)?(www\.)?(example\.com|example\.invalid)(\/|$)/i.test(lpUrl);
+    const readableLp = validHttpUrl(lpUrl) && !placeholderLp ? lpUrl : "";
     const lpInstructions = readableLp
       ? [`LP URL: ${readableLp}`, "Open and read this LP before proposing fields. Use only readable text and explicit facts; do not infer missing details.", "If it cannot be read, set source.status to unreadable, do not fill fields from the unread LP, and ask for pasted text or manual entry."].join("\n")
-      : "No valid LP URL was supplied. Do not infer LP facts; use only available facts and manual input.";
+      : placeholderLp
+        ? "The supplied LP URL is a test placeholder. Do not open, quote, display, or use it. Treat LP facts as not provided."
+        : "No valid LP URL was supplied. Do not infer LP facts; use only available facts and manual input.";
     return [
       lpInstructions,
       "寺子屋AI チラシ・SNS告知画像制作ツールの入力内容を整理する相談です。あなたが参照できる私の過去チャット、同じプロジェクトの資料、利用可能なメモリから、対象のサービス・イベントに関する確かな情報だけを拾ってください。参照できない情報を読めたように装わないでください。",
@@ -34,7 +37,7 @@
       `次のキーだけを使い、JSONコードブロックで返してください。分からないキーは省略してください: ${KEYS.join(", ")}。形式: {"fields":{"name":"...","audience":"..."}}。name はサービス・イベント名、headline は画像の主見出し、description は概要、benefit1〜3 は伝えたいこと、cta は次の行動です。各値は短く、文字列にしてください。JSONの後に、参照できた根拠と未確認点を短く書いてください。`,
       returnUrl ? `可能ならJSONをUTF-8のbase64urlにし、${returnUrl}/#image-intake=<エンコード文字列> の入力案リンクも返してください。できなければJSONだけで構いません。リンク先では未入力欄だけが埋まります。` : "入力案リンクを作れない場合はJSONだけで返してください。",
       `現在入力済みの項目: ${JSON.stringify(fields)}`
-      , `Return a JSON source object alongside fields: {"source":{"lpUrl":"...","status":"read|unreadable|not_provided","facts":["..."],"unknowns":["..."]}}. Keep all fields factual and leave unread or missing details blank.`,
+      , `Use only the user's confirmed JSON facts to make production-ready content. Do not pause for a test URL or an unset contact destination. Never invent missing facts or silently reconcile contradictions. If cta is blank, use a neutral CTA such as "詳細は主催者へ" without adding a URL or contact method. Return a JSON source object alongside fields: {"source":{"lpUrl":"...","status":"read|unreadable|not_provided","facts":["..."],"unknowns":["..."]}}. Keep all fields factual and leave unread or missing details blank.`,
     ].join("\n\n");
   }
 

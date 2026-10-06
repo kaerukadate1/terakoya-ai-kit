@@ -12,8 +12,8 @@ test("consultation asks for verifiable business details and a JSON intake", () =
 });
 
 test("consultation passes a valid LP URL and requires an explicit read status", () => {
-  const prompt = Consult.buildPrompt({ lpUrl: "https://example.com/lp" }, "https://sample.chatgpt.site/");
-  assert.match(prompt, /LP URL: https:\/\/example\.com\/lp/);
+  const prompt = Consult.buildPrompt({ lpUrl: "https://sample.invalid/lp" }, "https://sample.chatgpt.site/");
+  assert.match(prompt, /LP URL: https:\/\/sample\.invalid\/lp/);
   assert.match(prompt, /read\|unreadable\|not_provided/);
   assert.match(prompt, /If it cannot be read/);
   assert.doesNotMatch(Consult.buildPrompt({ lpUrl: "javascript:alert(1)" }), /LP URL:/);
