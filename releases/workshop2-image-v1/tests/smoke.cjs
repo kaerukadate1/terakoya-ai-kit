@@ -96,7 +96,7 @@ const sandbox = {
   localStorage: { getItem: key => storage.get(key) || null, setItem: (key, value) => storage.set(key, value) },
   FormData: class { constructor() {} entries() { return Object.entries(fields).map(([key, node]) => [key, node.value]); } },
   URL: class extends URL { static createObjectURL() { return "blob:smoke"; } static revokeObjectURL() {} },
-  location: { protocol: "https:", href: "https://example.test/", origin: "https://example.test", hash: "", pathname: "/test", search: "" },
+  location: { protocol: "https:", href: "https://example.test/", origin: "https://example.test", hash: "#image-intake=eyJmaWVsZHMiOnsibmFtZSI6IkxQIn19", pathname: "/test", search: "" },
   fetch: async () => ({ ok: true, json: async () => ({ entries: [
     { id: "one", url: "completed-images/one/flyer.png", name: "講座 チラシ", medium: "flyer", slot: 0, createdAt: "2026-10-03T00:00:00Z", fields: { name: "講座", lpUrl: "https://example.test/landing" }, settings: { designs: [{ layout: 0 }] } },
     { id: "two", url: "completed-images/two/sns.png", name: "講座 SNS", medium: "sns", slot: 0, createdAt: "2026-10-03T00:01:00Z", fields: { name: "講座" }, settings: { designs: [{ layout: 0 }] } }
@@ -114,6 +114,9 @@ vm.runInNewContext(fs.readFileSync(path.join(root, "work.js"), "utf8"), sandbox)
 sandbox.ImageLibrary = { async save(entry) { saved.push(entry); }, async list() { return saved; } };
 sandbox.window = { scrollTo() {} };
 vm.runInNewContext(fs.readFileSync(path.join(root, "app.js"), "utf8"), sandbox);
+assert.equal(fields.name.value, "", "return links only preview; they do not change inputs");
+assert.equal(nodes["#consult-panel"].hidden, false, "return links open the review panel");
+assert.match(nodes["#consult-answer"].value, /LP/, "return payload is placed in the JSON review field");
 assert.equal(drawCalls.length, 0, "no fixed preview layout is drawn");
 assert.match(nodes["#design-settings"].innerHTML, /デザインの雰囲気/);
 assert.match(nodes["#design-settings"].innerHTML, /クール/);
