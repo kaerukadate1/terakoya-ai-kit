@@ -30,3 +30,8 @@ test("starter points to this release and every fixed file exists", () => {
   assert.match(fs.readFileSync(path.join(release, "index.html"), "utf8"), /システムに合わせる/);
   assert.match(fs.readFileSync(path.join(release, "index.html"), "utf8"), /<script src="state\.js"><\/script>\s*<script src="library\.js"><\/script>\s*<script src="work\.js"><\/script>/);
 });
+
+test("restoring a saved image also restores its optional LP URL", () => {
+  const app = fs.readFileSync(path.join(release, "app.js"), "utf8");
+  assert.match(app, /lpUrlInput\.value\s*=\s*typeof entry\.fields\?\.lpUrl === "string" \? entry\.fields\.lpUrl : ""/);
+});

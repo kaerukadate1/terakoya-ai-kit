@@ -350,6 +350,7 @@
   function restoreEntry(entry) {
     if (!confirm("今の入力を保存画像の設定に置き換えますか？ 写真は再選択が必要です。")) return;
     for (const key of ImageConsult.KEYS) form.elements[key].value = typeof entry.fields?.[key] === "string" ? entry.fields[key] : "";
+    lpUrlInput.value = typeof entry.fields?.lpUrl === "string" ? entry.fields.lpUrl : "";
     clearPhoto.click(); settings = ImageState.normalize(entry.settings);
     renderStructureSettings(); renderDesignSettings();
     safeStore(read()); storeSettings(); go("info");

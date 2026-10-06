@@ -10,7 +10,7 @@ for (const file of ["index.html", "STARTER_PROMPT.txt", "BUILD_PROMPT.md", "READ
 }
 assert.match(fs.readFileSync(path.join(root, "STARTER_PROMPT.txt"), "utf8"), /releases\/workshop2-image-v1\/BUILD_PROMPT\.md/);
 const fields = Object.fromEntries(
-  ["name", "audience", "headline", "description", "benefit1", "benefit2", "benefit3", "date", "place", "price", "cta", "url"]
+  ["name", "audience", "headline", "description", "benefit1", "benefit2", "benefit3", "date", "place", "price", "cta", "url", "lpUrl"]
     .map(key => [key, { value: "" }])
 );
 const listeners = {};
@@ -55,7 +55,7 @@ const nodes = {
   "#restore-hidden": { addEventListener(type, fn) { listeners[`restore-hidden:${type}`] = fn; } },
   "#photo": { files: [], value: "", addEventListener(type, fn) { listeners[`photo:${type}`] = fn; } },
   "#photo-name": { textContent: "" },
-  "#clear-photo": { hidden: true, addEventListener(type, fn) { listeners[`clear:${type}`] = fn; } },
+  "#clear-photo": { hidden: true, addEventListener(type, fn) { listeners[`clear:${type}`] = fn; }, click() { listeners["clear:click"]?.(); } },
   "#save-status": { textContent: "" },
   "#consult": { addEventListener(type, fn) { listeners[`consult:${type}`] = fn; }, setAttribute() {} },
   "#consult-panel": { hidden: true },
@@ -87,7 +87,7 @@ const document = {
   createElement(tag) {
     if (tag === "canvas") return canvas(0, 0);
     if (tag === "a") return { click() { opened.push(this.href); }, remove() {}, href: "", download: "" };
-    return { className: "", textContent: "", append() {}, addEventListener() {}, src: "", alt: "" };
+    return { className: "", textContent: "", children: [], append(...children) { this.children.push(...children); }, addEventListener(type, fn) { this[`on${type}`] = fn; }, src: "", alt: "" };
   }
 };
 const storage = new Map();
@@ -98,7 +98,7 @@ const sandbox = {
   URL: class extends URL { static createObjectURL() { return "blob:smoke"; } static revokeObjectURL() {} },
   location: { protocol: "https:", href: "https://example.test/", origin: "https://example.test", hash: "", pathname: "/test", search: "" },
   fetch: async () => ({ ok: true, json: async () => ({ entries: [
-    { id: "one", url: "completed-images/one/flyer.png", name: "講座 チラシ", medium: "flyer", slot: 0, createdAt: "2026-10-03T00:00:00Z", fields: { name: "講座" }, settings: { designs: [{ layout: 0 }] } },
+    { id: "one", url: "completed-images/one/flyer.png", name: "講座 チラシ", medium: "flyer", slot: 0, createdAt: "2026-10-03T00:00:00Z", fields: { name: "講座", lpUrl: "https://example.test/landing" }, settings: { designs: [{ layout: 0 }] } },
     { id: "two", url: "completed-images/two/sns.png", name: "講座 SNS", medium: "sns", slot: 0, createdAt: "2026-10-03T00:01:00Z", fields: { name: "講座" }, settings: { designs: [{ layout: 0 }] } }
   ] }) }),
   history: { replaceState() {} },
@@ -156,6 +156,10 @@ async function run() {
   await new Promise(resolve => setImmediate(resolve));
   assert.equal(libraryCards.flyer.length, 1);
   assert.equal(libraryCards.sns.length, 1, "SNS images appear in a separate group");
+  const actions = libraryCards.flyer[0].children[1].children[2];
+  const restoreButton = actions.children.find(button => button.textContent === "設定を開く");
+  restoreButton.onclick();
+  assert.equal(fields.lpUrl.value, "https://example.test/landing", "saved LP URL is restored with the other fields");
   sandbox.ImageLibrary.list = async () => { throw new Error("storage unavailable"); };
   listeners["refresh-library:click"]();
   await new Promise(resolve => setImmediate(resolve));
