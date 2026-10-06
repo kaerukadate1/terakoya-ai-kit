@@ -133,7 +133,10 @@
       if (!/^[A-Za-z0-9_-]{1,40000}$/.test(encoded)) throw new Error("入力案のリンクが無効です");
       const base64 = encoded.replace(/-/g, "+").replace(/_/g, "/");
       const bytes = Uint8Array.from(atob(base64), char => char.charCodeAt(0));
-      applyConsult(JSON.parse(new TextDecoder().decode(bytes)));
+      const answer = JSON.parse(new TextDecoder().decode(bytes));
+      document.querySelector("#consult-answer").value = JSON.stringify(answer, null, 2);
+      setConsultOpen(true);
+      consultStatus.textContent = "戻り内容を読み込みました。根拠・提案・未確認を確認してから「確認して反映」を押してください。既存入力は上書きしません。";
     } catch { setConsultOpen(true); consultStatus.textContent = "入力案のリンクを読み込めませんでした。JSONを貼り付けてください"; }
   }
   function openWithPrompt(prompt) {
