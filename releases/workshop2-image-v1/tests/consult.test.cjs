@@ -11,6 +11,20 @@ test("consultation asks for verifiable business details and a JSON intake", () =
   assert.doesNotMatch(Consult.buildPrompt({}, "https://other.example/"), /other\.example/);
 });
 
+test("consultation passes a valid LP URL and requires an explicit read status", () => {
+  const prompt = Consult.buildPrompt({ lpUrl: "https://example.com/lp" }, "https://sample.chatgpt.site/");
+  assert.match(prompt, /LP URL: https:\/\/example\.com\/lp/);
+  assert.match(prompt, /read\|unreadable\|not_provided/);
+  assert.match(prompt, /If it cannot be read/);
+  assert.doesNotMatch(Consult.buildPrompt({ lpUrl: "javascript:alert(1)" }), /LP URL:/);
+});
+
+test("LP source summary distinguishes readable, unreadable, and unknown facts", () => {
+  assert.match(Consult.sourceSummary({ source: { status: "read", facts: ["heading"], unknowns: ["price"] } }), /LP read/);
+  assert.match(Consult.sourceSummary({ source: { status: "unreadable" } }), /LP unreadable/);
+  assert.match(Consult.sourceSummary({}), /not supplied/);
+});
+
 test("JSON responses are parsed, existing values remain, and only known strings are applied", () => {
   const answer = Consult.parseAnswer('```json\n{"fields":{"name":"新しい名前","audience":"初めての方","date":"","unknown":"ignored","url":"javascript:alert(1)"}}\n```\n未確認: 日時');
   const result = Consult.applyFields({ name: "元の名前", audience: "" }, answer);

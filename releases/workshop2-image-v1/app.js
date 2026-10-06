@@ -117,11 +117,12 @@
   }
   function applyConsult(answer, overwrite = false) {
     const result = ImageConsult.applyFields(read(), answer, overwrite);
+    const source = ImageConsult.sourceSummary(answer);
     if (!result.applied) { consultStatus.textContent = "反映できる入力案がありませんでした"; return; }
     for (const key of ImageConsult.KEYS) form.elements[key].value = result.fields[key] || "";
-    safeStore(read()); repaint(); setConsultOpen(false);
+    safeStore(read()); repaint();
     status.textContent = `${result.applied}項目を反映しました`;
-    consultStatus.textContent = "";
+    consultStatus.textContent = source;
   }
   function receiveConsultLink() {
     if (!location.hash.startsWith("#image-intake=")) return;

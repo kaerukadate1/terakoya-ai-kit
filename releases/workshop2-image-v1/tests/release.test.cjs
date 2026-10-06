@@ -27,6 +27,7 @@ test("starter points to this release and every fixed file exists", () => {
   assert.doesNotMatch(fs.readFileSync(path.join(release, "index.html"), "utf8"), /画像を比べる|id="preview"/);
   assert.match(fs.readFileSync(path.join(release, "index.html"), "utf8"), /id="library-flyer"/);
   assert.match(fs.readFileSync(path.join(release, "index.html"), "utf8"), /id="library-sns"/);
+  assert.match(fs.readFileSync(path.join(release, "index.html"), "utf8"), /name="lpUrl"/);
   assert.match(fs.readFileSync(path.join(release, "index.html"), "utf8"), /システムに合わせる/);
   assert.match(fs.readFileSync(path.join(release, "index.html"), "utf8"), /<script src="state\.js"><\/script>\s*<script src="library\.js"><\/script>\s*<script src="work\.js"><\/script>/);
 });

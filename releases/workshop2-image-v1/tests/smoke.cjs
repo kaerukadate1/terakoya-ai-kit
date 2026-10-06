@@ -140,7 +140,8 @@ async function run() {
   assert.equal(fields.name.value, "講座", "existing inputs remain unless overwrite is checked");
   assert.equal(fields.audience.value, "初心者");
   assert.equal(fields.benefit1.value, "持ち帰り資料");
-  assert.equal(nodes["#consult-panel"].hidden, true);
+  assert.equal(nodes["#consult-panel"].hidden, false, "consultation remains visible for review");
+  assert.match(nodes["#consult-status"].textContent, /LP read status was not supplied/);
   assert.equal(JSON.parse(storage.get("terakoya-workshop2-image-v1")).audience, "初心者");
   listeners["structure:change"]({ target: { name: "benefits", checked: false } });
   assert.equal(JSON.parse(storage.get("terakoya-workshop2-image-settings-v1")).flyer.benefits, false);

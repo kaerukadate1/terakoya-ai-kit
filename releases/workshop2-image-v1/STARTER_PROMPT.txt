@@ -1,3 +1,5 @@
 寺子屋AI チラシ・SNS告知画像制作ツールを、私だけが開けるWorkサイトとして作ってください。次のビルドプロンプトを読み、同じ版の固定ファイルと共通・チラシ・SNSの3つのデザインスキルを実際に取得して使ってください。内容・媒体別構成・3案のデザイン・ChatGPTでの画像生成・媒体別の完成画像一覧まで動くようにしてください。固定レイアウトの画像下見は不要です。チラシとSNS投稿画像は同じ見た目のサイズ違いにせず、媒体ごとに別の構図と情報設計にしてください。3案それぞれで9種類のデザイン方向と画像の自由な配色を選べるようにしてください。ヘッダーの「画面の見た目」からツールのライト/ダーク/システムとメイン/サブカラーも変更できるようにしてください。画像生成時にもGitHubの3スキルを読み、文字の収まり、写真との一体感、CTAを実寸と縮小表示で検品してください。ファイルが読めなければ推測で補わず教えてください。
 
 https://raw.githubusercontent.com/kaerukadate1/terakoya-ai-kit/feature/workshop2-image-v1/releases/workshop2-image-v1/BUILD_PROMPT.md
+
+LP intake requirement: before production, pass any LP URL to the ChatGPT consultation. It must read the LP when accessible and return factual field proposals with `source.status` (`read`, `unreadable`, or `not_provided`), verified facts, and unknowns. Let the user review/edit before applying. On unreadable LPs, preserve existing fields and return to pasted text or manual entry; never invent facts.

@@ -29,6 +29,7 @@
 
 | 状況 | まずすること |
 | --- | --- |
+| LP intake | Before production, enter the optional LP URL and use **ChatGPTに相談**. Review `source.status` (`read`, `unreadable`, or `not_provided`), verified facts, and unknowns before applying. If unreadable, use pasted text or manual input without inventing facts. |
 | 画像が普通の文字だけで弱い | 生成依頼を開き、画像全体として再設計するよう依頼して1案だけ作り直す。 |
 | SNSに情報が多すぎる | 日時・料金・URLなどを投稿本文へ回し、タイトル＋短い補足に戻す。 |
 | LPを読み込めない | URLと閲覧可否を確認し、必要項目を手入力する。推測で作らない。 |

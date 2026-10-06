@@ -32,6 +32,8 @@
 
 ## Current release requirements
 
+- LP intake happens before production: pass the optional LP URL through the consultation prompt, require `source.status` (`read`, `unreadable`, or `not_provided`) plus verified facts and unknowns, and let the user review/edit the returned proposal before applying it. An unreadable LP must preserve existing fields and fall back to pasted text or manual entry.
+
 - Preserve the existing Site URL, owner-only access, saved input, and all completed-image entries when updating a Site.
 - Offer ten palette presets plus free background and accent colors for each of three designs. Keep the screen theme controls separate from image colors.
 - Let the user choose SNS 4:5 (1080x1350) or 16:9 (1920x1080). Show the selected ratio accurately throughout the workflow and saved-image list. A different-ratio request creates only one new composition and keeps its source image.
