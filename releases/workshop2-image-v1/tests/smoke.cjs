@@ -11,7 +11,7 @@ for (const file of ["index.html", "STARTER_PROMPT.txt", "BUILD_PROMPT.md", "READ
 assert.match(fs.readFileSync(path.join(root, "STARTER_PROMPT.txt"), "utf8"), /releases\/workshop2-image-v1\/BUILD_PROMPT\.md/);
 const fields = Object.fromEntries(
   ["name", "audience", "headline", "description", "benefit1", "benefit2", "benefit3", "date", "place", "price", "cta", "url", "lpUrl"]
-    .map(key => [key, { value: "" }])
+    .map(key => [key, { value: "", focus() {} }])
 );
 const listeners = {};
 const form = {
@@ -90,6 +90,9 @@ const document = {
     return { className: "", textContent: "", children: [], append(...children) { this.children.push(...children); }, addEventListener(type, fn) { this[`on${type}`] = fn; }, src: "", alt: "" };
   }
 };
+for (const key of ["lp-import", "consult-retry", "review-consult", "consult-review", "consult-source", "consult-fields", "consult-manual", "lp-text", "info-status"]) {
+  nodes["#" + key] = { value: "", checked: false, hidden: true, textContent: "", innerHTML: "", replaceChildren() {}, append() {}, querySelectorAll() { return []; }, addEventListener(type, fn) { listeners[key + ":" + type] = fn; } };
+}
 const storage = new Map();
 const sandbox = {
   document,
@@ -112,7 +115,7 @@ vm.runInNewContext(fs.readFileSync(path.join(root, "consult.js"), "utf8"), sandb
 vm.runInNewContext(fs.readFileSync(path.join(root, "state.js"), "utf8"), sandbox);
 vm.runInNewContext(fs.readFileSync(path.join(root, "work.js"), "utf8"), sandbox);
 sandbox.ImageLibrary = { async save(entry) { saved.push(entry); }, async list() { return saved; } };
-sandbox.window = { scrollTo() {} };
+sandbox.window = { scrollTo() {}, addEventListener() {} };
 vm.runInNewContext(fs.readFileSync(path.join(root, "app.js"), "utf8"), sandbox);
 assert.equal(fields.name.value, "", "return links only preview; they do not change inputs");
 assert.equal(nodes["#consult-panel"].hidden, false, "return links open the review panel");
@@ -131,9 +134,9 @@ assert.equal(JSON.parse(storage.get("terakoya-workshop2-image-theme-v1")).mode, 
 async function run() {
   assert.equal(downloads.length, 0, "incomplete form must not export");
   listeners["open-work:click"]();
-  assert.match(nodes["#work-status"].textContent, /name/);
-  assert.match(nodes["#work-status"].textContent, /headline/);
-  assert.match(nodes["#work-status"].textContent, /cta/);
+  assert.match(nodes["#work-status"].textContent, /サービス・イベント名/);
+  assert.match(nodes["#work-status"].textContent, /メインのひとこと/);
+  assert.match(nodes["#work-status"].textContent, /呼びかけ/);
   fields.name.value = "講座";
   fields.headline.value = "自分のサービスを伝える";
   fields.cta.value = "詳細を見る";
@@ -145,11 +148,10 @@ async function run() {
   nodes["#consult-answer"].value = '```json\n{"fields":{"name":"別名","audience":"初心者","benefit1":"持ち帰り資料"}}\n```';
   listeners["apply-consult:click"]();
   assert.equal(fields.name.value, "講座", "existing inputs remain unless overwrite is checked");
-  assert.equal(fields.audience.value, "初心者");
-  assert.equal(fields.benefit1.value, "持ち帰り資料");
+  assert.equal(fields.audience.value, "", "unreviewed JSON must not apply");
+  assert.equal(fields.benefit1.value, "");
   assert.equal(nodes["#consult-panel"].hidden, false, "consultation remains visible for review");
-  assert.match(nodes["#consult-status"].textContent, /LP read status was not supplied/);
-  assert.equal(JSON.parse(storage.get("terakoya-workshop2-image-v1")).audience, "初心者");
+  assert.match(nodes["#consult-status"].textContent, /確認/);
   listeners["structure:change"]({ target: { name: "benefits", checked: false } });
   assert.equal(JSON.parse(storage.get("terakoya-workshop2-image-settings-v1")).flyer.benefits, false);
   listeners["design-settings:change"]({ target: { dataset: { slot: "0" }, value: "8", matches: selector => selector === "select[data-layout]" } });

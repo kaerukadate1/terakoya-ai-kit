@@ -6,6 +6,10 @@
 
 ## 固定ファイル
 
+配布実装は正本Site v24、commit `372b0e1b486329b1b9821beaab34812fa8fbad64` のHTML/JSを基準とする。取得したHTML/CSS/JSを実際のアプリとして配置し、Markdown文書をHTMLとして公開したり、テンプレートの説明ページだけで完成としない。新規受講生サイトには正本の個別案件・完成画像をコピーせず、空の画像一覧から始める。既存サイト更新では既存データを保持する。
+
+全テキストをUTF-8で読み書きする。HTMLには `meta charset="utf-8"` を保持し、レスポンスのContent-Typeと文字コード、JS/CSSの配信と起動を確認する。01～05が実際に操作できることを確認するまで、完成と報告しない。取得した実装を説明文で代替しない。
+
 この文書と同じリリースの `index.html`、`styles.css`、`app.js`、`consult.js`、`state.js`、`library.js`、`work.js`、`WORKSHOP_GUIDE.md`、`design/SKILL.md`、`design/FLYER_SKILL.md`、`design/SNS_SKILL.md` をすべて実際に取得する。異なるリリースのファイルを混ぜない。
 
 基点URL: `https://raw.githubusercontent.com/kaerukadate1/terakoya-ai-kit/feature/workshop2-image-v1/releases/workshop2-image-v1/`
@@ -23,7 +27,7 @@
 
 ## 01に常設する「LPから完成画像まで」の操作ガイド
 
-01の最初に、次の6段階を短く常設する。画面の番号と名称をそのまま使い、どこで何をするかが初見でも分かるようにする。
+01のLP URL入力欄・「LPを読み取る」ボタンのすぐ近くに、次の6段階を常設する。ページ最上部には置かない。画面の番号と名称をそのまま使い、どこで何をするかが初見でも分かるようにする。
 
 1. **LPをChatGPT相談へ渡す** — LPがある場合はURLを入力し、別のChatGPT相談会話で事実を整理する。
 2. **相談結果を受け取る** — 戻りリンク、またはJSON全文を受け取る。長いリンクや開けないリンクではJSON貼付を案内する。

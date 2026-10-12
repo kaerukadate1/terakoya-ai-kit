@@ -23,7 +23,6 @@
   const status = document.querySelector("#work-status");
   const consultPanel = document.querySelector("#consult-panel");
   const consultButton = document.querySelector("#consult");
-  const lpImportButton = (() => { try { return document.querySelector("#lp-import"); } catch { return null; } })();
   const consultStatus = document.querySelector("#consult-status");
   const snsAspectSelect = (() => {
     let existing = null;
@@ -43,6 +42,7 @@
   let libraryUrls = [];
   let hidden = [];
   let debounce;
+  let reviewedProposal = null;
 
   function theme() {
     let saved = {};
@@ -117,13 +117,39 @@
     consultButton.setAttribute("aria-expanded", String(open));
   }
   function applyConsult(answer, overwrite = false) {
+    const manual = document.querySelector("#consult-manual").checked;
+    const sourceStatus = answer?.source?.status;
+    const realLp = ImageConsult.productionFields(read()).lpUrl;
+    if (!manual && !["read", "not_provided"].includes(sourceStatus)) {
+      consultStatus.textContent = "LP本文を貼り付けて相談し直すか、手入力の内容を確認してください。既存入力は変更していません。"; return;
+    }
+    if (!manual && realLp && (sourceStatus !== "read" || answer.source.lpUrl !== realLp)) {
+      consultStatus.textContent = "現在のLP URLと取得結果が一致しません。相談し直すか、手入力として確認してください。"; return;
+    }
     const result = ImageConsult.applyFields(read(), answer, overwrite);
     const source = ImageConsult.sourceSummary(answer);
     if (!result.applied) { consultStatus.textContent = "反映できる入力案がありませんでした"; return; }
     for (const key of ImageConsult.KEYS) form.elements[key].value = result.fields[key] || "";
     safeStore(read()); repaint();
     status.textContent = `${result.applied}項目を反映しました`;
-    consultStatus.textContent = source;
+    consultStatus.textContent = `${result.applied}項目を反映しました。${overwrite ? "選択に従い入力済みの項目も置き換えました。" : "既存入力はそのまま保持しました。"} 01の内容を確認し、02構成、03デザイン、04画像生成、05保存確認へ進んでください。\n${source}`;
+  }
+  const fieldLabels = { name: "サービス・イベント名", audience: "対象者", headline: "メインのひとこと", description: "内容", benefit1: "伝えたいこと 1", benefit2: "伝えたいこと 2", benefit3: "伝えたいこと 3", date: "日時", place: "場所・形式", price: "料金", cta: "呼びかけ", url: "申込先URL" };
+  function reviewConsult(answer) {
+    if (!answer?.fields || typeof answer.fields !== "object" || Array.isArray(answer.fields)) throw new Error("入力案の形式が違います");
+    reviewedProposal = answer;
+    const container = document.querySelector("#consult-fields"); container.replaceChildren();
+    for (const key of ImageConsult.KEYS) {
+      const label = document.createElement("label"); label.textContent = fieldLabels[key];
+      const input = document.createElement("input"); input.dataset.consultKey = key;
+      input.maxLength = ImageConsult.LIMITS[key]; input.value = typeof answer.fields[key] === "string" ? answer.fields[key] : "";
+      label.append(input); container.append(label);
+    }
+    document.querySelector("#consult-source").textContent = ImageConsult.sourceSummary(answer);
+    document.querySelector("#consult-manual").checked = false;
+    document.querySelector("#consult-overwrite").checked = false;
+    document.querySelector("#consult-review").hidden = false; setConsultOpen(true);
+    consultStatus.textContent = "まだ反映していません。取得状況と入力案を確認し、必要な箇所を修正してください。";
   }
   function receiveConsultLink() {
     if (!location.hash.startsWith("#image-intake=")) return;
@@ -135,9 +161,15 @@
       const bytes = Uint8Array.from(atob(base64), char => char.charCodeAt(0));
       const answer = JSON.parse(new TextDecoder().decode(bytes));
       document.querySelector("#consult-answer").value = JSON.stringify(answer, null, 2);
-      setConsultOpen(true);
-      consultStatus.textContent = "戻り内容を読み込みました。根拠・提案・未確認を確認してから「確認して反映」を押してください。既存入力は上書きしません。";
-    } catch { setConsultOpen(true); consultStatus.textContent = "入力案のリンクを読み込めませんでした。JSONを貼り付けてください"; }
+      go("info");
+      reviewConsult(answer);
+      consultStatus.textContent = "戻りリンクの内容を受け取りました。まだ反映していません。確認済みの事実・提案・未確認項目を確認・修正してから「確認した入力案を反映」を押してください。既存入力は保持しています。";
+    } catch {
+      reviewedProposal = null;
+      document.querySelector("#consult-review").hidden = true;
+      go("info"); setConsultOpen(true);
+      consultStatus.textContent = "入力案のリンクを読み込めませんでした。ChatGPTのJSONコードブロック全体を貼り付けて「入力案を確認・修正」を押してください。既存入力は変更していません。";
+    }
   }
   function openWithPrompt(prompt) {
     const link = document.createElement("a");
@@ -493,23 +525,40 @@
     form.reset(); clearPhoto.click(); settings = ImageState.normalize(null);
     safeStore(read()); storeSettings(); renderStructureSettings(); renderDesignSettings(); repaint(); go("info");
   });
-  consultButton.addEventListener("click", () => {
+  function startConsult() {
     setConsultOpen(true);
     const origin = /^https?:$/.test(location.protocol) ? location.origin + "/" : "";
-    openWithPrompt(ImageConsult.buildPrompt(read(), origin));
+    openWithPrompt(ImageConsult.buildPrompt({ ...read(), lpText: document.querySelector("#lp-text").value }, origin));
     consultStatus.textContent = "新しいタブの依頼文を確認して送信してください";
-  });
-  if (lpImportButton) lpImportButton.addEventListener("click", () => {
-    setConsultOpen(true);
-    const origin = /^https?:$/.test(location.protocol) ? location.origin + "/" : "";
-    openWithPrompt(ImageConsult.buildPrompt(read(), origin));
-    consultStatus.textContent = "LPの事実を別会話で確認し、戻りリンクまたはJSONを反映してください。既存入力は上書きしません。";
+  }
+  consultButton.addEventListener("click", startConsult);
+  document.querySelector("#consult-retry").addEventListener("click", startConsult);
+  document.querySelector("#lp-import").addEventListener("click", () => {
+    const lp = lpUrlInput.value.trim();
+    if (!ImageConsult.validHttpUrl(lp) || ImageConsult.isTestUrl(lp)) {
+      setConsultOpen(true);
+      consultStatus.textContent = "実際のLP URLを入力してください。取得できない場合は本文を貼り付けるか、01へ手入力できます。";
+      lpUrlInput.focus(); return;
+    }
+    startConsult();
+    consultStatus.textContent = "別のChatGPT会話でLPの事実を確認し、戻りリンクまたはJSONで入力案を受け取ってください。確認後、空欄だけに反映します。";
   });
   function workPrompt() {
     const data = read();
-    const missing = ["name", "headline", "cta"].filter(key => !String(data[key] || "").trim());
-    if (missing.length || !form.reportValidity()) { document.querySelector("#work-status").textContent = `不足項目: ${missing.join(", ") || "URL形式"}。01の「内容を入れる」に戻って修正してください`; go("info"); return ""; }
-    return ImageWork.prompt(read(), ImageState.normalize(settings), location.href);
+    const labels = { name: "サービス・イベント名", headline: "メインのひとこと", cta: "呼びかけ" };
+    const missing = Object.keys(labels).filter(key => !String(data[key] || "").trim());
+    const invalid = Array.from(form.elements).filter(element => element.willValidate && !element.validity.valid);
+    if (missing.length || invalid.length) {
+      const names = missing.length ? missing.map(key => labels[key]) : invalid.map(element => element.name === "lpUrl" ? "LP URLの形式" : element.name === "url" ? "申込先URLの形式" : labels[element.name] || element.name);
+      const message = `不足・確認が必要な項目: ${names.join("、")}。01の「内容を入れる」で修正してください。`;
+      status.textContent = message;
+      document.querySelector("#info-status").textContent = message;
+      go("info");
+      (form.elements[missing[0]] || invalid[0])?.focus();
+      return "";
+    }
+    document.querySelector("#info-status").textContent = "";
+    return ImageWork.prompt(ImageConsult.productionFields(read()), ImageState.normalize(settings), location.href);
   }
   document.querySelector("#open-work").addEventListener("click", () => {
     const prompt = workPrompt(); if (!prompt) return;
@@ -531,13 +580,19 @@
     document.querySelector("#theme-toggle").setAttribute("aria-expanded", String(!panel.hidden));
   });
   for (const id of ["theme-mode", "theme-main", "theme-sub"]) document.querySelector(`#${id}`).addEventListener("change", saveTheme);
-  document.querySelector("#apply-consult").addEventListener("click", () => {
-    try { applyConsult(ImageConsult.parseAnswer(document.querySelector("#consult-answer").value), document.querySelector("#consult-overwrite").checked); }
+  document.querySelector("#review-consult").addEventListener("click", () => {
+    try { reviewConsult(ImageConsult.parseAnswer(document.querySelector("#consult-answer").value)); }
     catch (error) { consultStatus.textContent = error.message || "入力案を読み込めませんでした"; }
+  });
+  document.querySelector("#apply-consult").addEventListener("click", () => {
+    if (!reviewedProposal) { consultStatus.textContent = "まず入力案を確認してください"; return; }
+    const fields = Object.fromEntries(Array.from(document.querySelectorAll("[data-consult-key]")).map(input => [input.dataset.consultKey, input.value]));
+    applyConsult({ ...reviewedProposal, fields }, document.querySelector("#consult-overwrite").checked);
   });
   document.querySelector("#close-consult").addEventListener("click", () => setConsultOpen(false));
   document.querySelectorAll(".step").forEach(button => button.addEventListener("click", () => go(button.dataset.step)));
   document.querySelectorAll(".next-step").forEach(button => button.addEventListener("click", () => go(button.dataset.next)));
   document.querySelector("#refresh-library").addEventListener("click", refreshLibrary);
+  window.addEventListener("hashchange", receiveConsultLink);
   restore(); restoreSettings(); restoreHidden(); theme(); renderStructureSettings(); renderDesignSettings(); repaint(); receiveConsultLink();
 })();

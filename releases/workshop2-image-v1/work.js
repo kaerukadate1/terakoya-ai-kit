@@ -4,7 +4,8 @@
   root.ImageWork = api;
 })(typeof globalThis !== "undefined" ? globalThis : window, function () {
   "use strict";
-  const DESIGN_SKILL_BASE = "https://raw.githubusercontent.com/kaerukadate1/terakoya-ai-kit/feature/workshop2-image-v1/releases/workshop2-image-v1/design/";
+  const ImageConsult = typeof module === "object" && module.exports ? require("./consult.js") : globalThis.ImageConsult;
+  const DESIGN_SKILL_BASE = "https://raw.githubusercontent.com/kaerukadate1/terakoya-ai-kit/b9151e0e3aee8b8391c452defaf9a1b68a1b79db/releases/workshop2-image-v1/design/";
   const DESIGN_SKILL_URLS = ["SKILL.md", "FLYER_SKILL.md", "SNS_SKILL.md"].map(file => DESIGN_SKILL_BASE + file);
   const STYLE_LABELS = ["洗練", "ナチュラル", "インパクト", "親しみ", "信頼感", "華やか", "シンプル", "上品", "クール"];
 
@@ -58,14 +59,15 @@
     };
   }
   function prompt(fields, settings, url, revision = null) {
+    fields = ImageConsult.productionFields(fields);
     const site = toolUrl(url);
     const facts = Object.fromEntries(Object.entries(fields).filter(([, value]) => typeof value === "string").map(([key, value]) => [key, value.slice(0, 300)]));
     const designDirections = (settings.designs || []).map((item, index) => ({ slot: index + 1, direction: STYLE_LABELS[item.layout] || "要確認" }));
     const payload = { facts, mediaBriefs: mediumBriefs(facts, settings), settings, designDirections, targetSite: site || "要確認", manifest: "completed-images.json", revision: revision ? { id: revision.id, url: revision.url, medium: revision.medium, slot: revision.slot } : null };
     const scope = revision
-      ? `既存画像 ${revision.url} の修正です。対象はデザイン${revision.slot + 1}の${revision.medium === "flyer" ? "A4チラシ(2480x3508)" : "SNS投稿4:5(1080x1350)"}1枚だけです。まず私に修正したい点を聞き、その内容に沿って編集してください。他の5枚は作り直さないでください。`
+      ? `既存画像 ${revision.url} の修正です。対象はデザイン${revision.slot + 1}の${revision.medium === "flyer" ? "A4チラシ(2480x3508)" : (settings.snsAspect === "16:9" ? "SNS投稿16:9(1920x1080)" : "SNS投稿4:5(1080x1350)")}1枚だけです。まず私に修正したい点を聞き、その内容に沿って編集してください。他の5枚は作り直さないでください。`
       : "3つの雰囲気から、それぞれA4チラシ(2480x3508)とSNS投稿画像4:5(1080x1350)を独立に設計し、計6枚を生成してください。色やブランドの一貫性は保ちつつ、同じ構図のリサイズ・トリミング・文字削減だけで2媒体にしないでください。";
-    return `寺子屋AIのチラシ・SNS告知画像を制作してください。最初に次のGitHubの共通・チラシ・SNSの3つの制作スキルを実際に取得して読み、各媒体の制作と検品へ適用してください。1つでも取得できなければ制作を止め、取得できないURLを報告してください。\n${DESIGN_SKILL_URLS.join("\n")}\n\n添付JSONが唯一の事実情報です。${scope}
+    return `寺子屋AIのチラシ・SNS告知画像を制作してください。最初に次のGitHubの共通・チラシ・SNSの3つの制作スキルを実際に取得して読み、各媒体の制作と検品へ適用してください。1つでも取得できなければ制作を止め、取得できないURLを報告してください。\n${DESIGN_SKILL_URLS.join("\n")}\n\n添付JSONが本人の確認済みの唯一の事実情報です。テスト用URLは参照も掲載もしないでください。相談先URLやLP URLの未入力・取得不可を理由に確認質問で止めず、未確定情報を省略して生成を進めてください。呼びかけが空欄ならURLや連絡手段を創作せず、自然な中立表現または省略で仕上げてください。${scope}
 
 制作順: (1) 同じ事実から媒体別に主役・掲載情報・視線の流れを別々に決める。(2) 3つの雰囲気それぞれに、チラシとSNSで異なる構図を設計する。(3) まずビジュアル素材を生成し、次に日本語文字を正確に組む。(4) A4とスマートフォン縮小表示で検品する。旧版の固定的な構成下見・Canvas画像を参照したり、そこからトレースしたりしない。
 
@@ -78,19 +80,21 @@
 制作データ:\n${JSON.stringify(payload, null, 2)}`;
   }
   function promptWithRules(fields, settings, url, revision) {
+    fields = ImageConsult.productionFields(fields);
     const text = prompt(fields, settings, url, revision);
     const aspect = settings?.snsAspect === "16:9" ? "16:9 (1920x1080)" : "4:5 (1080x1350)";
     const target = revision?.convertAspect === "16:9" ? "16:9 (1920x1080)" : revision?.convertAspect === "4:5" ? "4:5 (1080x1350)" : "";
     const lpUrl = String(fields?.lpUrl || "").trim();
-    return `${text}\n\nCURRENT WORKFLOW — THIS OVERRIDES ANY OLDER INSTRUCTION ABOVE THAT REQUIRES FIXED CANVAS LAYOUTS OR SEPARATE TEXT OVERLAYS.\nCreate each deliverable as one cohesive, high-quality image design: typography, decoration, whitespace, and visual direction belong together. Never force a generic font overlay or a Canvas template. Verify factual text after generation and correct errors.\n\nFlyer: A4 2480x3508, self-contained: what, who, benefits, confirmed practical details, and the next action in one printed sheet.\nSNS: ${aspect}; thumbnail-first. Use title, subtitle only if needed, and at most one support line. Never reuse flyer detail blocks or simply resize the flyer.\n${lpUrl ? `Source LP: ${lpUrl}. Open it and use only information and visual cues actually readable there. If access fails or a detail is missing, ask; never invent it.` : "No LP URL was supplied."}\n${target ? `Create ONE NEW ${target} version from the existing SNS image. Keep the original. Recompose so the subject, text, and mood survive. Never crop, stretch, or merely pad the original.` : "Create three flyer/SNS pairs using the SNS aspect above."}\nBefore saving, inspect full size and a phone-size view. Reject clipped text, inaccurate facts, unreadable contrast, generic boxed CTA buttons, or weak image/text integration.`;
+    return `${text}\n\nCURRENT WORKFLOW — THIS OVERRIDES ANY OLDER INSTRUCTION ABOVE THAT REQUIRES FIXED CANVAS LAYOUTS OR SEPARATE TEXT OVERLAYS.\nCreate each deliverable as one cohesive, high-quality image design: typography, decoration, whitespace, and visual direction belong together. Never force a generic font overlay or a Canvas template. Verify factual text after generation and correct errors.\n\nFlyer: A4 2480x3508, self-contained: what, who, benefits, confirmed practical details, and the next action in one printed sheet.\nSNS: ${aspect}; thumbnail-first. Use title, subtitle only if needed, and at most one support line. Never reuse flyer detail blocks or simply resize the flyer.\n${lpUrl ? `参照LP URL（相談済みの設定として保存）: ${lpUrl}。今回は確認済みJSONだけを事実の根拠にする。LPの再取得・追加確認を理由に生成を止めず、未入力事項は省略する。` : "有効なLP URLは未指定です。確認済みJSONだけで生成を進めてください。"}\n${target ? `Create ONE NEW ${target} version from the existing SNS image. Keep the original. Recompose so the subject, text, and mood survive. Never crop, stretch, or merely pad the original.` : (revision ? "Edit only the ONE specified image; keep its source and every other image." : "Create three flyer/SNS pairs using the SNS aspect above.")}\nBefore saving, inspect full size and a phone-size view. Reject clipped text, inaccurate facts, unreadable contrast, generic boxed CTA buttons, or weak image/text integration.`;
   }
   function promptWithRulesBeforePayload(fields, settings, url, revision) {
+    fields = ImageConsult.productionFields(fields);
     if (revision?.convertAspect) {
       const target = revision.convertAspect === "16:9" ? "16:9 (1920x1080)" : "4:5 (1080x1350)";
       const site = toolUrl(url);
       const facts = Object.fromEntries(Object.entries(fields).filter(([, value]) => typeof value === "string").map(([key, value]) => [key, value.slice(0, 300)]));
       const nextSettings = { ...settings, snsAspect: revision.convertAspect };
-      return `寺子屋AIの既存SNS画像から、別比率の新しい画像を1枚だけ制作してください。最初に以下の3つの制作スキルを取得して読み、適用してください。取得できないものがあれば制作を止め、そのURLを報告してください。\n${DESIGN_SKILL_URLS.join("\n")}\n\n元画像: ${revision.url}\n目標: ${target} のPNGを1枚。元画像は残してください。単純な切り抜き、引き伸ばし、余白追加ではなく、被写体・文字・雰囲気を保って再構成してください。他の画像は生成しないでください。\n\n事実は下記JSONと、読める場合の元画像だけを使ってください。未入力の日時・会場・申込先・価格は作らないでください。LPが指定されていれば実際に読めた内容だけを使い、読めなければ推測しないでください。案内先が未入力なら配布準備完了と呼ばず、行き先のないCTAを描かないでください。\n\n日本語の誤字、文字切れ、余白、見出しの改行、背景とのコントラストを実画像で確認してください。幅375pxの縮小表示でも読めることを確認し、暗い背景の赤文字など低コントラストは作り直してください。最終PNGのピクセルが正確に${target}であると確認してから保存してください。検査できなければ合格と報告しないでください。\n\n本人限定の同じSiteを編集できる場合だけ、元画像と既存entriesを保ったまま completed-images/<新ID>/ にPNGとサムネイルを追加し、completed-images.json に1件追記してください。新entryは id/name/medium=sns/slot/url/thumbnail/createdAt/fields/settings を含め、settings.snsAspect は ${revision.convertAspect} にしてください。既存入力・権限を変えず、一般公開しないでください。追加後は同じSiteの完成画像画面に表示されるか確認してください。反映できなければ、そう明示して完成PNGを返してください。\n\n制作データ:\n${JSON.stringify({ facts, settings: nextSettings, source: { id: revision.id, url: revision.url, slot: revision.slot }, targetSite: site }, null, 2)}`;
+      return `寺子屋AIの既存SNS画像から、別比率の新しい画像を1枚だけ制作してください。最初に以下の3つの制作スキルを取得して読み、適用してください。取得できないものがあれば制作を止め、そのURLを報告してください。\n${DESIGN_SKILL_URLS.join("\n")}\n\n元画像: ${revision.url}\n目標: ${target} のPNGを1枚。元画像は残してください。単純な切り抜き、引き伸ばし、余白追加ではなく、被写体・文字・雰囲気を保って再構成してください。他の画像は生成しないでください。\n\n事実は下記JSONと、読める場合の元画像だけを使ってください。未入力の日時・会場・申込先・価格は作らないでください。入力JSONは本人が確認済みです。LP URLは設定として保持し、生成前に再取得せず、このJSONだけを事実の根拠にしてください。案内先が未入力なら配布準備完了と呼ばず、行き先のないCTAを描かないでください。\n\n日本語の誤字、文字切れ、余白、見出しの改行、背景とのコントラストを実画像で確認してください。幅375pxの縮小表示でも読めることを確認し、暗い背景の赤文字など低コントラストは作り直してください。最終PNGのピクセルが正確に${target}であると確認してから保存してください。検査できなければ合格と報告しないでください。\n\n本人限定の同じSiteを編集できる場合だけ、元画像と既存entriesを保ったまま completed-images/<新ID>/ にPNGとサムネイルを追加し、completed-images.json に1件追記してください。新entryは id/name/medium=sns/slot/url/thumbnail/createdAt/fields/settings を含め、settings.snsAspect は ${revision.convertAspect} にしてください。既存入力・権限を変えず、一般公開しないでください。追加後は同じSiteの完成画像画面に表示されるか確認してください。反映できなければ、そう明示して完成PNGを返してください。\n\n制作データ:\n${JSON.stringify({ facts, settings: nextSettings, source: { id: revision.id, url: revision.url, slot: revision.slot }, targetSite: site }, null, 2)}`;
     }
     const selectedSns = settings?.snsAspect === "16:9" ? "16:9(1920x1080)" : "4:5(1080x1350)";
     const combined = `${promptWithRules(fields, settings, url, revision).replace("SNS投稿画像4:5(1080x1350)", `SNS投稿画像${selectedSns}`)}\n\nQUALITY GATE: Inspect a 375px-wide phone view; reject unreadable contrast, especially red text on dark backgrounds. Export A4 at exactly 2480x3508 and SNS at the selected dimensions, then verify final PNG pixels before saving. For an event, only call it distribution-ready when supplied date, venue, and application destination are visibly confirmed; never invent missing facts.`;
