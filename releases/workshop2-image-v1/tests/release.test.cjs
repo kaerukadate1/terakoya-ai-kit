@@ -4,7 +4,7 @@ const fs = require("node:fs");
 const path = require("node:path");
 
 const release = path.resolve(__dirname, "..");
-const files = ["index.html", "styles.css", "consult.js", "state.js", "library.js", "work.js", "app.js", "design/SKILL.md", "design/FLYER_SKILL.md", "design/SNS_SKILL.md", "BUILD_PROMPT.md", "STARTER_PROMPT.txt", "UPDATE_EXISTING_SITE_PROMPT.md"];
+const files = ["index.html", "styles.css", "consult.js", "state.js", "library.js", "work.js", "app.js", "WORKSHOP_GUIDE.md", "design/SKILL.md", "design/FLYER_SKILL.md", "design/SNS_SKILL.md", "BUILD_PROMPT.md", "STARTER_PROMPT.txt", "UPDATE_EXISTING_SITE_PROMPT.md"];
 
 test("starter points to this release and every fixed file exists", () => {
   for (const file of files) assert.ok(fs.existsSync(path.join(release, file)), file);
@@ -16,6 +16,9 @@ test("starter points to this release and every fixed file exists", () => {
   assert.ok(starter.includes(name));
   assert.ok(build.includes(name));
   assert.match(build, /04の依頼文/);
+  assert.match(build, /LPから完成画像まで.*操作ガイド/);
+  assert.match(build, /一覧を更新/);
+  assert.match(build, /WORKSHOP_GUIDE\.md/);
   assert.match(build, /design\/FLYER_SKILL\.md/);
   assert.match(build, /design\/SNS_SKILL\.md/);
   const skill = fs.readFileSync(path.join(release, "design/SKILL.md"), "utf8");
@@ -30,6 +33,9 @@ test("starter points to this release and every fixed file exists", () => {
   assert.match(fs.readFileSync(path.join(release, "index.html"), "utf8"), /name="lpUrl"/);
   assert.match(fs.readFileSync(path.join(release, "index.html"), "utf8"), /システムに合わせる/);
   assert.match(fs.readFileSync(path.join(release, "index.html"), "utf8"), /<script src="state\.js"><\/script>\s*<script src="library\.js"><\/script>\s*<script src="work\.js"><\/script>/);
+  const guide = fs.readFileSync(path.join(release, "WORKSHOP_GUIDE.md"), "utf8");
+  assert.match(guide, /LPから完成画像まで/);
+  assert.match(guide, /一覧を更新/);
 });
 
 test("restoring a saved image also restores its optional LP URL", () => {
