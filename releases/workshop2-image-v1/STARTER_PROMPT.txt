@@ -1,3 +1,3 @@
 寺子屋AI チラシ・SNS告知画像制作ツールを、私だけが開けるWorkサイトとして作ってください。まず下のビルドプロンプトを最後まで読み、そこに指定された**同じリリースの固定ファイル、操作ガイド、共通・チラシ・SNSの3つのデザインスキル**を実際に取得して使ってください。本文の要件がこの制作の正本です。取得できないファイルが1つでもあれば、推測で補わず、取得できなかったURLを報告してください。
 
-https://raw.githubusercontent.com/kaerukadate1/terakoya-ai-kit/15f153af2949d5b1248c2b56c14ffe87d6276b9b/releases/workshop2-image-v1/BUILD_PROMPT.md
+https://raw.githubusercontent.com/kaerukadate1/terakoya-ai-kit/ca7dc254ae411f5ab052a0938af9183948413500/releases/workshop2-image-v1/BUILD_PROMPT.md
