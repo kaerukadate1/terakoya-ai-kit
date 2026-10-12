@@ -12,7 +12,9 @@
 
 この文書と同じリリースの `index.html`、`styles.css`、`app.js`、`consult.js`、`state.js`、`library.js`、`work.js`、`WORKSHOP_GUIDE.md`、`design/SKILL.md`、`design/FLYER_SKILL.md`、`design/SNS_SKILL.md` をすべて実際に取得する。異なるリリースのファイルを混ぜない。
 
-基点URL: `https://raw.githubusercontent.com/kaerukadate1/terakoya-ai-kit/feature/workshop2-image-v1/releases/workshop2-image-v1/`
+基点URLは、このBUILD_PROMPT.mdを実際に取得した固定commit URLから末尾の `BUILD_PROMPT.md` を除いた同階層URLとする。ブランチURLへ読み替えない。取得元URLのcommitが不明なら制作を止め、そのURLを確認する。上記11ファイルをすべてこの基点から取得する。
+
+取得した `work.js` の `DESIGN_SKILL_BASE` も、この基点に `design/` を付けたURLへ設定する。元ファイル内の古いcommitやブランチURLは使用しない。画像生成の依頼文でも同じ固定commitの3スキルを毎回取得する。このURL設定以外に、取得した実装を説明ページや別テンプレートへ置き換えない。
 
 ## 作るもの
 
