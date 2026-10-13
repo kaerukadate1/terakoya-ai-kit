@@ -87,7 +87,7 @@ const document = {
   createElement(tag) {
     if (tag === "canvas") return canvas(0, 0);
     if (tag === "a") return { click() { opened.push(this.href); }, remove() {}, href: "", download: "" };
-    return { className: "", textContent: "", children: [], append(...children) { this.children.push(...children); }, addEventListener(type, fn) { this[`on${type}`] = fn; }, src: "", alt: "" };
+    return { dataset: {}, className: "", textContent: "", children: [], append(...children) { this.children.push(...children); }, addEventListener(type, fn) { this[`on${type}`] = fn; }, src: "", alt: "" };
   }
 };
 for (const key of ["lp-import", "consult-retry", "review-consult", "consult-review", "consult-source", "consult-fields", "consult-manual", "lp-text", "info-status"]) {
