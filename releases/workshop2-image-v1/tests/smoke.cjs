@@ -152,6 +152,14 @@ async function run() {
   assert.equal(fields.benefit1.value, "");
   assert.equal(nodes["#consult-panel"].hidden, false, "consultation remains visible for review");
   assert.match(nodes["#consult-status"].textContent, /確認/);
+  listeners["review-consult:click"]();
+  assert.equal(nodes["#consult-review"].hidden, false);
+  nodes["#consult-answer"].value = "invalid JSON";
+  listeners["review-consult:click"]();
+  assert.equal(nodes["#consult-review"].hidden, true, "invalid JSON clears the previous review");
+  listeners["apply-consult:click"]();
+  assert.match(nodes["#consult-status"].textContent, /まず入力案を確認/);
+  assert.equal(fields.name.value, "講座", "old proposal cannot apply after parse failure");
   listeners["structure:change"]({ target: { name: "benefits", checked: false } });
   assert.equal(JSON.parse(storage.get("terakoya-workshop2-image-settings-v1")).flyer.benefits, false);
   listeners["design-settings:change"]({ target: { dataset: { slot: "0" }, value: "8", matches: selector => selector === "select[data-layout]" } });

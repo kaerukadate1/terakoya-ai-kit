@@ -582,7 +582,12 @@
   for (const id of ["theme-mode", "theme-main", "theme-sub"]) document.querySelector(`#${id}`).addEventListener("change", saveTheme);
   document.querySelector("#review-consult").addEventListener("click", () => {
     try { reviewConsult(ImageConsult.parseAnswer(document.querySelector("#consult-answer").value)); }
-    catch (error) { consultStatus.textContent = error.message || "入力案を読み込めませんでした"; }
+    catch (error) {
+      reviewedProposal = null;
+      document.querySelector("#consult-fields").replaceChildren();
+      document.querySelector("#consult-review").hidden = true;
+      consultStatus.textContent = error.message || "入力案を読み込めませんでした";
+    }
   });
   document.querySelector("#apply-consult").addEventListener("click", () => {
     if (!reviewedProposal) { consultStatus.textContent = "まず入力案を確認してください"; return; }
