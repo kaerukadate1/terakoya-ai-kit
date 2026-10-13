@@ -80,6 +80,7 @@ const document = {
   documentElement: { dataset: {}, style: { setProperty() {} } },
   querySelector(selector) { assert.ok(nodes[selector], selector); return nodes[selector]; },
   querySelectorAll(selector) {
+    if (selector === "[data-consult-key]") return [];
     if (selector === ".panel") return ["info", "structure", "design", "generate", "library"].map(id => ({ id, classList: { toggle() {} } }));
     if (selector === ".step" || selector === ".next-step") return ["info", "structure", "design", "generate", "library"].map(step => ({ dataset: { step, next: step }, classList: { toggle() {} }, setAttribute() {}, removeAttribute() {}, addEventListener(type, fn) { listeners[`${selector}:${step}:${type}`] = fn; } }));
     throw new Error(selector);
