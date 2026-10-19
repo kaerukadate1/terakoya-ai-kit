@@ -11,7 +11,12 @@ test("starter points to this release and every fixed file exists", () => {
   const starter = fs.readFileSync(path.join(release, "STARTER_PROMPT.txt"), "utf8");
   const build = fs.readFileSync(path.join(release, "BUILD_PROMPT.md"), "utf8");
   const name = "寺子屋AI チラシ・SNS告知画像制作ツール";
-  assert.match(starter, /releases\/workshop2-image-v1\/BUILD_PROMPT\.md/);
+  assert.match(starter, /https:\/\/github\.com\/kaerukadate1\/terakoya-ai-kit/);
+  assert.doesNotMatch(starter, /raw\.githubusercontent\.com/);
+  assert.match(starter, /2480×3508/);
+  assert.match(starter, /1080×1350/);
+  assert.match(starter, /1080×1080/);
+  assert.match(starter, /1200×630/);
   assert.match(fs.readFileSync(path.join(release, "UPDATE_EXISTING_SITE_PROMPT.md"), "utf8"), /現在のWorkサイトURL/);
   assert.ok(starter.includes(name));
   assert.ok(build.includes(name));
@@ -36,14 +41,26 @@ test("starter points to this release and every fixed file exists", () => {
   assert.equal(driveCopy, starter);
   assert.match(starter, /事前の宿題は出さない/);
   assert.match(starter, /質問して集めて/);
-  assert.doesNotMatch(starter, /要確認/);
+  assert.match(starter, /ツールの画面を作ってください/);
+  assert.match(starter, /AI向け：チラシ・SNS画像を作るならここを読む/);
+  assert.match(starter, /flyer-sns\//);
+  assert.doesNotMatch(starter, /要確認|私だけ|本人限定|一般公開|Workサイトとして/);
+  const readme = fs.readFileSync(path.resolve(release, "../../README.md"), "utf8");
+  assert.match(readme, /## AI向け：チラシ・SNS画像を作るならここを読む/);
+  assert.match(readme, /flyer-sns\/スキル\.md/);
+  assert.match(readme, /design\/SKILL\.md/);
+  assert.match(readme, /design\/FLYER_SKILL\.md/);
+  assert.match(readme, /design\/SNS_SKILL\.md/);
   assert.match(build, /宿題は出さない/);
+  assert.doesNotMatch(build, /私だけ|本人限定|一般公開/);
   for (const file of ["修正を依頼する.txt", "文字を直す.txt", "別のサイズを足す.txt", "2枚だけ作る.txt", "やり直す.txt"]) {
     const text = fs.readFileSync(path.resolve(release, "../../flyer-sns", file), "utf8");
-    assert.match(text, /design\/SKILL\.md/, file);
-    assert.match(text, /design\/FLYER_SKILL\.md/, file);
-    assert.match(text, /design\/SNS_SKILL\.md/, file);
-    assert.doesNotMatch(text, /要確認/, file);
+    assert.match(text, /https:\/\/github\.com\/kaerukadate1\/terakoya-ai-kit/, file);
+    assert.doesNotMatch(text, /raw\.githubusercontent\.com/, file);
+    assert.match(text, /AI向け：チラシ・SNS画像を作るならここを読む/, file);
+    assert.match(text, /flyer-sns\//, file);
+    assert.match(text, /共通・チラシ・SNSの3つのデザインスキル/, file);
+    assert.doesNotMatch(text, /要確認|私だけ|本人限定|一般公開|新しいサイト/, file);
   }
   assert.match(fs.readFileSync(path.join(release, "index.html"), "utf8"), /システムに合わせる/);
   assert.match(fs.readFileSync(path.join(release, "index.html"), "utf8"), /<script src="state\.js"><\/script>\s*<script src="library\.js"><\/script>\s*<script src="work\.js"><\/script>/);
