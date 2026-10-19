@@ -8,7 +8,9 @@ const productName = "寺子屋AI チラシ・SNS告知画像制作ツール";
 for (const file of ["index.html", "STARTER_PROMPT.txt", "BUILD_PROMPT.md", "README.md", "design/SKILL.md"]) {
   assert.ok(fs.readFileSync(path.join(root, file), "utf8").includes(productName), `${file} must use the product name`);
 }
-assert.match(fs.readFileSync(path.join(root, "STARTER_PROMPT.txt"), "utf8"), /releases\/workshop2-image-v1\/BUILD_PROMPT\.md/);
+const starter = fs.readFileSync(path.join(root, "STARTER_PROMPT.txt"), "utf8");
+assert.match(starter, /https:\/\/github\.com\/kaerukadate1\/terakoya-ai-kit/);
+assert.doesNotMatch(starter, /raw\.githubusercontent\.com/);
 const fields = Object.fromEntries(
   ["name", "audience", "headline", "description", "benefit1", "benefit2", "benefit3", "date", "place", "price", "cta", "url"]
     .map(key => [key, { value: "" }])

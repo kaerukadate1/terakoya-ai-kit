@@ -32,4 +32,4 @@
 | 時間が押して2枚で帰る | [2枚だけ作る.txt](2枚だけ作る.txt) |
 | 画面作りや生成が止まった | [やり直す.txt](やり直す.txt) |
 
-画面と制作指示は [releases/workshop2-image-v1](../releases/workshop2-image-v1/README.md) にあります。フォルダ名は、開始文が取得するパスなので変えていません。
+画面と制作指示は [releases/workshop2-image-v1](../releases/workshop2-image-v1/README.md) にあります。リポジトリ先頭の「AI向け：チラシ・SNS画像を作るならここを読む」から、このフォルダと3つのデザインスキルへ進みます。フォルダ名は、画面が読むパスなので変えていません。
