@@ -13,6 +13,14 @@ test("same-site manifest accepts only hosted image paths", () => {
   assert.equal(entries.length, 1);
   assert.equal(entries[0].url, "https://tool.example/completed-images/a/flyer.png");
   assert.equal(entries[0].medium, "flyer");
+  assert.equal(entries[0].format, "flyer");
+  const sns = Work.parseManifest({ entries: [
+    { id: "s", url: "completed-images/s/sns.png", medium: "sns" },
+    { id: "q", url: "completed-images/q/square.png", medium: "sns", format: "square" }
+  ] }, base);
+  assert.equal(sns[0].format, "portrait");
+  assert.equal(sns[1].format, "square");
+  assert.equal(sns[1].medium, "sns");
 });
 
 test("generation brief separates flyer and SNS production", () => {
@@ -20,7 +28,8 @@ test("generation brief separates flyer and SNS production", () => {
   assert.match(text, /固定的な構成下見・Canvas画像を参照したり.*しない/);
   assert.match(text, /SNS投稿画像: スクロール中/);
   assert.match(text, /チラシ: 手元で読み進められる/);
-  assert.match(text, /同じ構図のリサイズ・トリミング・文字削減だけで2媒体にしない/);
+  assert.match(text, /同じ構図のリサイズ・トリミング・文字削減だけで媒体違いにしない/);
+  assert.match(text, /計4枚/);
   assert.match(text, /completed-images.json/);
   assert.match(text, /design\/SKILL.md/);
   assert.match(text, /design\/FLYER_SKILL.md/);
@@ -33,14 +42,39 @@ test("generation brief separates flyer and SNS production", () => {
   const payload = JSON.parse(text.slice(text.indexOf("制作データ:\n") + "制作データ:\n".length));
   assert.equal(payload.mediaBriefs.flyer.description, "詳しい説明");
   assert.equal(payload.mediaBriefs.flyer.details.date, "10月3日");
-  assert.equal(payload.mediaBriefs.sns.optionalSupport, "");
-  assert.ok(!JSON.stringify(payload.mediaBriefs.sns).includes("詳しい説明"));
+  assert.equal(payload.mediaBriefs.portrait.optionalSupport, "");
+  assert.equal(payload.mediaBriefs.square.optionalSupport, "");
+  assert.equal(payload.mediaBriefs.landscape.optionalSupport, "");
+  assert.deepEqual(payload.outputs.map(item => item.id), ["flyer", "portrait", "square", "landscape"]);
+  assert.equal(payload.outputs.find(item => item.id === "landscape").width, 1200);
+  assert.equal(payload.outputs.find(item => item.id === "landscape").height, 630);
+  assert.ok(!JSON.stringify(payload.mediaBriefs.portrait).includes("詳しい説明"));
+  assert.ok(!JSON.stringify(payload.mediaBriefs.square).includes("詳しい説明"));
+  assert.ok(!JSON.stringify(payload.mediaBriefs.landscape).includes("詳しい説明"));
   assert.match(text, /自動反映できなかった/);
+});
+
+test("unchecked formats and designs stay out of the generation brief", () => {
+  const text = Work.prompt({ name: "講座", headline: "学ぶ", description: "詳しい説明", cta: "詳細を見る" }, {
+    outputs: { flyer: true, portrait: true, square: false, landscape: false },
+    designs: [{ include: true, layout: 0 }, { include: false, layout: 1 }, { include: false, layout: 2 }],
+    flyer: { description: true },
+    snsSupport: "none"
+  }, "https://tool.example/");
+  const payload = JSON.parse(text.slice(text.indexOf("制作データ:\n") + "制作データ:\n".length));
+  assert.match(text, /計2枚/);
+  assert.doesNotMatch(text, /1200x630/);
+  assert.doesNotMatch(text, /1080x1080/);
+  assert.deepEqual(payload.outputs.map(item => item.id), ["flyer", "portrait"]);
+  assert.equal(payload.mediaBriefs.square, undefined);
+  assert.equal(payload.mediaBriefs.landscape, undefined);
+  assert.equal(payload.designDirections.length, 1);
 });
 
 test("revision brief targets one image and keeps the original", () => {
   const text = Work.prompt({ name: "講座" }, { designs: [] }, "https://tool.example/", { id: "old", url: "https://tool.example/old.png", medium: "sns", slot: 1 });
   assert.match(text, /1枚だけ/);
-  assert.match(text, /他の5枚は作り直さない/);
+  assert.match(text, /1080x1350/);
+  assert.match(text, /他の画像は作り直さない/);
   assert.match(text, /元画像を残し/);
 });

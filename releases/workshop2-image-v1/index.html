@@ -30,7 +30,7 @@
 
     <main class="main-area">
       <section id="info" class="panel active" aria-labelledby="info-title">
-        <div class="panel-head"><div><p class="eyebrow">01 / CONTENT</p><h1 id="info-title">伝えたいことを整理する</h1></div><div class="head-actions"><button id="consult" class="subtle-button" type="button" aria-controls="consult-panel" aria-expanded="false">ChatGPTに相談</button><button id="load-sample" class="subtle-button" type="button">記入例</button></div></div>
+        <div class="panel-head"><div><p class="eyebrow">01 / CONTENT</p><h1 id="info-title">伝えたいことを整理する</h1><p class="sub">自分の事業にも、お客様の仕事にも使えます。</p></div><div class="head-actions"><button id="consult" class="subtle-button" type="button" aria-controls="consult-panel" aria-expanded="false">ChatGPTに相談</button><button id="load-sample" class="subtle-button" type="button">記入例</button></div></div>
         <section id="consult-panel" class="consult-panel" hidden aria-labelledby="consult-title">
           <h2 id="consult-title">ChatGPTから入力案を受け取る</h2>
           <p>新しいタブで相談し、返ってきたJSONを貼り付けてください。未確認の情報は空欄のままにします。</p>
@@ -61,14 +61,20 @@
       <section id="structure" class="panel" aria-labelledby="structure-title">
         <div class="panel-head"><div><p class="eyebrow">02 / STRUCTURE</p><h1 id="structure-title">媒体ごとの掲載内容</h1></div></div>
         <div class="structure-columns">
-          <fieldset class="structure-list"><legend>チラシ A4</legend>
+          <fieldset class="structure-list" id="flyer-fields"><legend>チラシ A4</legend>
+            <label><span><strong>このチラシを作る</strong><small>家庭用プリンタ向け PNG・2480×3508</small></span><input name="output-flyer" type="checkbox" checked data-output="flyer"></label>
             <label><span><strong>内容</strong><small>サービス・イベントの概要</small></span><input name="description" type="checkbox" checked></label>
             <label><span><strong>伝えたいこと</strong><small>最大3項目</small></span><input name="benefits" type="checkbox" checked></label>
             <label><span><strong>開催・提供情報</strong><small>日時・場所・料金の確定分</small></span><input name="details" type="checkbox" checked></label>
             <label><span><strong>申込先URL</strong><small>入力されている場合のみ</small></span><input name="url" type="checkbox" checked></label>
+            <p class="structure-note">家庭用プリンタでA4に印刷します。端の文字が切れないよう、余白を残して印刷してください。</p>
           </fieldset>
-          <fieldset class="structure-list"><legend>SNS投稿 4:5</legend>
+          <fieldset class="structure-list" id="sns-fields"><legend>SNS告知画像</legend>
+            <label><span><strong>4:5</strong><small>1080×1350。縦長のフィード投稿</small></span><input name="output-portrait" type="checkbox" checked data-output="portrait"></label>
+            <label><span><strong>正方形</strong><small>1080×1080。正方形のフィード投稿</small></span><input name="output-square" type="checkbox" checked data-output="square"></label>
+            <label><span><strong>横長</strong><small>1200×630。タイムラインとリンク共有</small></span><input name="output-landscape" type="checkbox" checked data-output="landscape"></label>
             <label class="support-select">見出しの補足に載せる情報<select id="sns-support"><option value="none">載せない</option><option value="audience">対象者</option><option value="benefit1">伝えたいこと 1</option><option value="date">日時</option></select></label>
+            <p class="structure-note">3種類は同じ画像の切り抜きにしません。今日作るものだけオンにしてください。</p>
           </fieldset>
         </div>
         <div class="bottom-actions"><button class="primary-button next-step" data-next="design" type="button">デザインへ進む</button></div>
@@ -82,8 +88,8 @@
 
       <section id="generate" class="panel" aria-labelledby="generate-title">
         <div class="panel-head"><div><p class="eyebrow">04 / GENERATE</p><h1 id="generate-title">ChatGPTで画像を仕上げる</h1></div></div>
-        <p class="sub">3案からチラシとSNS投稿画像を別々に設計して生成します。写真を使う場合は、開いた会話に写真を添付してください。</p>
-        <div class="generate-actions"><button id="open-work" class="primary-button" type="button">ChatGPTで6枚を生成</button><button id="copy-work" class="subtle-button" type="button">依頼文をコピー</button></div>
+        <p class="sub">オンにした案と種類だけを、別々の構図で生成します。チラシは家庭用プリンタで印刷するA4のPNGです。写真を使う場合は、開いた会話に写真を添付してください。</p>
+        <div class="generate-actions"><button id="open-work" class="primary-button" type="button">ChatGPTで12枚を生成</button><button id="copy-work" class="subtle-button" type="button">依頼文をコピー</button></div>
         <p id="work-status" role="status" aria-live="polite"></p>
         <div class="bottom-actions"><button class="primary-button next-step" data-next="library" type="button">完成画像を見る</button></div>
       </section>
@@ -92,7 +98,9 @@
         <div class="panel-head"><div><p class="eyebrow">05 / LIBRARY</p><h1 id="library-title">完成画像</h1><p class="sub">Workが同じサイトに保存した完成画像を媒体別に表示します。以前このブラウザに保存した画像も残ります。</p></div><div class="head-actions"><button id="restore-hidden" class="subtle-button" type="button">一覧表示を戻す</button><button id="refresh-library" class="subtle-button" type="button">一覧を更新</button></div></div>
         <p id="library-status" role="status" aria-live="polite"></p>
         <section class="library-group" aria-labelledby="library-flyer-title"><h2 id="library-flyer-title">チラシ A4</h2><div id="library-flyer" class="library-list"></div></section>
-        <section class="library-group" aria-labelledby="library-sns-title"><h2 id="library-sns-title">SNS投稿画像 4:5</h2><div id="library-sns" class="library-list"></div></section>
+        <section class="library-group" aria-labelledby="library-sns-portrait-title"><h2 id="library-sns-portrait-title">SNS 4:5</h2><div id="library-sns-portrait" class="library-list"></div></section>
+        <section class="library-group" aria-labelledby="library-sns-square-title"><h2 id="library-sns-square-title">SNS 正方形</h2><div id="library-sns-square" class="library-list"></div></section>
+        <section class="library-group" aria-labelledby="library-sns-landscape-title"><h2 id="library-sns-landscape-title">SNS 横長</h2><div id="library-sns-landscape" class="library-list"></div></section>
       </section>
     </main>
   </div>

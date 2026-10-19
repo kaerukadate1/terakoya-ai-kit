@@ -6,6 +6,16 @@ test("settings migrate safely and keep three editable designs", () => {
   const defaults = State.normalize(null);
   assert.equal(defaults.designs.length, 3);
   assert.deepEqual(defaults.designs.map(item => item.layout), [0, 1, 2]);
+  assert.ok(defaults.designs.every(item => item.include));
+  assert.deepEqual(defaults.outputs, { flyer: true, portrait: true, square: true, landscape: true });
+  const forced = State.normalize({
+    outputs: { flyer: false, portrait: false, square: false, landscape: false },
+    designs: [{ include: false }, { include: false }, { include: false }]
+  });
+  assert.equal(forced.outputs.flyer, true);
+  assert.equal(forced.outputs.portrait, false);
+  assert.equal(forced.designs[0].include, true);
+  assert.equal(forced.designs[1].include, false);
   const changed = State.normalize({ flyer: { benefits: false }, snsSupport: "date", designs: [{ layout: 2, palette: "blue" }] });
   assert.equal(changed.flyer.benefits, false);
   assert.equal(changed.flyer.description, true);

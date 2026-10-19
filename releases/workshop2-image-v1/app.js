@@ -6,8 +6,13 @@
   const HIDDEN_KEY = "terakoya-workshop2-image-hidden-v1";
   const form = document.querySelector("#brief-form");
   const designSettings = document.querySelector("#design-settings");
-  const structureFields = document.querySelector(".structure-list");
-  const libraryGroups = { flyer: document.querySelector("#library-flyer"), sns: document.querySelector("#library-sns") };
+  const structureRoot = document.querySelector(".structure-columns");
+  const libraryGroups = {
+    flyer: document.querySelector("#library-flyer"),
+    portrait: document.querySelector("#library-sns-portrait"),
+    square: document.querySelector("#library-sns-square"),
+    landscape: document.querySelector("#library-sns-landscape")
+  };
   const photoInput = document.querySelector("#photo");
   const photoName = document.querySelector("#photo-name");
   const clearPhoto = document.querySelector("#clear-photo");
@@ -78,15 +83,31 @@
     if (typeof window !== "undefined") window.scrollTo({ top: 0, behavior: "instant" });
   }
   function renderStructureSettings() {
-    for (const key of Object.keys(settings.flyer)) structureFields.querySelector(`[name="${key}"]`).checked = settings.flyer[key];
+    for (const key of Object.keys(settings.flyer)) {
+      const node = structureRoot.querySelector(`#flyer-fields [name="${key}"]`);
+      if (node) node.checked = settings.flyer[key];
+    }
+    for (const id of Object.keys(settings.outputs)) {
+      const node = structureRoot.querySelector(`[data-output="${id}"]`);
+      if (node) node.checked = settings.outputs[id];
+    }
     document.querySelector("#sns-support").value = settings.snsSupport;
+    updateGenerateButton();
+  }
+  function updateGenerateButton() {
+    const count = ImageWork.plan(settings).count;
+    document.querySelector("#open-work").textContent = `ChatGPTで${count}枚を生成`;
+  }
+  function groupKey(entry) {
+    if (entry.format && libraryGroups[entry.format]) return entry.format;
+    return entry.medium === "flyer" ? "flyer" : "portrait";
   }
   function renderDesignSettings() {
     designSettings.innerHTML = settings.designs.map((design, index) => {
       const palette = ImageState.palette(design);
       const options = ImageState.LAYOUTS.map((label, value) => `<option value="${value}"${design.layout === value ? " selected" : ""}>${label}</option>`).join("");
       const swatches = Object.entries(ImageState.PALETTES).map(([key, item]) => `<button class="palette-choice" type="button" data-preset="${key}" data-slot="${index}" style="background:${item.accent}" title="${item.label}" aria-label="${item.label}の配色にする"></button>`).join("");
-      return `<section class="design-slot"><span class="number">0${index + 1}</span><h2>デザイン ${index + 1}</h2><label>デザインの雰囲気<select data-layout data-slot="${index}" aria-label="デザイン${index + 1}の雰囲気">${options}</select></label><div class="swatch-preview" style="background:${palette.bg};color:${palette.ink};border-top:6px solid ${palette.accent}">${ImageState.LAYOUTS[design.layout]}</div><p>${ImageState.NOTES[design.layout]}</p><div class="palette-choices" role="group" aria-label="デザイン${index + 1}の配色例">${swatches}</div><div class="color-fields"><label>背景色<input type="color" data-color="bg" data-slot="${index}" value="${design.bg}"></label><label>アクセント色<input type="color" data-color="accent" data-slot="${index}" value="${design.accent}"></label></div></section>`;
+      return `<section class="design-slot"><span class="number">0${index + 1}</span><h2>デザイン ${index + 1}</h2><label class="include-design"><input type="checkbox" data-include data-slot="${index}"${design.include ? " checked" : ""}>この案を作る</label><label>デザインの雰囲気<select data-layout data-slot="${index}" aria-label="デザイン${index + 1}の雰囲気">${options}</select></label><div class="swatch-preview" style="background:${palette.bg};color:${palette.ink};border-top:6px solid ${palette.accent}">${ImageState.LAYOUTS[design.layout]}</div><p>${ImageState.NOTES[design.layout]}</p><div class="palette-choices" role="group" aria-label="デザイン${index + 1}の配色例">${swatches}</div><div class="color-fields"><label>背景色<input type="color" data-color="bg" data-slot="${index}" value="${design.bg}"></label><label>アクセント色<input type="color" data-color="accent" data-slot="${index}" value="${design.accent}"></label></div></section>`;
     }).join("");
   }
   function setConsultOpen(open) {
@@ -369,7 +390,7 @@
         frame.append(img);
         const body = document.createElement("div"); body.className = "library-body";
         const title = document.createElement("h2"); title.textContent = entry.name || "名称未設定";
-        const meta = document.createElement("p"); meta.textContent = `${entry.medium === "flyer" ? "チラシ A4" : "SNS投稿 4:5"} / デザイン ${entry.slot + 1} / ${entry.createdAt ? new Date(entry.createdAt).toLocaleString("ja-JP") : "日時未記録"}${entry.source === "local" ? " / 旧版の端末保存" : ""}`;
+        const meta = document.createElement("p"); meta.textContent = `${ImageWork.labelFor(entry)} / デザイン ${entry.slot + 1} / ${entry.createdAt ? new Date(entry.createdAt).toLocaleString("ja-JP") : "日時未記録"}${entry.source === "local" ? " / 旧版の端末保存" : ""}`;
         const actions = document.createElement("div"); actions.className = "library-actions";
         if (entry.source === "local") actions.append(action("PNG保存", "primary-button", () => downloadBlob(entry.imageBlob, entry.filename)));
         else actions.append(action("画像を開く", "primary-button", () => { const link = document.createElement("a"); link.href = entry.url; link.target = "_blank"; link.rel = "noopener noreferrer"; link.click(); }));
@@ -383,10 +404,10 @@
           if (!confirm(`「${entry.name}」を一覧から削除しますか？\n画像ファイル自体は削除されません。\nこの端末の一覧からのみ外れます。`)) return;
           hideEntry(`${entry.source}:${entry.id}`); refreshLibrary();
         }));
-        body.append(title, meta, actions); card.append(frame, body); libraryGroups[entry.medium === "flyer" ? "flyer" : "sns"].append(card);
+        body.append(title, meta, actions); card.append(frame, body); libraryGroups[groupKey(entry)].append(card);
       }
-      for (const [medium, group] of Object.entries(libraryGroups)) {
-        if (!entries.some(entry => entry.medium === medium)) {
+      for (const [key, group] of Object.entries(libraryGroups)) {
+        if (!entries.some(entry => groupKey(entry) === key)) {
           const empty = document.createElement("p"); empty.className = "library-empty"; empty.textContent = "まだ完成画像はありません"; group.append(empty);
         }
       }
@@ -399,22 +420,26 @@
     debounce = setTimeout(() => { safeStore(read()); repaint(); }, 120);
   });
   form.addEventListener("submit", event => event.preventDefault());
-  structureFields.addEventListener("change", event => {
-    const key = event.target.name;
-    if (!Object.hasOwn(settings.flyer, key)) return;
-    settings.flyer[key] = event.target.checked;
-    storeSettings(); repaint();
+  structureRoot.addEventListener("change", event => {
+    const output = event.target.dataset.output;
+    if (output && Object.hasOwn(settings.outputs, output)) settings.outputs[output] = event.target.checked;
+    else if (Object.hasOwn(settings.flyer, event.target.name)) settings.flyer[event.target.name] = event.target.checked;
+    else return;
+    settings = ImageState.normalize(settings);
+    storeSettings(); renderStructureSettings(); repaint();
   });
   document.querySelector("#sns-support").addEventListener("change", event => {
     settings.snsSupport = event.target.value;
-    settings = ImageState.normalize(settings); storeSettings(); repaint();
+    settings = ImageState.normalize(settings); storeSettings(); updateGenerateButton(); repaint();
   });
   designSettings.addEventListener("change", event => {
     const slot = Number(event.target.dataset.slot);
     if (!Number.isInteger(slot) || slot < 0 || slot > 2) return;
-    if (event.target.matches("select[data-layout]")) settings.designs[slot].layout = Number(event.target.value);
+    if (event.target.matches("input[data-include]")) settings.designs[slot].include = event.target.checked;
+    else if (event.target.matches("select[data-layout]")) settings.designs[slot].layout = Number(event.target.value);
     else if (event.target.matches("input[data-color]")) settings.designs[slot][event.target.dataset.color] = event.target.value;
-    settings = ImageState.normalize(settings); storeSettings(); renderDesignSettings(); repaint();
+    else return;
+    settings = ImageState.normalize(settings); storeSettings(); renderDesignSettings(); updateGenerateButton(); repaint();
   });
   designSettings.addEventListener("click", event => {
     const button = event.target.closest("button[data-preset]");
