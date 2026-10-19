@@ -1,12 +1,14 @@
 # 寺子屋AI マイサイト v5
 
-マイサイトを、WebツールのURLだけでなく、手元のファイル・バッチ、スキル、プロンプト、その他の参照先をまとめる仕事場へ拡張した版です。v4の見た目と共通告知を引き継ぎます。新規サイトの道具一覧と事業プロフィールは空です。
+参加者が開く説明は [my-site](../../my-site/README.md) です。このフォルダ名は、開始文が取得するパスなので変えていません。
+
+マイサイトは、WebツールのURL、手元のファイル、スキル、プロンプト、その他の参照先をまとめる本人の仕事場です。新規サイトの道具一覧と事業プロフィールは空です。
 
 ## 渡すもの
 
-- [STARTER_PROMPT.txt](STARTER_PROMPT.txt): 参加者が貼る短い開始文。名称は「スタータープロンプト」。
-- [BUILD_PROMPT.md](BUILD_PROMPT.md): GitHubから読み込む本体の「ビルドプロンプト」。
-- `index.html` / `styles.css` / `app.js` / `assets/terakoya-logo.jpg`: ローカルで動作確認できる固定画面。
+- [STARTER_PROMPT.txt](STARTER_PROMPT.txt): 参加者が貼る開始文。[my-site/開始文.txt](../../my-site/開始文.txt) と同じ文です。タグ `mytools-v5-20261003-manage` のビルド指示を取得します。
+- [BUILD_PROMPT.md](BUILD_PROMPT.md): GitHubから読み込む制作指示です。
+- `index.html` / `styles.css` / `app.js` / `assets/terakoya-logo.jpg`: ローカルで動作確認できる固定画面です。
 
 ## 登録の仕方
 
@@ -14,10 +16,8 @@
 
 各登録の「一覧から外す」はマイサイト上の登録だけを解除し、元のツールやファイルは削除しません。上下の矢印で順番を変えられ、種類で絞り込んでいるときも表示中の項目同士を並べ替えられます。
 
-## 重要な境界
+## 境界
 
-次回講座の共通告知は公式サイトの `GET https://terakoya-ai.vercel.app/api/next-workshop` から読みます。運営画面は非公開の `terakoya-ai` リポジトリに置き、運営用パスワードとサーバー側の保存設定が整ってから公開します。ローカル試作の [workshop-console](../../workshop-console/README.md) は本番の運営画面ではありません。
+次回講座の共通告知は公式サイトの `GET https://terakoya-ai.vercel.app/api/next-workshop` から読みます。運営画面は非公開の `terakoya-ai` リポジトリにあります。
 
 静的版はサイトIDごとにブラウザの `localStorage` へ保存します。新規サイトは旧v4/v5の保存データを自動で読み込みません。既存サイトの更新時だけ、同じ本人の保存データと確認したキーを明示して移行できます。元データは書き換えません。独自ログインやサーバー保存、別端末同期はありません。ここへ秘密情報を入れないでください。Work / Sitesで作る場合は、[BUILD_PROMPT.md](BUILD_PROMPT.md) に従い、サイトごとに一意のIDを設定し、作成者が開けることと新規一覧が空であることを確認します。ブラウザからローカルのバッチやコマンドを直接起動する機能は提供しません。
-
-GitHubへ反映する前に `STARTER_PROMPT.txt` のraw URLを配布しないでください。反映後も、参照する版を固定してから通し試験を行ってください。

@@ -1,6 +1,6 @@
 @Sites
 寺子屋AIの共通仕様から、本人専用の「セミナーまるっと用意くん」を実際に作成してください。
 https://github.com/Kaeruka/terakoya-ai-kit
-README.md、docs/seminar-spec.md、docs/generation-spec.md、docs/registration.md、docs/production-flow.md を読み、適用した版を記録してください。読めなければ該当仕様の貼り付けを案内してください。
+README.md、archive/v1-announcement-kit/docs/seminar-spec.md、archive/v1-announcement-kit/docs/generation-spec.md、archive/v1-announcement-kit/docs/registration.md、archive/v1-announcement-kit/docs/production-flow.md を読み、適用した版を記録してください。読めなければ該当仕様の貼り付けを案内してください。
 告知素材の入力（入力欄は空で開始し、「テスト用」「サンプル入力」などの要素は置かない）、媒体選択、「ChatGPTで開く」ボタン（依頼文を `https://chatgpt.com/?q=` に入れて開く。返却JSONをツールへ貼り戻す手順も依頼文に含める。URLに収まらない長文は同じ依頼IDで自動分割して順に開く。「依頼文をコピー」などのコピー専用ボタンは置かない）、返却JSONの確認・取り込み・保存、過去の告知・依頼・取り込み結果をいつでも呼び出せる履歴画面まで実装してください。AI APIやAPIキー入力欄は不要です。LPと画像はChatGPTで完成物を作り、完成URLやファイルを結果へ関連付ける導線を用意してください。テキスト生成だけをLP・画像の完成と呼ばないでください。
 作成・検証・バージョン保存後、マイツールへ登録する名称・URL・説明・使い方を提示してください。公開やSNS投稿を自動では行わないでください。

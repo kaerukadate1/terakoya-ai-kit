@@ -30,7 +30,7 @@ AI生成は受講生自身のChatGPT Workで行う。運営の中継・受取サ
 【1 材料】
 「書く内容に迷ったらChatGPTに相談する」ボタンを材料欄の上部に置く。
 相談文を https://chatgpt.com/?prompt= に入れて新しいタブで開く。相談文のテンプレートは
-GitHub上の prompts/06-consult-material.txt を実行時に読み込み、ツール内に全文を埋め込まない。
+GitHub上の archive/v1-announcement-kit/prompts/06-consult-material.txt を実行時に読み込み、ツール内に全文を埋め込まない。
 相談文にはツールの受け取りAPIを返却先として含め、完成したシートを直接POSTさせる設計にする。
 POSTできない場合はコードブロック1つだけで返させ、整形済み文書や説明文を出させない。
 返答の本文はそのまま材料欄に入る形にする。
@@ -127,12 +127,12 @@ LPのリンクを保存してもLPサイト本体の複製保存や一般公開�
 【プロンプト・制作ルールの参照】
 依頼文・相談文のテンプレートと制作ルールはツール内に全文を埋め込まず、
 GitHub上のファイルを実行時に読み込む設計とする。参照先：
-・相談文テンプレート：prompts/06-consult-material.txt
-・制作ルール3種：prompts/terakoya-creative-rules.txt
+・相談文テンプレート：archive/v1-announcement-kit/prompts/06-consult-material.txt
+・制作ルール3種：archive/v1-announcement-kit/prompts/terakoya-creative-rules.txt
 （いずれもこのリポジトリのraw URL。配布版では検証済みのコミット固定URLに置き換える）
 読み込めない場合は不足を表示し、推測で文面を作らない。
 【制作ルール全文】
-下記は prompts/terakoya-creative-rules.txt と同一内容であり、依頼文に組み込む原本である。
+下記は archive/v1-announcement-kit/prompts/terakoya-creative-rules.txt と同一内容であり、依頼文に組み込む原本である。
 添付経路やオフライン検証のためにここにも全文を残す。
 【寺子屋AI コピーライティング】
 誰に、どんな場面で、何を提供し、何を持ち帰れるかを入力の具体語で伝えます。情報がなければ対象者や成果を推測して断定しません。

@@ -1,6 +1,6 @@
 @Sites
 寺子屋AIの共通仕様に沿って、本人専用の「マイツール」を実際に作成してください。
 https://github.com/Kaeruka/terakoya-ai-kit
-最初に README.md、prompts/02-mytools-full.txt、docs/announcements.md を読み、適用した版を記録してください。読めなければ読めたふりをせず、完全版の貼り付けを案内してください。
+最初に README.md、archive/v1-announcement-kit/prompts/02-mytools-full.txt、archive/v1-announcement-kit/docs/announcements.md を読み、適用した版を記録してください。読めなければ読めたふりをせず、完全版の貼り付けを案内してください。
 本人情報の回答前に共通部分の制作を始め、最初のファイルを作成した直後（3画面完成を待たず）に事業名、次に事業内容を一問ずつ聞いて、同じサイトへ反映してください。既知の情報は再質問しません。実際に処理していないときに「裏で制作中」と表示しないでください。
 作成・確認・バージョン保存まで進め、公開は別の操作として扱います。本人情報を公開GitHubへ書き込まないでください。

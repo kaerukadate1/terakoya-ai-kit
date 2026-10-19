@@ -32,7 +32,7 @@ test("starter points to this release and every fixed file exists", () => {
   assert.match(html, /id="library-sns-landscape"/);
   assert.match(html, /1200×630/);
   assert.match(html, /自分の事業にも、お客様の仕事にも使えます/);
-  const driveCopy = fs.readFileSync(path.resolve(release, "../../guides/session-2-images/開始文.txt"), "utf8");
+  const driveCopy = fs.readFileSync(path.resolve(release, "../../flyer-sns/開始文.txt"), "utf8");
   assert.equal(driveCopy, starter);
   assert.match(fs.readFileSync(path.join(release, "index.html"), "utf8"), /システムに合わせる/);
   assert.match(fs.readFileSync(path.join(release, "index.html"), "utf8"), /<script src="state\.js"><\/script>\s*<script src="library\.js"><\/script>\s*<script src="work\.js"><\/script>/);

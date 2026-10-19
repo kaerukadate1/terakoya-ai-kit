@@ -7,8 +7,8 @@
       "body": "ツール作成から完成LP・チラシ・SNS画像の保存まで、準備の流れをご覧いただけます。これは配信確認用の架空の案内です。",
       "startsAt": "2026-09-01T00:00:00Z",
       "endsAt": "2027-09-01T00:00:00Z",
-      "detailUrl": "https://github.com/Kaeruka/terakoya-ai-kit/blob/main/examples/seminar.md",
-      "snsUrl": "https://github.com/Kaeruka/terakoya-ai-kit/blob/main/examples/sns.md",
+      "detailUrl": "https://github.com/Kaeruka/terakoya-ai-kit/blob/main/archive/v1-announcement-kit/examples/seminar.md",
+      "snsUrl": "https://github.com/Kaeruka/terakoya-ai-kit/blob/main/archive/v1-announcement-kit/examples/sns.md",
       "isDemo": true,
       "priority": 1
     }
