@@ -36,14 +36,17 @@ test("starter points to this release and every fixed file exists", () => {
   assert.equal(driveCopy, starter);
   assert.match(starter, /事前の宿題は出さない/);
   assert.match(starter, /質問して集めて/);
-  assert.doesNotMatch(starter, /要確認/);
+  assert.match(starter, /ツールの画面を作ってください/);
+  assert.doesNotMatch(starter, /要確認|私だけ|本人限定|一般公開|Workサイトとして/);
   assert.match(build, /宿題は出さない/);
+  assert.doesNotMatch(build, /私だけ|本人限定|一般公開/);
   for (const file of ["修正を依頼する.txt", "文字を直す.txt", "別のサイズを足す.txt", "2枚だけ作る.txt", "やり直す.txt"]) {
     const text = fs.readFileSync(path.resolve(release, "../../flyer-sns", file), "utf8");
     assert.match(text, /design\/SKILL\.md/, file);
     assert.match(text, /design\/FLYER_SKILL\.md/, file);
     assert.match(text, /design\/SNS_SKILL\.md/, file);
-    assert.doesNotMatch(text, /要確認/, file);
+    assert.match(text, /読めないものがあれば、そのURLを伝えて止めてください/, file);
+    assert.doesNotMatch(text, /要確認|私だけ|本人限定|一般公開|新しいサイト/, file);
   }
   assert.match(fs.readFileSync(path.join(release, "index.html"), "utf8"), /システムに合わせる/);
   assert.match(fs.readFileSync(path.join(release, "index.html"), "utf8"), /<script src="state\.js"><\/script>\s*<script src="library\.js"><\/script>\s*<script src="work\.js"><\/script>/);

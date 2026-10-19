@@ -1,8 +1,8 @@
-すでにできている告知に、足りないサイズを足してください。新しいサイトは作らないでください。先に、今ある画像と、足したいサイズを私に確認してください。足せるサイズは、チラシA4（2480×3508）、SNS 4:5（1080×1350）、正方形（1080×1080）、横長（1200×630）です。
+できている告知に、足りないサイズだけ足してください。先に、今ある画像と、足すサイズを確認してください。サイズは、チラシA4（2480×3508）、SNS 4:5（1080×1350）、正方形（1080×1080）、横長（1200×630）です。
 
-次の3つのスキルを取得して読んでから作ってください。1つでも読めなければ止めて、読めないURLを教えてください。
+次の3つを読んでから作ってください。読めないものがあれば、そのURLを伝えて止めてください。
 https://raw.githubusercontent.com/kaerukadate1/terakoya-ai-kit/main/releases/workshop2-image-v1/design/SKILL.md
 https://raw.githubusercontent.com/kaerukadate1/terakoya-ai-kit/main/releases/workshop2-image-v1/design/FLYER_SKILL.md
 https://raw.githubusercontent.com/kaerukadate1/terakoya-ai-kit/main/releases/workshop2-image-v1/design/SNS_SKILL.md
 
-足すサイズは、今ある画像の拡大、縮小、切り抜きにしないでください。媒体ごとに構図を別にしてください。チラシは家庭用プリンタで印刷するPNGです。文字とURLは紙の端から離してください。横長は左から右へ主題が分かる構図にしてください。選んでいないサイズは作らないでください。
+足すサイズは、今ある画像の拡大、縮小、切り抜きにしないでください。媒体ごとに構図を別にしてください。チラシは家庭用プリンタで印刷するPNGで、文字とURLは紙の端から離してください。横長は左から右へ主題が分かる構図にしてください。選んでいないサイズは作らないでください。

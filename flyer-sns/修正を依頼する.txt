@@ -1,8 +1,8 @@
-今開いている、私だけのチラシ・SNS画像のサイトで、できている画像を1枚だけ直してください。新しいサイトは作らないでください。先に、どの画像を、どこを直したいかを私に聞いてください。
+今の画面にある画像を1枚だけ直してください。先に、どの画像の、どこを直すかを聞いてください。
 
-次の3つのスキルを取得して読んでから直してください。1つでも読めなければ止めて、読めないURLを教えてください。
+次の3つを読んでから直してください。読めないものがあれば、そのURLを伝えて止めてください。
 https://raw.githubusercontent.com/kaerukadate1/terakoya-ai-kit/main/releases/workshop2-image-v1/design/SKILL.md
 https://raw.githubusercontent.com/kaerukadate1/terakoya-ai-kit/main/releases/workshop2-image-v1/design/FLYER_SKILL.md
 https://raw.githubusercontent.com/kaerukadate1/terakoya-ai-kit/main/releases/workshop2-image-v1/design/SNS_SKILL.md
 
-直すのは指定した1枚だけです。ほかの画像は作り直さないでください。元の画像は残し、新しい画像として返してください。決まっていない日時、料金、実績は足さないでください。チラシなら家庭用プリンタで印刷するPNGのまま、文字とURLは紙の端から離してください。
+指定した1枚だけ直し、ほかの画像は作り直さないでください。元の画像は残し、直した画像を新しく返してください。決まっていない日時、料金、実績は足さないでください。チラシは家庭用プリンタで印刷するPNGのまま、文字とURLは紙の端から離してください。
