@@ -1,0 +1,10 @@
+今日は2枚だけ作ります。新しいサイトは作らないでください。チラシA4（2480×3508）を1枚と、SNSの4:5（1080×1350）を1枚だけです。正方形、横長、2案目、3案目は作らないでください。
+
+画面がある場合は、チラシと4:5だけオン、デザインは1案だけオンにして、ボタンが「ChatGPTで2枚を生成」になっていることを私に見せてから作ってください。
+
+次の3つのスキルを取得して読んでから作ってください。1つでも読めなければ止めて、読めないURLを教えてください。
+https://raw.githubusercontent.com/kaerukadate1/terakoya-ai-kit/main/releases/workshop2-image-v1/design/SKILL.md
+https://raw.githubusercontent.com/kaerukadate1/terakoya-ai-kit/main/releases/workshop2-image-v1/design/FLYER_SKILL.md
+https://raw.githubusercontent.com/kaerukadate1/terakoya-ai-kit/main/releases/workshop2-image-v1/design/SNS_SKILL.md
+
+2枚は同じ絵のサイズ違いにしないでください。チラシは家庭用プリンタで印刷するPNGで、文字とURLは紙の端から離してください。4:5は縦長の投稿用に、別に構図を組んでください。材料が足りなければ、その場で私に質問してください。事前の宿題は出さないでください。決まっていない日時や料金は空欄のままにしてください。

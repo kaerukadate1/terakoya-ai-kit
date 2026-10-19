@@ -13,10 +13,12 @@
     green: { label: "グリーン", bg: "#d8e8ce", ink: "#162b33", accent: "#d4543c", soft: "#ffffff", softInk: "#162b33", onAccent: "#ffffff" },
     blue: { label: "ブルー", bg: "#e9f2f6", ink: "#142a3a", accent: "#216a86", soft: "#ffffff", softInk: "#142a3a", onAccent: "#ffffff" }
   };
+  const OUTPUTS = ["flyer", "portrait", "square", "landscape"];
   const DEFAULT = {
     flyer: { description: true, benefits: true, details: true, url: true },
+    outputs: { flyer: true, portrait: true, square: true, landscape: true },
     snsSupport: "none",
-    designs: [{ layout: 0, palette: "coral" }, { layout: 1, palette: "gold" }, { layout: 2, palette: "green" }]
+    designs: [{ layout: 0, palette: "coral", include: true }, { layout: 1, palette: "gold", include: true }, { layout: 2, palette: "green", include: true }]
   };
   function color(value, fallback) { return typeof value === "string" && /^#[0-9a-fA-F]{6}$/.test(value) ? value.toLowerCase() : fallback; }
   function contrast(hex) {
@@ -32,13 +34,17 @@
   function normalize(input) {
     const flyer = Object.fromEntries(Object.keys(DEFAULT.flyer).map(key => [key, typeof input?.flyer?.[key] === "boolean" ? input.flyer[key] : true]));
     const snsSupport = ["none", "audience", "benefit1", "date"].includes(input?.snsSupport) ? input.snsSupport : "none";
+    const outputs = Object.fromEntries(OUTPUTS.map(id => [id, typeof input?.outputs?.[id] === "boolean" ? input.outputs[id] : true]));
+    if (!OUTPUTS.some(id => outputs[id])) outputs.flyer = true;
     const designs = DEFAULT.designs.map((fallback, index) => {
       const item = input?.designs?.[index];
       const selected = Object.hasOwn(PALETTES, item?.palette) ? item.palette : fallback.palette;
       return { layout: Number.isInteger(item?.layout) && item.layout >= 0 && item.layout < LAYOUTS.length ? item.layout : fallback.layout,
-        palette: selected, bg: color(item?.bg, PALETTES[selected].bg), accent: color(item?.accent, PALETTES[selected].accent) };
+        palette: selected, bg: color(item?.bg, PALETTES[selected].bg), accent: color(item?.accent, PALETTES[selected].accent),
+        include: typeof item?.include === "boolean" ? item.include : true };
     });
-    return { flyer, snsSupport, designs };
+    if (!designs.some(item => item.include)) designs[0].include = true;
+    return { flyer, outputs, snsSupport, designs };
   }
   function displayData(raw, medium, rawSettings) {
     const settings = normalize(rawSettings);
@@ -55,5 +61,5 @@
     const key = normalize(rawSettings).snsSupport;
     return key === "none" ? "" : String(data[key] || "").trim();
   }
-  return { LAYOUTS, NOTES, PALETTES, normalize, displayData, snsSupport, palette, color, contrast };
+  return { LAYOUTS, NOTES, PALETTES, OUTPUTS, normalize, displayData, snsSupport, palette, color, contrast };
 });

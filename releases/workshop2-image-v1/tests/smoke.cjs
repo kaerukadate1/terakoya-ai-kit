@@ -41,15 +41,26 @@ function canvas(width, height, dataset = {}) {
   return item;
 }
 const checkboxNodes = Object.fromEntries(["description", "benefits", "details", "url"].map(key => [key, { checked: true }]));
-const libraryCards = { flyer: [], sns: [] };
+const libraryCards = { flyer: [], portrait: [], square: [], landscape: [] };
 const saved = [];
 const nodes = {
   "#brief-form": form,
   "#design-settings": { innerHTML: "", addEventListener(type, fn) { listeners[`design-settings:${type}`] = fn; } },
-  ".structure-list": { querySelector(selector) { return checkboxNodes[selector.match(/name="(\w+)"/)[1]]; }, addEventListener(type, fn) { listeners[`structure:${type}`] = fn; } },
+  ".structure-columns": {
+    querySelector(selector) {
+      const named = selector.match(/name="(\w+)"/);
+      if (named) return checkboxNodes[named[1]] || null;
+      const output = selector.match(/data-output="(\w+)"/);
+      if (output) return { checked: true };
+      return null;
+    },
+    addEventListener(type, fn) { listeners[`structure:${type}`] = fn; }
+  },
   "#sns-support": { value: "none", addEventListener(type, fn) { listeners[`sns-support:${type}`] = fn; } },
   "#library-flyer": { replaceChildren() { libraryCards.flyer.length = 0; }, append(card) { libraryCards.flyer.push(card); } },
-  "#library-sns": { replaceChildren() { libraryCards.sns.length = 0; }, append(card) { libraryCards.sns.push(card); } },
+  "#library-sns-portrait": { replaceChildren() { libraryCards.portrait.length = 0; }, append(card) { libraryCards.portrait.push(card); } },
+  "#library-sns-square": { replaceChildren() { libraryCards.square.length = 0; }, append(card) { libraryCards.square.push(card); } },
+  "#library-sns-landscape": { replaceChildren() { libraryCards.landscape.length = 0; }, append(card) { libraryCards.landscape.push(card); } },
   "#library-status": { textContent: "" },
   "#refresh-library": { addEventListener(type, fn) { listeners[`refresh-library:${type}`] = fn; } },
   "#restore-hidden": { addEventListener(type, fn) { listeners[`restore-hidden:${type}`] = fn; } },
@@ -118,6 +129,8 @@ assert.equal(drawCalls.length, 0, "no fixed preview layout is drawn");
 assert.match(nodes["#design-settings"].innerHTML, /デザインの雰囲気/);
 assert.match(nodes["#design-settings"].innerHTML, /クール/);
 assert.match(nodes["#design-settings"].innerHTML, /背景色/);
+assert.match(nodes["#design-settings"].innerHTML, /この案を作る/);
+assert.equal(nodes["#open-work"].textContent, "ChatGPTで12枚を生成");
 assert.ok(listeners["theme-toggle:click"]);
 listeners["theme-toggle:click"]();
 assert.equal(nodes["#theme-panel"].hidden, false);
@@ -151,8 +164,13 @@ async function run() {
   assert.equal(fields.benefit1.value, "持ち帰り資料");
   assert.equal(nodes["#consult-panel"].hidden, true);
   assert.equal(JSON.parse(storage.get("terakoya-workshop2-image-v1")).audience, "初心者");
-  listeners["structure:change"]({ target: { name: "benefits", checked: false } });
+  listeners["structure:change"]({ target: { name: "benefits", checked: false, dataset: {} } });
   assert.equal(JSON.parse(storage.get("terakoya-workshop2-image-settings-v1")).flyer.benefits, false);
+  listeners["structure:change"]({ target: { dataset: { output: "square" }, checked: false } });
+  listeners["structure:change"]({ target: { dataset: { output: "landscape" }, checked: false } });
+  listeners["design-settings:change"]({ target: { dataset: { slot: "1" }, checked: false, matches: selector => selector === "input[data-include]" } });
+  listeners["design-settings:change"]({ target: { dataset: { slot: "2" }, checked: false, matches: selector => selector === "input[data-include]" } });
+  assert.equal(nodes["#open-work"].textContent, "ChatGPTで2枚を生成");
   listeners["design-settings:change"]({ target: { dataset: { slot: "0" }, value: "8", matches: selector => selector === "select[data-layout]" } });
   assert.equal(JSON.parse(storage.get("terakoya-workshop2-image-settings-v1")).designs[0].layout, 8);
   for (let layout = 0; layout < 9; layout++) listeners["design-settings:change"]({ target: { dataset: { slot: "0" }, value: String(layout), matches: selector => selector === "select[data-layout]" } });
@@ -164,7 +182,9 @@ async function run() {
   listeners[".step:library:click"]();
   await new Promise(resolve => setImmediate(resolve));
   assert.equal(libraryCards.flyer.length, 1);
-  assert.equal(libraryCards.sns.length, 1, "SNS images appear in a separate group");
+  assert.equal(libraryCards.portrait.length, 1, "legacy SNS images stay in the 4:5 group");
+  assert.equal(libraryCards.square[0].textContent, "まだ完成画像はありません");
+  assert.equal(libraryCards.landscape[0].textContent, "まだ完成画像はありません");
   sandbox.ImageLibrary.list = async () => { throw new Error("storage unavailable"); };
   listeners["refresh-library:click"]();
   await new Promise(resolve => setImmediate(resolve));

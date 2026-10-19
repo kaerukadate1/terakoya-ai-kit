@@ -464,10 +464,10 @@ P0またはP1がある場合は、合計点が高くても合格にしない。
 
 ## 寺子屋AIの既存仕様
 
-- `docs/generation-spec.md`
-- `docs/quality-checklist.md`
-- `docs/verification.md`
-- `docs/workshop-runbook.md`
+- `archive/v1-announcement-kit/docs/generation-spec.md`
+- `archive/v1-announcement-kit/docs/quality-checklist.md`
+- `archive/v1-announcement-kit/docs/verification.md`
+- `archive/v1-announcement-kit/docs/workshop-runbook.md`
 
 既存キットの創作禁止、媒体別出力、本人限定保存、モバイル確認、2時間ワークショップの制約を優先しています。
 

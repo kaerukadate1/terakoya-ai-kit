@@ -1,0 +1,2 @@
+寺子屋AIのLP制作ツールを、私だけが開けるWorkのサイトとして完成させてください。次のGitHubの制作指示を読み、固定ファイルを使って、保存・非公開サイトの発行・動作確認まで進めてください。確認質問やZIPの解凍作業で止めず、最後に開けるサイトのリンクを返してください。
+https://raw.githubusercontent.com/kaerukadate1/terakoya-ai-kit/main/releases/lp-maker-pilot-20260925/WORKSHOP_PROMPT.md
