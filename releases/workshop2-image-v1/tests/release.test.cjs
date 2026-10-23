@@ -26,6 +26,15 @@ test("starter points to this release and every fixed file exists", () => {
   const skill = fs.readFileSync(path.join(release, "design/SKILL.md"), "utf8");
   assert.match(skill, /^---\nname: terakoya-flyer-sns-design/m);
   assert.match(skill, /納品前の画像チェック/);
+  assert.match(skill, /10種類の配色例/);
+  assert.match(skill, /後乗せを必須にしない/);
+  assert.match(skill, /日本語・URL・数字を原文と照合/);
+  assert.doesNotMatch(skill, /文字まで画像生成に任せない/);
+  assert.match(build, /後合成を必須にしない/);
+  assert.match(build, /ラベンダー、ローズ、シトラス、スカイ、チャコール、テラコッタ/);
+  assert.match(starter, /画像の中に含めて生成/);
+  assert.match(starter, /原文と照合/);
+  assert.doesNotMatch(starter, /描かせず|文字を重ね直して/);
   for (const file of files.slice(0, 7)) assert.ok(build.includes(file), file);
   assert.match(fs.readFileSync(path.join(release, "index.html"), "utf8"), /<script src="consult\.js"><\/script>/);
   assert.match(fs.readFileSync(path.join(release, "index.html"), "utf8"), /画面の見た目/);
@@ -61,6 +70,9 @@ test("starter points to this release and every fixed file exists", () => {
     assert.match(text, /flyer-sns\//, file);
     assert.match(text, /共通・チラシ・SNSの3つのデザインスキル/, file);
     assert.doesNotMatch(text, /要確認|私だけ|本人限定|一般公開|新しいサイト/, file);
+    assert.match(text, /必須にしな|必須にせず/, file);
+    assert.match(text, /原文/, file);
+    assert.doesNotMatch(text, /描かせず|描かせたまま|テキスト描画で重ね/, file);
   }
   assert.match(fs.readFileSync(path.join(release, "index.html"), "utf8"), /システムに合わせる/);
   assert.match(fs.readFileSync(path.join(release, "index.html"), "utf8"), /<script src="state\.js"><\/script>\s*<script src="library\.js"><\/script>\s*<script src="work\.js"><\/script>/);
