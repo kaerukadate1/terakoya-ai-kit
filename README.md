@@ -9,7 +9,7 @@
 3. デザインスキル3つ。共通は [design/SKILL.md](releases/workshop2-image-v1/design/SKILL.md)、チラシは [design/FLYER_SKILL.md](releases/workshop2-image-v1/design/FLYER_SKILL.md)、SNSは [design/SNS_SKILL.md](releases/workshop2-image-v1/design/SNS_SKILL.md)。
 4. 画面の固定ファイルと制作指示。場所は [releases/workshop2-image-v1](releases/workshop2-image-v1/README.md)。使うファイルは `index.html`、`styles.css`、`app.js`、`consult.js`、`state.js`、`library.js`、`work.js`、`BUILD_PROMPT.md`。
 
-開始文に書いてある画面の流れ、4サイズ、文字の重ね方、印刷の余白、材料の聞き方は、リポジトリが読めないときもその文のまま進めてください。読めなかった場所は一言伝え、別の仕様で補わないでください。共有範囲や公開設定は指定しません。
+開始文に書いてある画面の流れ、4サイズ、文字を画像に含める作り方、印刷の余白、材料の聞き方は、リポジトリが読めないときもその文のまま進めてください。読めなかった場所は一言伝え、別の仕様で補わないでください。共有範囲や公開設定は指定しません。
 
 ChatGPT Workで、制作ツールの画面を作り、LPやチラシ・SNS画像を仕上げるキットです。作りたいものを1つ選び、その開始文をWorkへ送ります。AIがこのリポジトリの案内と固定ファイルを読み、そのあと本人の素材で仕上げます。
 

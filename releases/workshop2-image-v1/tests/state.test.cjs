@@ -48,3 +48,16 @@ test("nine layouts and independent custom colors survive normalization", () => {
   assert.equal(State.palette(value.designs[0]).ink, "#ffffff");
   assert.equal(State.normalize({ designs: [{ bg: "red", accent: "javascript:1" }] }).designs[0].bg, State.PALETTES.coral.bg);
 });
+
+test("ten palette presets stay selectable without dropping four-size defaults", () => {
+  const keys = ["coral", "gold", "green", "blue", "lavender", "rose", "citrus", "sky", "charcoal", "terracotta"];
+  assert.deepEqual(Object.keys(State.PALETTES), keys);
+  const lavender = State.normalize({ designs: [{ palette: "lavender", include: true }] });
+  assert.equal(lavender.designs[0].palette, "lavender");
+  assert.equal(lavender.designs[0].bg, State.PALETTES.lavender.bg);
+  assert.equal(lavender.designs[0].accent, State.PALETTES.lavender.accent);
+  assert.equal(lavender.designs[0].include, true);
+  assert.deepEqual(lavender.outputs, { flyer: true, portrait: true, square: true, landscape: true });
+  assert.equal(State.palette({ palette: "charcoal" }).bg, "#25282c");
+  assert.equal(State.palette({ palette: "charcoal" }).ink, "#ffffff");
+});

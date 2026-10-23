@@ -52,6 +52,12 @@ test("generation brief separates flyer and SNS production", () => {
   assert.ok(!JSON.stringify(payload.mediaBriefs.square).includes("詳しい説明"));
   assert.ok(!JSON.stringify(payload.mediaBriefs.landscape).includes("詳しい説明"));
   assert.match(text, /自動反映できなかった/);
+  assert.match(text, /一体の完成画像として設計・生成/);
+  assert.match(text, /一体の画像デザインとして制作し、固定Canvasや汎用フォントの後乗せを必須にしない/);
+  assert.match(text, /日本語の見出し、URL、料金、日時、CTAを原文と照合/);
+  assert.doesNotMatch(text, /テキスト描画で重ねて/);
+  assert.doesNotMatch(text, /描かせっぱなしにしない/);
+  assert.doesNotMatch(text, /まずビジュアル素材を生成し、次に日本語文字を正確に組む/);
 });
 
 test("unchecked formats and designs stay out of the generation brief", () => {
