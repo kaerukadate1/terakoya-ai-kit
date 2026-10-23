@@ -1,0 +1,2 @@
+寺子屋AIのnote記事制作ツールを作ってください。下記の固定版ビルドプロンプトと、同じ版の画面ファイル・ライティングスキル・画像制作スキル・自動返送スキルを実際に取得して読み、指示どおり構築してください。記事アイデアまたはLPから始め、本文・サムネイル・挿入画像を制作し、Workが同じツールへ結果を自動で戻せる形にします。LPからの場合はネタ選びを省略してください。取得できない資料や実装・検証できない機能は推測で済ませず報告してください。
+https://raw.githubusercontent.com/kaerukadate1/terakoya-ai-kit/note-article-v1-20261023/releases/note-article-v1/BUILD_PROMPT.md

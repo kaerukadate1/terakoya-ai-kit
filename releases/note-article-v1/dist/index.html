@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <title>寺子屋AI note記事制作ツール</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="app-header">
+    <div class="identity"><span class="identity-mark" aria-hidden="true">寺</span><div><strong>寺子屋AI</strong><span class="identity-sub">note記事制作ツール</span></div><span class="edition">WORKSHOP 03</span></div>
+    <div class="header-actions"><span id="save-status" role="status">この端末に保存</span><button id="theme-toggle" class="quiet" aria-expanded="false" aria-controls="theme-panel">画面の見た目</button><button id="new-project" class="quiet">新しい記事</button></div>
+  </header>
+  <section id="theme-panel" hidden class="theme-panel"><label>表示モード<select id="theme"><option value="system">システム</option><option value="light">ライト</option><option value="dark">ダーク</option></select></label></section>
+  <div class="shell">
+    <nav class="steps" aria-label="記事制作の流れ">
+      <button data-step="brief" class="active" aria-current="step"><span>01</span>内容を入れる</button>
+      <button data-step="topics"><span>02</span>ネタを選ぶ</button>
+      <button data-step="outline"><span>03</span>構成を決める</button>
+      <button data-step="write"><span>04</span>記事と画像を仕上げる</button>
+      <button data-step="library"><span>05</span>完成記事</button>
+      <div class="nav-bottom"><span class="status-dot"></span>ワークスペース<div>本文・設定はこの端末に保存</div></div>
+    </nav>
+    <main>
+      <p id="notice" role="status" aria-live="polite" hidden></p>
+      <section id="return-tray" class="return-tray" aria-label="Workからの制作結果" hidden><div class="return-head"><strong>Workからの制作結果</strong><button id="check-returns" class="quiet" type="button">結果を確認</button></div><div id="return-list" aria-live="polite"></div></section>
+      <section id="brief" class="panel active" aria-labelledby="brief-heading">
+        <div class="panel-head"><div><p class="eyebrow">01 / BRIEF</p><h1 id="brief-heading">記事の出発点を決める</h1></div><button id="sample" class="quiet">記入例</button></div>
+        <form id="brief-form">
+          <div class="segmented" role="group" aria-label="始め方"><label><input type="radio" name="mode" value="idea" checked>書きたいことから</label><label><input type="radio" name="mode" value="lp">LPから</label></div>
+          <div id="idea-fields"><label>どんな記事を書きたいですか <b>必須</b><textarea name="idea" rows="3" maxlength="6000" placeholder="例：忙しくても運動を続けるコツを伝え、自宅トレーニングの案内につなげたい"></textarea></label></div>
+          <div id="lp-fields" hidden><label>紹介したいLPのURL <b>必須</b><input name="lpUrl" type="url" maxlength="2000" placeholder="https://..."></label><label>LPの本文・補足 <span>任意</span><textarea name="sourceText" rows="3" maxlength="30000"></textarea></label></div>
+          <div class="form-grid separated">
+            <label>サービス・活動名<input name="name" maxlength="300"></label>
+            <label>届けたい読者<input name="audience" maxlength="1000" placeholder="どんな悩みや状況の人か"></label>
+            <label class="wide">紹介したい内容<textarea name="offer" rows="2" maxlength="6000"></textarea></label>
+            <label>誘導先URL <span>任意</span><input name="ctaUrl" type="url" maxlength="2000" placeholder="未入力の場合はLPのURL"></label>
+            <label>案内の言葉<input name="ctaText" maxlength="300"></label>
+            <label class="wide">使ってよい事実・経験<textarea name="facts" rows="3" maxlength="6000" placeholder="実際の経験、提供内容、確認済みの特徴など"></textarea></label>
+            <label class="wide">避けたい表現・入れない内容<textarea name="avoid" rows="2" maxlength="6000"></textarea></label>
+          </div>
+        </form>
+        <div class="bottom-actions"><button class="primary" id="to-topics">記事のネタを考える <span aria-hidden="true">→</span></button></div>
+      </section>
+      <section id="topics" class="panel" aria-labelledby="topics-heading" hidden>
+        <div class="panel-head"><div><p class="eyebrow">02 / IDEAS</p><h1 id="topics-heading">読者に届くネタを選ぶ</h1></div><button class="quiet" data-ai="topics">ChatGPTに3案を相談</button></div>
+        <div id="source-summary" class="source-summary" hidden></div>
+        <div id="topic-list" class="topic-list"></div>
+        <div class="bottom-actions"><button class="quiet" data-go="brief">内容に戻る</button><button class="primary" id="to-outline">構成を決める <span aria-hidden="true">→</span></button></div>
+      </section>
+      <section id="outline" class="panel" aria-labelledby="outline-heading" hidden>
+        <div class="panel-head"><div><p class="eyebrow" id="outline-eyebrow">03 / OUTLINE</p><h1 id="outline-heading">記事の流れを整える</h1></div><button id="lp-alternative" class="quiet" data-ai="lp-outline" hidden>別の切り口を提案</button></div>
+        <div id="outline-source" class="source-summary" hidden></div>
+        <div id="lp-outline-empty" class="empty" hidden><span class="empty-number">01</span><h2>LPから、おすすめの記事構成へ。</h2><button data-ai="lp-outline" class="primary">ChatGPTでおすすめ構成を作る</button></div>
+        <div id="outline-content">
+        <label>記事タイトル<input id="outline-title" maxlength="200"></label>
+        <div id="bridge" class="bridge"></div><div id="outline-list"></div>
+        <div class="inline"><button id="add-section" class="quiet">章を追加</button></div>
+        <form id="settings-form" class="form-grid separated">
+          <label>文章の雰囲気<select name="tone"><option>やさしく丁寧</option><option>親しみやすい会話調</option><option>簡潔で実務的</option><option>落ち着いた専門家調</option></select></label>
+          <label>本文の長さ<select name="length"><option value="1200">短め / 約1,200字</option><option value="2000">標準 / 約2,000字</option><option value="3000">じっくり / 約3,000字</option></select></label>
+          <label>挿入画像<select name="imageCount"><option value="0">なし</option><option value="1">最大1枚</option><option value="2">最大2枚</option><option value="3">最大3枚</option></select></label>
+          <label>画像の雰囲気<select name="visualStyle"><option>写真中心・自然体</option><option>やわらかなイラスト</option><option>洗練された編集デザイン</option><option>わかりやすい図解</option><option>力強く印象的</option></select></label>
+          <label>メインカラー<input type="color" name="brand"></label><label>アクセントカラー<input type="color" name="accent"></label>
+        </form>
+        </div>
+        <div class="bottom-actions"><button class="quiet" id="outline-back" data-go="topics">ネタに戻る</button><button class="primary" id="to-write">この構成で制作する <span aria-hidden="true">→</span></button></div>
+      </section>
+      <section id="write" class="panel" aria-labelledby="write-heading" hidden>
+        <div class="panel-head"><div><p class="eyebrow" id="write-eyebrow">04 / EDITOR</p><h1 id="write-heading">記事と画像を仕上げる</h1></div><button data-ai="article" class="quiet">ChatGPTで記事を制作</button></div>
+        <div class="editor-toolbar"><div class="segmented" role="group" aria-label="表示"><button id="view-preview" type="button" aria-pressed="true">プレビュー</button><button id="view-edit" type="button" aria-pressed="false">本文を編集</button></div><span id="word-count"></span><button id="copy-article" class="quiet">本文をコピー</button></div>
+        <div id="article-empty" class="empty"><span class="empty-number">Aa</span><h2>構成から、読みたくなる記事へ。</h2><button data-ai="article" class="primary">ChatGPTで記事を制作</button></div>
+        <div class="editor-layout" id="article-layout" hidden><article id="preview" class="article-preview"></article><div id="article-edit" hidden></div><aside id="image-plan" class="image-plan"></aside></div>
+        <div class="bottom-actions"><button class="quiet" data-go="outline">構成に戻る</button><button id="save-article" class="primary">完成記事に保存</button></div>
+      </section>
+      <section id="library" class="panel" aria-labelledby="library-heading" hidden>
+        <div class="panel-head"><div><p class="eyebrow" id="library-eyebrow">05 / LIBRARY</p><h1 id="library-heading">完成記事</h1></div><label class="file-button quiet">バックアップを読み込む<input id="import-project" type="file" accept="application/json,.json" hidden></label></div>
+        <div id="library-list" class="library-list"></div>
+      </section>
+    </main>
+  </div>
+  <dialog id="ai-dialog" aria-labelledby="ai-heading"><div class="dialog-head"><h2 id="ai-heading">ChatGPTに依頼</h2><button id="close-ai" class="icon" aria-label="閉じる" title="閉じる">×</button></div><p id="ai-help" class="muted"></p><label>依頼文<textarea id="ai-prompt" rows="7" readonly></textarea></label><div class="inline"><button id="open-chat" class="primary">依頼文付きでChatGPTを開き直す</button><button id="copy-prompt" class="quiet">依頼文をコピー</button></div><div id="answer-area" class="separated"><details id="manual-return"><summary>自動で戻らない場合の手動取り込み</summary><label>ChatGPTの回答（JSON全体）<textarea id="ai-answer" rows="5"></textarea></label><div class="inline"><button id="review-answer" class="primary">回答を確認する</button></div></details><div id="answer-review" hidden><div id="review-content"></div><label class="check"><input type="checkbox" id="confirm-answer">提案と事実・未確認事項を確認しました</label><button id="apply-answer" class="primary">確認した内容を取り込む</button></div></div><p id="ai-status" role="status" aria-live="polite"></p></dialog>
+  <script src="kit.js?v=1.0.0"></script><script src="core.js?v=1.0.0"></script><script src="assets.js"></script><script src="bridge.js?v=1.0.0"></script><script src="app.js?v=1.0.0"></script>
+</body></html>

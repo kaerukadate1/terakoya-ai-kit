@@ -1,0 +1,12 @@
+const test = require('node:test');
+const assert = require('node:assert/strict');
+const B = require('../dist/bridge.js');
+const job = () => B.request('image', 'draft-1234567890', 'cover', 'https://tool.example.org/path', 'baseline');
+const envelope = j => ({ schemaVersion: 1, requestId: j.id, type: j.type, draftId: j.draftId, slotId: j.slotId, targetSite: j.targetSite, status: 'complete', imageUrl: `/returns/${j.id}/image.png` });
+test('request retains exact origin, type and slot', () => { const j = job(); assert.equal(j.targetSite, 'https://tool.example.org'); assert.equal(j.slotId, 'cover'); assert.throws(() => B.request('x', 'draft-1234567890', '', 'https://x.test', '')); });
+test('return path cannot traverse', () => { const j = job(); assert.equal(B.resultPath(j), `/returns/${j.id}/result.json`); assert.throws(() => B.resultPath({ id: '../wrong' })); });
+test('wrong request, draft, slot or site cannot be applied', () => { const j = job(), r = envelope(j); for (const [key, value] of [['requestId', 'other'], ['draftId', 'other'], ['slotId', 's2'], ['targetSite', 'https://other.test']]) assert.throws(() => B.validate({ ...r, [key]: value }, j)); });
+test('image must be in its own same-origin request folder', () => { const j = job(); for (const imageUrl of ['https://other.test/a.png', `/returns/other/image.png`, `/returns/${j.id}/../image.png`, 'javascript:alert(1)', `/returns/${j.id}/image.png?token=x`]) assert.throws(() => B.validate({ ...envelope(j), imageUrl }, j)); assert.ok(B.validate(envelope(j), j).imageUrl.startsWith(j.targetSite)); });
+test('absent result is pending, HTML fallback is not success', async () => { const j = job(); assert.equal(await B.read(j, async () => new Response('', { status: 404 })), null); await assert.rejects(() => B.read(j, async () => new Response('<html>', { headers: { 'content-type': 'text/html' } }))); });
+test('text response keeps structured data and checks completion', () => { const j = B.request('topics', 'draft-1234567890', '', 'https://tool.example.org', ''); const r = { ...envelope(j), data: { topics: [] } }; delete r.imageUrl; assert.deepEqual(B.validate(r, j).data, { topics: [] }); assert.throws(() => B.validate({ ...r, status: 'pending' }, j)); });
+test('prompt includes frozen skills, exact destination and non-overwrite constraints', () => { const j = job(), p = B.wrap('画像を作る', j); assert.match(p, /note-article-v1-20261023/); assert.match(p, new RegExp(`returns/${j.id}`)); assert.match(p, /別Siteの新規作成/); assert.match(p, /自動返送できなかった/); });

@@ -55,6 +55,16 @@ Webツール、ファイル、スキル、プロンプトを登録する、本�
 - [進行](my-site/進行.md)
 - [説明](my-site/README.md)
 
+## note記事を作る
+
+LPや記事アイデアから、集客につなげるnote記事・サムネイル・挿入画像を作ります。LPからはネタ選びを省略し、おすすめ構成1案へ進みます。Workが同じSiteへ保存・配信できた結果は自動で戻ります。
+
+- [スタータープロンプト](note-article/開始文.txt)
+- [手順](note-article/手順.md)
+- [進行](note-article/進行.md)
+- [スキル](note-article/スキル.md)
+- [説明](note-article/README.md)
+
 ## 以前の告知一式
 
 告知文からまとめて作る初版と告知V3は、今の入口ではありません。資料は [archive/v1-announcement-kit](archive/v1-announcement-kit/README.md) にあります。
