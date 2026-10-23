@@ -1,6 +1,6 @@
 # 寺子屋AI 第3回 note記事制作ツール
 
-2026-10-23 / 固定配布版 v1.0.0
+2026-10-23 / 固定配布版 v1.0.1
 
 ## 目的
 
@@ -44,9 +44,9 @@
 
 ## 固定版の入口
 
-スタータープロンプトは`STARTER_PROMPT.txt`。ビルドプロンプト・スキル・コードの全取得先をタグ`note-article-v1-20261023`に揃えている。`MANIFEST.json`で配布ファイルのSHA-256を検証する。
+スタータープロンプトは`STARTER_PROMPT.txt`。ビルドプロンプト・スキル・コードの全取得先をタグ`note-article-v1-20261023-r2`に揃えている。`MANIFEST.json`で配布ファイルのSHA-256を検証する。
 
-https://raw.githubusercontent.com/kaerukadate1/terakoya-ai-kit/note-article-v1-20261023/releases/note-article-v1/BUILD_PROMPT.md
+https://raw.githubusercontent.com/kaerukadate1/terakoya-ai-kit/note-article-v1-20261023-r2/releases/note-article-v1/BUILD_PROMPT.md
 
 ## note公式仕様の参照
 

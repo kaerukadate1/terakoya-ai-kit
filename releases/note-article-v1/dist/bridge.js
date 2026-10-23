@@ -30,7 +30,9 @@
     if (response.status === 404) return null;
     if (response.status === 401 || response.status === 403) throw Error('結果を取得する権限がありません。アクセス設定は変更せず、Workの保存結果を確認してください。');
     if (!response.ok) throw Error(`結果を取得できませんでした（${response.status}）。`);
-    if (!/application\/json/i.test(response.headers.get('content-type') || '')) throw Error('返送先がJSONではありません。保存先を確認してください。');
+    const mime = response.headers.get('content-type') || '';
+    if (/text\/html/i.test(mime)) return null;
+    if (!/application\/json/i.test(mime)) throw Error('返送先がJSONではありません。保存先を確認してください。');
     const body = await response.text(); if (body.length > 200000) throw Error('返送JSONが大きすぎます。');
     return validate(JSON.parse(body), job);
   }

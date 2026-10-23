@@ -1,11 +1,11 @@
 # 寺子屋AI note記事制作ツール / ビルドプロンプト
 
-第3回ワークショップ用。固定版1.0.0 / 2026-10-23。
+第3回ワークショップ用。固定版1.0.1 / 2026-10-23。
 
 ## 取得元と固定ファイル
 
 基点URL:
-`https://raw.githubusercontent.com/kaerukadate1/terakoya-ai-kit/note-article-v1-20261023/releases/note-article-v1/`
+`https://raw.githubusercontent.com/kaerukadate1/terakoya-ai-kit/note-article-v1-20261023-r2/releases/note-article-v1/`
 
 同じ固定版の`MANIFEST.json`を取得し、列挙されたファイルをすべて取得する。特に`dist/index.html`、`dist/styles.css`、`dist/kit.js`、`dist/core.js`、`dist/assets.js`、`dist/bridge.js`、`dist/app.js`、`dist/returns/README.txt`と次の3スキルを省略しない。
 

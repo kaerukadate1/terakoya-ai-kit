@@ -1,27 +1,27 @@
 {
-  "version": "1.0.0",
-  "release": "note-article-v1-20261023",
-  "baseUrl": "https://raw.githubusercontent.com/kaerukadate1/terakoya-ai-kit/note-article-v1-20261023/releases/note-article-v1/",
+  "version": "1.0.1",
+  "release": "note-article-v1-20261023-r2",
+  "baseUrl": "https://raw.githubusercontent.com/kaerukadate1/terakoya-ai-kit/note-article-v1-20261023-r2/releases/note-article-v1/",
   "files": [
     {
       "path": "BUILD_PROMPT.md",
-      "bytes": 5958,
-      "sha256": "f0d29b6f656fb69b3203bfaabd65101b5f03f7eb0c2742bc478bf5247410c171"
+      "bytes": 5961,
+      "sha256": "c4cc81cc03beab4f85666ed8631b3e756fae225c8f6bba15e6aaa3e57b452f57"
     },
     {
       "path": "QA.md",
-      "bytes": 2554,
-      "sha256": "e55c87ad37ad68867559df6cc9751182ce039691cc46591da782f94571270637"
+      "bytes": 2812,
+      "sha256": "cfca19619ebc87c4c6b0e06fbc835382ccf694dfd439b81d796b805d48205499"
     },
     {
       "path": "README.md",
-      "bytes": 5009,
-      "sha256": "05bd3383d760152679070f87fc4be840c479361097551e1ef2dbefc4b283572b"
+      "bytes": 5015,
+      "sha256": "6dce115367cefa57859cafabdcae9d9fce22a9fbfd22541dc68e7af9fc3f87c0"
     },
     {
       "path": "STARTER_PROMPT.txt",
-      "bytes": 768,
-      "sha256": "2a6faa2d7e8fd29e5f9db9f5e8976fa0b6d711bc62f9b27c150ff2bd330f550d"
+      "bytes": 771,
+      "sha256": "0bcdc68455520eb8920cda1a3153a398089d01ce833cc127332f7fb5b879db60"
     },
     {
       "path": "dist/app.js",
@@ -35,23 +35,23 @@
     },
     {
       "path": "dist/bridge.js",
-      "bytes": 5970,
-      "sha256": "9257f18c5b5aca5ea260a5254a56f6e517cd1d8faf9b87fd2a67a367ae6d7236"
+      "bytes": 6040,
+      "sha256": "6738a29c6a8c5465fbd5646d128c0fef214be1c8d140bc440ba9ee7434d6ddac"
     },
     {
       "path": "dist/core.js",
       "bytes": 15045,
-      "sha256": "b62a62379fad027afb632f2d6cdc208e1cf71eec4123ac6f069ae0185cf3815f"
+      "sha256": "2a3479bd1df2d9fbb3c184adbc8e586d8bce3d86f63b469239f9a9a9c2d32104"
     },
     {
       "path": "dist/index.html",
       "bytes": 10670,
-      "sha256": "b591b105141a592a05f4d9f2907f708025dfc7f6e6156ffb1f02615327b71ff3"
+      "sha256": "800b29657e45675ad358596b648bd92188f2aca62446b177b86823dc640f11c7"
     },
     {
       "path": "dist/kit.js",
-      "bytes": 547,
-      "sha256": "2aa18bc6f0211a8ffb0bb08c5b0386735761190bf226f0a4a616630347134363"
+      "bytes": 550,
+      "sha256": "4486af91e730aad3a88f7fa11104c3391a72749e1b7b1eaf76f4287a70f206c6"
     },
     {
       "path": "dist/returns/README.txt",

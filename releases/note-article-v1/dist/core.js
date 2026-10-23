@@ -4,7 +4,7 @@
   root.NoteCore = api;
 })(typeof globalThis !== 'undefined' ? globalThis : this, function () {
   'use strict';
-  const VERSION = '1.0.0';
+  const VERSION = '1.0.1';
   const LIMIT = 160000;
   const text = (v, n = 20000) => typeof v === 'string' ? v.trim().slice(0, n) : '';
   const uid = () => globalThis.crypto?.randomUUID?.() || `${Date.now()}-${Math.random().toString(36).slice(2)}`;
