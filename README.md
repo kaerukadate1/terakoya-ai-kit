@@ -20,7 +20,7 @@ LP・画像・note記事は、マイサイトを先に作らなくても始め�
 
 手順を見たいとき: [LP](lp/手順.md) / [画像](flyer-sns/手順.md) / [note記事](note-article/手順.md) / [マイサイト](my-site/手順.md)
 
-画像ツールの編集元は [flyer-sns/](flyer-sns/開発.md) にまとまりました。ほかの3ツールは段階的に整理します。
+更新する場所もツール別です：[LP](lp/開発.md) / [画像](flyer-sns/開発.md) / [note](note-article/開発.md) / [マイサイト](my-site/開発.md)。
 
 更新する人はこちら: [どこを編集するか・構成図](docs/repository-map.md) / [運用ルール](運用ルール.md)
 
