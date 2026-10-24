@@ -1,7 +1,7 @@
 # リポジトリ構成図と段階的な整理
 
 構成確認基準: main の 3423b5ee5ae0275463ce64c0653a7a81a983d01d。方針更新: 2026-10-24 JST。
-この文書は現状と今後の案を分けて示します。編集元の移動・配布方式の変更はまだ行っていません。
+この文書は現状と今後の案を分けて示します。画像ツールだけ編集元の分離と配布生成を実施済みです。LP・note・マイサイトは未移行です。
 
 ## 参加者が使う入口（維持）
 
@@ -17,14 +17,15 @@ README.md は参加者の入口、運用ルール.md は更新者向けの現行
 
 ## 現在、編集する場所
 
-- 各ツールの画面、制作指示、テストは上記 releases/ の中です。
+- 画像ツールの画面・制作指示・スキル・テストは flyer-sns/app/・prompts/・skills/・tests/ が正本です。開始文の正本は flyer-sns/開始文.txt。
+- ほかのツールの画面、制作指示、テストは上記 releases/ の中です。
 - LP用のコピーライティング・Webデザイン・レビュースキルの正本は plugins/terakoya-ai-creative/skills/。LP配布先の skills/ に同じ内容を複製しています。
-- 画像用の共通・チラシ・SNSスキルの正本は releases/workshop2-image-v1/design/。
+- 画像用の共通・チラシ・SNSスキルは flyer-sns/skills/ が正本、releases/workshop2-image-v1/design/ は生成先です。
 - note記事は releases/note-article-v1/ に dist/、skills/、tests/ と配布検証用 scripts/、MANIFEST.json があります。
 - archive/ は旧資料です。ただし docs/ と prompts/ の旧入口案内、releases/kokuchi-v3/ の配布済みファイルは互換性のため残っています。
 - .agents/plugins/marketplace.json は plugins/terakoya-ai-creative を参照します。この構成を無断で変えません。
 
-## 改善案：同じリポジトリの中を、ツールごとに分ける（未移行）
+## 全体方針：同じリポジトリの中を、ツールごとに分ける（画像のみ移行済み）
 
 LP・画像・note・マイサイトは、この1つのリポジトリで管理します。
 最上位をツール別にし、それぞれの中に画面・制作指示・スキル・必要なプラグインをまとめます。
@@ -73,8 +74,9 @@ terakoya-ai-kit/
 - 複数ツールで使う処理も、最初から大きな shared/ に分散させません。共通化が本当に必要になった箇所だけ、各ツールのREADMEに正本を明記して共用します。
 - releases/ は参加者が探す場所ではなく、配布済みURLを維持するための場所です。新構成への移行後も旧パスへ同じ実体を生成して残します。
 
-最初は画像ツールだけを対象に、現在のコードを flyer-sns/app/ へ集約し、既存releaseへ同じ内容を生成できることを確認する案です。
-この文書更新では、実ファイル・plugin・marketplace・公開設定の移動や変更はしていません。
+画像ツールは上記構成へ正本を集約済みです。既存releaseの22ファイルをバイト単位で維持する生成・検証スクリプトを追加しました。plugin・marketplace・公開設定は変更していません。
+
+[画像ツールの開発と配布の手順](../flyer-sns/開発.md)を参照してください。
 
 ## 配布と版の方針案
 
@@ -103,4 +105,4 @@ terakoya-ai-kit/
 実行: node scripts/verify-entrypoints.cjs
 
 この検査は全URLの疎通確認や画面テストではありません。既存のツール別テスト、note版のmanifest検証、実Siteでの制作・返送確認は別途必要です。
-次の段階は画像ツールの編集元分離と、移行前後の配布物が同じになることの確認です。
+画像ツールは scripts/generate-flyer-release.cjs --check で正本と生成先の一致を検査します。次の段階は、他ツールを同じ考え方で1つずつ整理することです。

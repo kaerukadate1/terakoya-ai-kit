@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>寺子屋AI チラシ・SNS告知画像制作ツール</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="app-header">
+    <div class="identity"><span class="identity-mark" aria-hidden="true">寺</span><strong>寺子屋AI チラシ・SNS告知画像制作ツール</strong></div>
+    <div class="header-actions"><span id="save-status" role="status">この端末に自動保存</span><button id="theme-toggle" class="subtle-button" type="button" aria-controls="theme-panel" aria-expanded="false">画面の見た目</button><button id="reset" class="subtle-button" type="button">新しい案件</button></div>
+  </header>
+  <section id="theme-panel" class="theme-panel" hidden aria-label="ツール画面の見た目">
+    <strong>ツール画面</strong>
+    <label>表示モード<select id="theme-mode"><option value="system">システムに合わせる</option><option value="light">ライト</option><option value="dark">ダーク</option></select></label>
+    <label>画面のメインカラー<input id="theme-main" type="color" value="#086c7e"></label>
+    <label>画面のサブカラー<input id="theme-sub" type="color" value="#b78b3c"></label>
+  </section>
+
+  <div class="app-shell">
+    <nav class="steps" aria-label="制作の流れ">
+      <button class="step active" data-step="info" aria-current="step"><span>01</span>内容を入れる</button>
+      <button class="step" data-step="structure"><span>02</span>構成を決める</button>
+      <button class="step" data-step="design"><span>03</span>デザインを選ぶ</button>
+      <button class="step" data-step="generate"><span>04</span>画像を仕上げる</button>
+      <button class="step" data-step="library"><span>05</span>完成画像</button>
+      <p class="steps-foot">入力内容はこの端末に保存されます。</p>
+    </nav>
+
+    <main class="main-area">
+      <section id="info" class="panel active" aria-labelledby="info-title">
+        <div class="panel-head"><div><p class="eyebrow">01 / CONTENT</p><h1 id="info-title">伝えたいことを整理する</h1><p class="sub">自分の事業にも、お客様の仕事にも使えます。</p></div><div class="head-actions"><button id="consult" class="subtle-button" type="button" aria-controls="consult-panel" aria-expanded="false">ChatGPTに相談</button><button id="load-sample" class="subtle-button" type="button">記入例</button></div></div>
+        <section id="consult-panel" class="consult-panel" hidden aria-labelledby="consult-title">
+          <h2 id="consult-title">ChatGPTから入力案を受け取る</h2>
+          <p>同じSiteへ保存・配信できた結果は自動で受け取ります。できない場合は入力案リンク、または下のJSON貼付を使ってください。手入力済みの内容は自動では上書きしません。</p>
+          <label for="consult-answer">ChatGPTの回答</label>
+          <textarea id="consult-answer" rows="6" placeholder='{"fields":{"name":"...","audience":"..."}}'></textarea>
+          <label class="consult-overwrite"><input id="consult-overwrite" type="checkbox">入力済みの項目も置き換える</label>
+          <div class="inline-actions"><button id="apply-consult" class="primary-button" type="button">入力案を反映</button><button id="close-consult" class="subtle-button" type="button">閉じる</button></div>
+          <p id="consult-status" role="status" aria-live="polite"></p>
+        </section>
+        <section class="consult-panel" aria-labelledby="lp-title"><h2 id="lp-title">LPから作る</h2><p>参照するLPをChatGPTで読み、確認できた内容を入力案にします。まずは1媒体×3案の3枚。保存済みの選択は保持します。</p><label>参照LP URL<input id="lp-source-url" type="url" maxlength="2000" placeholder="https://..."></label><label>LP本文（読めないときの代わり）<textarea id="lp-source-text" rows="3" maxlength="12000" placeholder="LP本文を貼り付けられます"></textarea></label><button id="lp-import" type="button" class="primary-button">LPから入力案を作る</button><p id="lp-status" role="status" aria-live="polite"></p><p>返送JSONは同じSiteに保存されます。共有範囲を確認し、非公開の顧客情報や個人情報は返送用データに含めないでください。LPの画像・ロゴは自動転載しません。</p></section>
+        <form id="brief-form" class="form-grid">
+          <label>サービス・イベント名 <b>必須</b><input name="name" maxlength="70" autocomplete="off" required placeholder="例：はじめてのAI画像講座"></label>
+          <label>対象者<input name="audience" maxlength="90" placeholder="例：自分のお店を紹介したい方"></label>
+          <label class="field-wide">メインのひとこと <b>必須</b><textarea name="headline" rows="2" maxlength="100" required placeholder="例：あなたのサービスを、ひと目で伝える。"></textarea></label>
+          <label class="field-wide">内容<textarea name="description" rows="3" maxlength="90" placeholder="どんな体験やサービスか"></textarea></label>
+          <label>伝えたいこと 1<input name="benefit1" maxlength="45" placeholder="例：初めてでも参加しやすい"></label>
+          <label>伝えたいこと 2<input name="benefit2" maxlength="45"></label>
+          <label>伝えたいこと 3<input name="benefit3" maxlength="45"></label>
+          <label>日時<input name="date" maxlength="32" placeholder="決まっている場合"></label>
+          <label>場所・形式<input name="place" maxlength="32" placeholder="決まっている場合"></label>
+          <label>料金<input name="price" maxlength="32" placeholder="決まっている場合"></label>
+          <label>呼びかけ <b>必須</b><input name="cta" maxlength="25" required placeholder="例：詳細を見る"></label>
+          <label>申込先URL<input name="url" maxlength="80" type="url" placeholder="https://..."></label>
+          <div class="photo-field field-wide"><label for="photo">写真・画像</label><div class="photo-row"><input id="photo" type="file" accept="image/png,image/jpeg,image/webp"><button id="clear-photo" class="subtle-button" type="button" hidden>外す</button></div><span id="photo-name">未選択</span></div>
+        </form>
+        <div class="bottom-actions"><button class="primary-button next-step" data-next="structure" type="button">構成へ進む</button></div>
+      </section>
+
+      <section id="structure" class="panel" aria-labelledby="structure-title">
+        <div class="panel-head"><div><p class="eyebrow">02 / STRUCTURE</p><h1 id="structure-title">媒体ごとの掲載内容</h1></div></div>
+        <div class="structure-columns">
+          <fieldset class="structure-list" id="flyer-fields"><legend>チラシ A4</legend>
+            <label><span><strong>このチラシを作る</strong><small>家庭用プリンタ向け PNG・2480×3508</small></span><input name="output-flyer" type="checkbox" checked data-output="flyer"></label>
+            <label><span><strong>内容</strong><small>サービス・イベントの概要</small></span><input name="description" type="checkbox" checked></label>
+            <label><span><strong>伝えたいこと</strong><small>最大3項目</small></span><input name="benefits" type="checkbox" checked></label>
+            <label><span><strong>開催・提供情報</strong><small>日時・場所・料金の確定分</small></span><input name="details" type="checkbox" checked></label>
+            <label><span><strong>申込先URL</strong><small>入力されている場合のみ</small></span><input name="url" type="checkbox" checked></label>
+            <p class="structure-note">家庭用プリンタでA4に印刷します。端の文字が切れないよう、余白を残して印刷してください。</p>
+          </fieldset>
+          <fieldset class="structure-list" id="sns-fields"><legend>SNS告知画像</legend>
+            <label><span><strong>4:5</strong><small>1080×1350。縦長のフィード投稿</small></span><input name="output-portrait" type="checkbox" data-output="portrait"></label>
+            <label><span><strong>正方形</strong><small>1080×1080。正方形のフィード投稿</small></span><input name="output-square" type="checkbox" data-output="square"></label>
+            <label><span><strong>横長</strong><small>1200×630。タイムラインとリンク共有</small></span><input name="output-landscape" type="checkbox" data-output="landscape"></label>
+            <label class="support-select">見出しの補足に載せる情報<select id="sns-support"><option value="none">載せない</option><option value="audience">対象者</option><option value="benefit1">伝えたいこと 1</option><option value="date">日時</option></select></label>
+            <p class="structure-note">3種類は同じ画像の切り抜きにしません。今日作るものだけオンにしてください。</p>
+          </fieldset>
+        </div>
+        <div class="bottom-actions"><button class="primary-button next-step" data-next="design" type="button">デザインへ進む</button></div>
+      </section>
+
+      <section id="design" class="panel" aria-labelledby="design-title">
+        <div class="panel-head"><div><p class="eyebrow">03 / DIRECTION</p><h1 id="design-title">3案の方向を決める</h1></div></div>
+        <div id="design-settings" class="design-settings"></div>
+        <div class="bottom-actions"><button class="primary-button next-step" data-next="generate" type="button">画像を仕上げる</button></div>
+      </section>
+
+      <section id="generate" class="panel" aria-labelledby="generate-title">
+        <div class="panel-head"><div><p class="eyebrow">04 / GENERATE</p><h1 id="generate-title">ChatGPTで画像を仕上げる</h1></div></div>
+        <p class="sub">オンにした案と種類だけを、別々の構図で生成します。チラシは家庭用プリンタで印刷するA4のPNGです。写真を使う場合は、開いた会話に写真を添付してください。</p>
+        <div class="generate-actions"><button id="open-work" class="primary-button" type="button">ChatGPTで3枚を生成</button><button id="copy-work" class="subtle-button" type="button">依頼文をコピー</button></div>
+        <p id="work-status" role="status" aria-live="polite"></p>
+        <div class="bottom-actions"><button class="primary-button next-step" data-next="library" type="button">完成画像を見る</button></div>
+      </section>
+
+      <section id="library" class="panel" aria-labelledby="library-title">
+        <div class="panel-head"><div><p class="eyebrow">05 / LIBRARY</p><h1 id="library-title">完成画像</h1><p class="sub">Workが同じサイトに保存した完成画像を媒体別に表示します。以前このブラウザに保存した画像も残ります。</p></div><div class="head-actions"><button id="restore-hidden" class="subtle-button" type="button">一覧表示を戻す</button><button id="refresh-library" class="subtle-button" type="button">一覧を更新</button></div></div>
+        <p id="library-status" role="status" aria-live="polite"></p>
+        <section class="library-group" aria-labelledby="library-flyer-title"><h2 id="library-flyer-title">チラシ A4</h2><div id="library-flyer" class="library-list"></div></section>
+        <section class="library-group" aria-labelledby="library-sns-portrait-title"><h2 id="library-sns-portrait-title">SNS 4:5</h2><div id="library-sns-portrait" class="library-list"></div></section>
+        <section class="library-group" aria-labelledby="library-sns-square-title"><h2 id="library-sns-square-title">SNS 正方形</h2><div id="library-sns-square" class="library-list"></div></section>
+        <section class="library-group" aria-labelledby="library-sns-landscape-title"><h2 id="library-sns-landscape-title">SNS 横長</h2><div id="library-sns-landscape" class="library-list"></div></section>
+      </section>
+    </main>
+  </div>
+  <script src="consult.js"></script>
+  <script src="state.js"></script>
+  <script src="library.js"></script>
+  <script src="work.js"></script>
+  <script src="intake.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
