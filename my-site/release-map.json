@@ -1,0 +1,39 @@
+{
+  "allowedTargets": [
+    "releases/mytools-v5"
+  ],
+  "files": [
+    {
+      "source": "prompts/BUILD_PROMPT.md",
+      "target": "releases/mytools-v5/BUILD_PROMPT.md"
+    },
+    {
+      "source": "prompts/RELEASE_README.md",
+      "target": "releases/mytools-v5/README.md"
+    },
+    {
+      "source": "開始文.txt",
+      "target": "releases/mytools-v5/STARTER_PROMPT.txt"
+    },
+    {
+      "source": "app/app.js",
+      "target": "releases/mytools-v5/app.js"
+    },
+    {
+      "source": "app/assets/terakoya-logo.jpg",
+      "target": "releases/mytools-v5/assets/terakoya-logo.jpg"
+    },
+    {
+      "source": "app/index.html",
+      "target": "releases/mytools-v5/index.html"
+    },
+    {
+      "source": "app/styles.css",
+      "target": "releases/mytools-v5/styles.css"
+    },
+    {
+      "source": "tests/browser.cjs",
+      "target": "releases/mytools-v5/tests/browser.cjs"
+    }
+  ]
+}
