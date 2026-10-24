@@ -1,0 +1,91 @@
+{
+  "allowedTargets": [
+    "releases/note-article-v1"
+  ],
+  "files": [
+    {
+      "source": "release/.gitattributes",
+      "target": "releases/note-article-v1/.gitattributes"
+    },
+    {
+      "source": "prompts/BUILD_PROMPT.md",
+      "target": "releases/note-article-v1/BUILD_PROMPT.md"
+    },
+    {
+      "source": "release/MANIFEST.json",
+      "target": "releases/note-article-v1/MANIFEST.json"
+    },
+    {
+      "source": "prompts/QA.md",
+      "target": "releases/note-article-v1/QA.md"
+    },
+    {
+      "source": "prompts/RELEASE_README.md",
+      "target": "releases/note-article-v1/README.md"
+    },
+    {
+      "source": "開始文.txt",
+      "target": "releases/note-article-v1/STARTER_PROMPT.txt"
+    },
+    {
+      "source": "app/app.js",
+      "target": "releases/note-article-v1/dist/app.js"
+    },
+    {
+      "source": "app/assets.js",
+      "target": "releases/note-article-v1/dist/assets.js"
+    },
+    {
+      "source": "app/bridge.js",
+      "target": "releases/note-article-v1/dist/bridge.js"
+    },
+    {
+      "source": "app/core.js",
+      "target": "releases/note-article-v1/dist/core.js"
+    },
+    {
+      "source": "app/index.html",
+      "target": "releases/note-article-v1/dist/index.html"
+    },
+    {
+      "source": "app/kit.js",
+      "target": "releases/note-article-v1/dist/kit.js"
+    },
+    {
+      "source": "app/returns/README.txt",
+      "target": "releases/note-article-v1/dist/returns/README.txt"
+    },
+    {
+      "source": "app/styles.css",
+      "target": "releases/note-article-v1/dist/styles.css"
+    },
+    {
+      "source": "scripts/build-manifest.cjs",
+      "target": "releases/note-article-v1/scripts/build-manifest.cjs"
+    },
+    {
+      "source": "scripts/verify-release.cjs",
+      "target": "releases/note-article-v1/scripts/verify-release.cjs"
+    },
+    {
+      "source": "skills/note-images/SKILL.md",
+      "target": "releases/note-article-v1/skills/note-images/SKILL.md"
+    },
+    {
+      "source": "skills/note-writing/SKILL.md",
+      "target": "releases/note-article-v1/skills/note-writing/SKILL.md"
+    },
+    {
+      "source": "skills/work-return/SKILL.md",
+      "target": "releases/note-article-v1/skills/work-return/SKILL.md"
+    },
+    {
+      "source": "tests/bridge.test.cjs",
+      "target": "releases/note-article-v1/tests/bridge.test.cjs"
+    },
+    {
+      "source": "tests/core.test.cjs",
+      "target": "releases/note-article-v1/tests/core.test.cjs"
+    }
+  ]
+}

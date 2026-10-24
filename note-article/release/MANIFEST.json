@@ -1,0 +1,82 @@
+{
+  "version": "1.0.1",
+  "release": "note-article-v1-20261023-r2",
+  "baseUrl": "https://raw.githubusercontent.com/kaerukadate1/terakoya-ai-kit/note-article-v1-20261023-r2/releases/note-article-v1/",
+  "files": [
+    {
+      "path": "BUILD_PROMPT.md",
+      "bytes": 5961,
+      "sha256": "c4cc81cc03beab4f85666ed8631b3e756fae225c8f6bba15e6aaa3e57b452f57"
+    },
+    {
+      "path": "QA.md",
+      "bytes": 2812,
+      "sha256": "cfca19619ebc87c4c6b0e06fbc835382ccf694dfd439b81d796b805d48205499"
+    },
+    {
+      "path": "README.md",
+      "bytes": 5015,
+      "sha256": "6dce115367cefa57859cafabdcae9d9fce22a9fbfd22541dc68e7af9fc3f87c0"
+    },
+    {
+      "path": "STARTER_PROMPT.txt",
+      "bytes": 771,
+      "sha256": "0bcdc68455520eb8920cda1a3153a398089d01ce833cc127332f7fb5b879db60"
+    },
+    {
+      "path": "dist/app.js",
+      "bytes": 37579,
+      "sha256": "2ffde810addebf4d546872b0b5fb6986814057d031214ec2d5bf352df4206f67"
+    },
+    {
+      "path": "dist/assets.js",
+      "bytes": 1749,
+      "sha256": "3274176f93613b2452653a41c06717cf211f5484a024783d6fa9022fbc53b56e"
+    },
+    {
+      "path": "dist/bridge.js",
+      "bytes": 6040,
+      "sha256": "6738a29c6a8c5465fbd5646d128c0fef214be1c8d140bc440ba9ee7434d6ddac"
+    },
+    {
+      "path": "dist/core.js",
+      "bytes": 15045,
+      "sha256": "2a3479bd1df2d9fbb3c184adbc8e586d8bce3d86f63b469239f9a9a9c2d32104"
+    },
+    {
+      "path": "dist/index.html",
+      "bytes": 10670,
+      "sha256": "800b29657e45675ad358596b648bd92188f2aca62446b177b86823dc640f11c7"
+    },
+    {
+      "path": "dist/kit.js",
+      "bytes": 550,
+      "sha256": "4486af91e730aad3a88f7fa11104c3391a72749e1b7b1eaf76f4287a70f206c6"
+    },
+    {
+      "path": "dist/returns/README.txt",
+      "bytes": 202,
+      "sha256": "6bffc170d694e7e4d0ba0bd82a15337a697c153608baef6af12b92fd001e04e1"
+    },
+    {
+      "path": "dist/styles.css",
+      "bytes": 12331,
+      "sha256": "303f6bda11692bc2585cdd3090811fc6e3e067869018d5bccfa912bf34aac78e"
+    },
+    {
+      "path": "skills/note-images/SKILL.md",
+      "bytes": 2426,
+      "sha256": "f4814a00a78c4fa7f8272ac5d14e235d121dceafd8d07b402f39a030d5cfd290"
+    },
+    {
+      "path": "skills/note-writing/SKILL.md",
+      "bytes": 3094,
+      "sha256": "8c3d8c8ac4d04a924a6423783f72acf8f9908e64452929a9280550bc9d5952d3"
+    },
+    {
+      "path": "skills/work-return/SKILL.md",
+      "bytes": 3324,
+      "sha256": "f546c285e484296b7ced36544e206255cc0348f6b7972874987075ae25272706"
+    }
+  ]
+}
