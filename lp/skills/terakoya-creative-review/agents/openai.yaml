@@ -1,0 +1,4 @@
+interface:
+  display_name: "寺子屋AI クリエイティブレビュー"
+  short_description: "文章・デザイン・導線を点検して優先順に具体的に改善します"
+  default_prompt: "Use $terakoya-creative-review to review and improve this creative work."

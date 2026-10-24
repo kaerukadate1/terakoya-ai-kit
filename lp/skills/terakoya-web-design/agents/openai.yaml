@@ -1,0 +1,4 @@
+interface:
+  display_name: "寺子屋AI Webデザイン"
+  short_description: "事業らしさが伝わるモバイル中心のサイトデザインを設計します"
+  default_prompt: "Use $terakoya-web-design to design this site for ChatGPT Work and Sites."

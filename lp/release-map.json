@@ -1,0 +1,148 @@
+{
+  "allowedTargets": [
+    "releases/lp-maker-pilot-20260925",
+    "plugins/terakoya-ai-creative"
+  ],
+  "files": [
+    {
+      "source": "prompts/RELEASE_README.md",
+      "target": "releases/lp-maker-pilot-20260925/README.md"
+    },
+    {
+      "source": "開始文.txt",
+      "target": "releases/lp-maker-pilot-20260925/START_HERE.txt"
+    },
+    {
+      "source": "prompts/WORKSHOP_PROMPT.md",
+      "target": "releases/lp-maker-pilot-20260925/WORKSHOP_PROMPT.md"
+    },
+    {
+      "source": "app/app.js",
+      "target": "releases/lp-maker-pilot-20260925/app.js"
+    },
+    {
+      "source": "app/completed-lps.json",
+      "target": "releases/lp-maker-pilot-20260925/completed-lps.json"
+    },
+    {
+      "source": "app/core.js",
+      "target": "releases/lp-maker-pilot-20260925/core.js"
+    },
+    {
+      "source": "app/history.json",
+      "target": "releases/lp-maker-pilot-20260925/history.json"
+    },
+    {
+      "source": "app/index.html",
+      "target": "releases/lp-maker-pilot-20260925/index.html"
+    },
+    {
+      "source": "app/library.js",
+      "target": "releases/lp-maker-pilot-20260925/library.js"
+    },
+    {
+      "source": "app/overrides.css",
+      "target": "releases/lp-maker-pilot-20260925/overrides.css"
+    },
+    {
+      "source": "app/sheet.js",
+      "target": "releases/lp-maker-pilot-20260925/sheet.js"
+    },
+    {
+      "source": "skills/terakoya-copywriting/SKILL.md",
+      "target": "releases/lp-maker-pilot-20260925/skills/terakoya-copywriting/SKILL.md"
+    },
+    {
+      "source": "skills/terakoya-copywriting/references/channel-guides.md",
+      "target": "releases/lp-maker-pilot-20260925/skills/terakoya-copywriting/references/channel-guides.md"
+    },
+    {
+      "source": "skills/terakoya-creative-review/SKILL.md",
+      "target": "releases/lp-maker-pilot-20260925/skills/terakoya-creative-review/SKILL.md"
+    },
+    {
+      "source": "skills/terakoya-creative-review/references/review-rubric.md",
+      "target": "releases/lp-maker-pilot-20260925/skills/terakoya-creative-review/references/review-rubric.md"
+    },
+    {
+      "source": "skills/terakoya-web-design/SKILL.md",
+      "target": "releases/lp-maker-pilot-20260925/skills/terakoya-web-design/SKILL.md"
+    },
+    {
+      "source": "skills/terakoya-web-design/references/work-sites-guidance.md",
+      "target": "releases/lp-maker-pilot-20260925/skills/terakoya-web-design/references/work-sites-guidance.md"
+    },
+    {
+      "source": "app/styles.css",
+      "target": "releases/lp-maker-pilot-20260925/styles.css"
+    },
+    {
+      "source": "tests/core.test.cjs",
+      "target": "releases/lp-maker-pilot-20260925/tests/core.test.cjs"
+    },
+    {
+      "source": "tests/history.test.cjs",
+      "target": "releases/lp-maker-pilot-20260925/tests/history.test.cjs"
+    },
+    {
+      "source": "tests/library.test.cjs",
+      "target": "releases/lp-maker-pilot-20260925/tests/library.test.cjs"
+    },
+    {
+      "source": "tests/sheet.test.cjs",
+      "target": "releases/lp-maker-pilot-20260925/tests/sheet.test.cjs"
+    },
+    {
+      "source": "tests/workshop-prompt.test.cjs",
+      "target": "releases/lp-maker-pilot-20260925/tests/workshop-prompt.test.cjs"
+    },
+    {
+      "source": "plugin/.codex-plugin/plugin.json",
+      "target": "plugins/terakoya-ai-creative/.codex-plugin/plugin.json"
+    },
+    {
+      "source": "plugin/README.md",
+      "target": "plugins/terakoya-ai-creative/README.md"
+    },
+    {
+      "source": "plugin/SOURCES.md",
+      "target": "plugins/terakoya-ai-creative/SOURCES.md"
+    },
+    {
+      "source": "skills/terakoya-copywriting/SKILL.md",
+      "target": "plugins/terakoya-ai-creative/skills/terakoya-copywriting/SKILL.md"
+    },
+    {
+      "source": "skills/terakoya-copywriting/agents/openai.yaml",
+      "target": "plugins/terakoya-ai-creative/skills/terakoya-copywriting/agents/openai.yaml"
+    },
+    {
+      "source": "skills/terakoya-copywriting/references/channel-guides.md",
+      "target": "plugins/terakoya-ai-creative/skills/terakoya-copywriting/references/channel-guides.md"
+    },
+    {
+      "source": "skills/terakoya-creative-review/SKILL.md",
+      "target": "plugins/terakoya-ai-creative/skills/terakoya-creative-review/SKILL.md"
+    },
+    {
+      "source": "skills/terakoya-creative-review/agents/openai.yaml",
+      "target": "plugins/terakoya-ai-creative/skills/terakoya-creative-review/agents/openai.yaml"
+    },
+    {
+      "source": "skills/terakoya-creative-review/references/review-rubric.md",
+      "target": "plugins/terakoya-ai-creative/skills/terakoya-creative-review/references/review-rubric.md"
+    },
+    {
+      "source": "skills/terakoya-web-design/SKILL.md",
+      "target": "plugins/terakoya-ai-creative/skills/terakoya-web-design/SKILL.md"
+    },
+    {
+      "source": "skills/terakoya-web-design/agents/openai.yaml",
+      "target": "plugins/terakoya-ai-creative/skills/terakoya-web-design/agents/openai.yaml"
+    },
+    {
+      "source": "skills/terakoya-web-design/references/work-sites-guidance.md",
+      "target": "plugins/terakoya-ai-creative/skills/terakoya-web-design/references/work-sites-guidance.md"
+    }
+  ]
+}

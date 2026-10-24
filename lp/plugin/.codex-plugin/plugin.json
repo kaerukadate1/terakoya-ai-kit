@@ -1,0 +1,28 @@
+{
+  "name": "terakoya-ai-creative",
+  "version": "0.1.0",
+  "description": "寺子屋AIの制作物を、自然な日本語、事業に合うWebデザイン、事実に忠実な品質レビューで改善するスキル集です。",
+  "author": {
+    "name": "寺子屋AI",
+    "url": "https://github.com/Kaeruka"
+  },
+  "homepage": "https://terakoya-ai.vercel.app/terakoya-ai",
+  "repository": "https://github.com/Kaeruka/terakoya-ai-kit",
+  "keywords": ["terakoya-ai", "copywriting", "web-design", "creative-review", "japanese"],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "寺子屋AI クリエイティブ",
+    "shortDescription": "文章・デザイン・仕上げの質を高める",
+    "longDescription": "ソロプレナーや小規模事業者がChatGPT WorkとSitesで作る告知文、LP、Webツールを改善します。事実を創作しない日本語コピー、事業ごとのデザイン設計、公開前の優先度付きレビューを1つにまとめています。",
+    "developerName": "寺子屋AI",
+    "category": "Creativity",
+    "capabilities": ["Read", "Write"],
+    "websiteURL": "https://terakoya-ai.vercel.app/terakoya-ai",
+    "defaultPrompt": [
+      "この告知文を事実に忠実なまま改善してください",
+      "この事業に合うWebデザインを設計してください",
+      "この制作物を公開前にレビューしてください"
+    ],
+    "brandColor": "#172331"
+  }
+}

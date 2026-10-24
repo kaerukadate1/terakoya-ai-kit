@@ -1,0 +1,6 @@
+interface:
+  display_name: "寺子屋AI コピーライティング"
+  short_description: "事実に忠実な日本語の告知文とLP原稿を自然に設計します"
+  default_prompt: "Use $terakoya-copywriting to improve this Japanese promotional copy."
+policy:
+  allow_implicit_invocation: true
