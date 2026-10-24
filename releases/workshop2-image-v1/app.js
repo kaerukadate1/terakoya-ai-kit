@@ -26,6 +26,50 @@
   let libraryUrls = [];
   let hidden = [];
   let debounce;
+  const INTAKE_KEY = KEY + "-intake-v1";
+  let pending = null, polling = false;
+  try { pending = JSON.parse(localStorage.getItem(INTAKE_KEY) || "null"); } catch {}
+  const lpUrl = document.querySelector("#lp-source-url"), lpText = document.querySelector("#lp-source-text");
+  try { const source=JSON.parse(localStorage.getItem(KEY+"-source")||"{}");lpUrl.value=source.url||"";lpText.value=source.text||"";} catch {}
+  function saveSource(){try{localStorage.setItem(KEY+"-source",JSON.stringify({url:lpUrl.value,text:lpText.value}));}catch{}}
+  lpUrl.addEventListener("input",saveSource);lpText.addEventListener("input",saveSource);
+  function beginIntake(fromLP=false){
+    if(fromLP&&!lpUrl.value.trim()&&!lpText.value.trim()){document.querySelector("#lp-status").textContent="LP URLまたは本文を入れてください";return;}
+    try {
+      const origin=location.origin;
+      const cleaned=ImageConsult.prepareFields(read());
+      for(const key of ImageConsult.KEYS)form.elements[key].value=cleaned[key]||"";
+      safeStore(read());repaint();
+      document.querySelector("#consult-answer").value="";
+      document.querySelector("#consult-overwrite").checked=false;
+      pending=ImageIntake.job(read(),fromLP?lpUrl.value.trim():"",fromLP?lpText.value:"",origin);
+      localStorage.setItem(INTAKE_KEY,JSON.stringify(pending));
+      setConsultOpen(true);
+      openWithPrompt(ImageIntake.prompt(pending,ImageConsult.buildPrompt(read(),origin)));
+      consultStatus.textContent="開いたChatGPTで依頼文を確認して送信してください。同じSiteへの返送を待ちます。";
+      document.querySelector("#lp-status").textContent=fromLP?"LP読取を依頼しました。取得結果はまだ未確認です。":"";
+    }catch(e){consultStatus.textContent=e.message;document.querySelector("#lp-status").textContent=e.message;}
+  }
+  document.querySelector("#lp-import").addEventListener("click",()=>beginIntake(true));
+  async function receiveIntake(){
+    if(!pending||polling||pending.origin!==location.origin)return;
+    if(Date.now()-pending.createdAt>15*60*1000){consultStatus.textContent="自動確認の待機時間が終了しました。結果を確認し、必要なら入力案リンク／JSONで反映してください。";pending=null;localStorage.removeItem(INTAKE_KEY);return;}
+    polling=true;const current=pending;
+    try{
+      const response=await fetch(`returns/${current.id}/result.json?t=${Date.now()}`,{cache:"no-store",credentials:"same-origin",redirect:"error",signal:AbortSignal.timeout(12000)});
+      if(response.status===404)return;
+      if(!response.ok)throw Error(`返送の確認ができません (${response.status})`);
+      if(!/application\/json/i.test(response.headers.get("content-type")||""))return;
+      const text=await response.text();if(text.length>200000)throw Error("返送結果が長すぎます");
+      const answer=ImageIntake.validate(JSON.parse(text),current);
+      if(pending!==current)return;
+      const now=read();for(const key of Object.keys(answer.fields))if(now[key]!==current.baseline[key])delete answer.fields[key];
+      applyConsult(answer,false);
+      document.querySelector("#lp-status").textContent=(answer.source.status==="read"?"LP本文を確認済み。":"LP未読取。貼付本文・本人入力のみ使用。")+" 未確認: "+(answer.source.unknowns||[]).slice(0,10).join(" / ");
+      pending=null;localStorage.removeItem(INTAKE_KEY);
+    }catch(e){consultStatus.textContent=e.message+"。自動反映せず保留しています。";}finally{polling=false;}
+  }
+  setInterval(receiveIntake,15000);window.addEventListener("focus",receiveIntake);
 
   function theme() {
     let saved = {};
@@ -115,6 +159,11 @@
     consultButton.setAttribute("aria-expanded", String(open));
   }
   function applyConsult(answer, overwrite = false) {
+    if (pending?.sourceUrl) {
+      if (ImageIntake.url(answer.source?.url) !== pending.sourceUrl) throw Error("参照LPが一致しません。今回のLPへの回答を使ってください");
+      if (!["read", "unreadable"].includes(answer.source?.status)) throw Error("LP取得状況がありません");
+      if (answer.source.status !== "read" && !pending.sourceText.trim()) { consultStatus.textContent="LPを読み取れませんでした。本文を貼り付けて再依頼してください"; return; }
+    }
     const result = ImageConsult.applyFields(read(), answer, overwrite);
     if (!result.applied) { consultStatus.textContent = "反映できる入力案がありませんでした"; return; }
     for (const key of ImageConsult.KEYS) form.elements[key].value = result.fields[key] || "";
@@ -287,20 +336,11 @@
   });
   document.querySelector("#reset").addEventListener("click", () => {
     if (!confirm("入力内容と設定を新しい案件に置き換えますか？ 完成画像の一覧は残ります。")) return;
+    pending=null;localStorage.removeItem(INTAKE_KEY);lpUrl.value="";lpText.value="";saveSource();
     form.reset(); clearPhoto.click(); settings = ImageState.normalize(null);
     safeStore(read()); storeSettings(); renderStructureSettings(); renderDesignSettings(); repaint(); go("info");
   });
-  consultButton.addEventListener("click", () => {
-    const fields = ImageConsult.prepareFields(read());
-    for (const [key, value] of Object.entries(fields)) form.elements[key].value = value;
-    safeStore(read()); repaint();
-    document.querySelector("#consult-answer").value = "";
-    document.querySelector("#consult-overwrite").checked = false;
-    setConsultOpen(true);
-    const origin = /^https?:$/.test(location.protocol) ? location.origin + "/" : "";
-    openWithPrompt(ImageConsult.buildPrompt(read(), origin));
-    consultStatus.textContent = "新しいタブの依頼文を確認して送信してください";
-  });
+  consultButton.addEventListener("click", () => beginIntake(false));
   function workPrompt() {
     if (!valid(read()) || !form.reportValidity()) { document.querySelector("#work-status").textContent = "必須項目とURL形式を確認してください"; return ""; }
     return ImageWork.prompt(read(), ImageState.normalize(settings), location.href);
@@ -333,5 +373,5 @@
   document.querySelectorAll(".step").forEach(button => button.addEventListener("click", () => go(button.dataset.step)));
   document.querySelectorAll(".next-step").forEach(button => button.addEventListener("click", () => go(button.dataset.next)));
   document.querySelector("#refresh-library").addEventListener("click", refreshLibrary);
-  restore(); restoreSettings(); restoreHidden(); theme(); renderStructureSettings(); renderDesignSettings(); repaint(); receiveConsultLink();
+  restore(); restoreSettings(); restoreHidden(); theme(); renderStructureSettings(); renderDesignSettings(); repaint(); receiveConsultLink(); receiveIntake();
 })();

@@ -29,7 +29,7 @@ LP・画像・note記事は、マイサイトを先に作らなくても始め�
 1. この節。
 2. [flyer-sns](flyer-sns/README.md) の説明と、[スキルの案内](flyer-sns/スキル.md)。
 3. デザインスキル3つ。共通は [design/SKILL.md](releases/workshop2-image-v1/design/SKILL.md)、チラシは [design/FLYER_SKILL.md](releases/workshop2-image-v1/design/FLYER_SKILL.md)、SNSは [design/SNS_SKILL.md](releases/workshop2-image-v1/design/SNS_SKILL.md)。
-4. 画面の固定ファイルと制作指示。場所は [releases/workshop2-image-v1](releases/workshop2-image-v1/README.md)。使うファイルは `index.html`、`styles.css`、`app.js`、`consult.js`、`state.js`、`library.js`、`work.js`、`BUILD_PROMPT.md`。
+4. 画面の固定ファイルと制作指示。場所は [releases/workshop2-image-v1](releases/workshop2-image-v1/README.md)。使うファイルは `index.html`、`styles.css`、`app.js`、`consult.js`、`intake.js`、`state.js`、`library.js`、`work.js`、`BUILD_PROMPT.md`。
 
 開始文に書いてある画面の流れ、4サイズ、文字を画像に含める作り方、印刷の余白、材料の聞き方は、リポジトリが読めないときもその文のまま進めてください。読めなかった場所は一言伝え、別の仕様で補わないでください。共有範囲や公開設定は指定しません。
 

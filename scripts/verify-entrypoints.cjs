@@ -18,6 +18,7 @@ const required = [
   'releases/workshop2-image-v1/styles.css',
   'releases/workshop2-image-v1/app.js',
   'releases/workshop2-image-v1/consult.js',
+  'releases/workshop2-image-v1/intake.js',
   'releases/workshop2-image-v1/state.js',
   'releases/workshop2-image-v1/library.js',
   'releases/workshop2-image-v1/work.js',

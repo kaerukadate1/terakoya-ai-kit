@@ -4,7 +4,7 @@ const fs = require("node:fs");
 const path = require("node:path");
 
 const release = path.resolve(__dirname, "..");
-const files = ["index.html", "styles.css", "consult.js", "state.js", "library.js", "work.js", "app.js", "design/SKILL.md", "design/FLYER_SKILL.md", "design/SNS_SKILL.md", "BUILD_PROMPT.md", "STARTER_PROMPT.txt", "UPDATE_EXISTING_SITE_PROMPT.md"];
+const files = ["index.html", "styles.css", "consult.js", "intake.js", "state.js", "library.js", "work.js", "app.js", "design/SKILL.md", "design/FLYER_SKILL.md", "design/SNS_SKILL.md", "BUILD_PROMPT.md", "STARTER_PROMPT.txt", "UPDATE_EXISTING_SITE_PROMPT.md"];
 
 test("starter points to this release and every fixed file exists", () => {
   for (const file of files) assert.ok(fs.existsSync(path.join(release, file)), file);

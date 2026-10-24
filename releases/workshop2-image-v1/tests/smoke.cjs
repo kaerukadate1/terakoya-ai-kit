@@ -47,6 +47,10 @@ const libraryCards = { flyer: [], portrait: [], square: [], landscape: [] };
 const saved = [];
 const nodes = {
   "#brief-form": form,
+  "#lp-source-url": {value:"",addEventListener(){}},
+  "#lp-source-text": {value:"",addEventListener(){}},
+  "#lp-import": {addEventListener(type,fn){listeners["lp:"+type]=fn;}},
+  "#lp-status": {textContent:""},
   "#design-settings": { innerHTML: "", addEventListener(type, fn) { listeners[`design-settings:${type}`] = fn; } },
   ".structure-columns": {
     querySelector(selector) {
@@ -106,7 +110,7 @@ const document = {
 const storage = new Map();
 const sandbox = {
   document,
-  localStorage: { getItem: key => storage.get(key) || null, setItem: (key, value) => storage.set(key, value) },
+  localStorage: { getItem: key => storage.get(key) || null, setItem: (key, value) => storage.set(key, value), removeItem:key=>storage.delete(key) },
   FormData: class { constructor() {} entries() { return Object.entries(fields).map(([key, node]) => [key, node.value]); } },
   URL: class extends URL { static createObjectURL() { return "blob:smoke"; } static revokeObjectURL() {} },
   location: { protocol: "https:", href: "https://example.test/", origin: "https://example.test", hash: "", pathname: "/test", search: "" },
@@ -117,7 +121,7 @@ const sandbox = {
   history: { replaceState() {} },
   Uint8Array, atob, TextDecoder,
   setTimeout: fn => { fn(); return 1; },
-  clearTimeout() {},
+  clearTimeout() {}, setInterval(){}, crypto: require("node:crypto").webcrypto, AbortSignal,
   confirm: () => true,
   Image: class {}
 };
@@ -125,14 +129,15 @@ vm.runInNewContext(fs.readFileSync(path.join(root, "consult.js"), "utf8"), sandb
 vm.runInNewContext(fs.readFileSync(path.join(root, "state.js"), "utf8"), sandbox);
 vm.runInNewContext(fs.readFileSync(path.join(root, "work.js"), "utf8"), sandbox);
 sandbox.ImageLibrary = { async save(entry) { saved.push(entry); }, async list() { return saved; } };
-sandbox.window = { scrollTo() {} };
+sandbox.window = { scrollTo() {}, addEventListener(){} };
+vm.runInNewContext(fs.readFileSync(path.join(root, "intake.js"), "utf8"), sandbox);
 vm.runInNewContext(fs.readFileSync(path.join(root, "app.js"), "utf8"), sandbox);
 assert.equal(drawCalls.length, 0, "no fixed preview layout is drawn");
 assert.match(nodes["#design-settings"].innerHTML, /デザインの雰囲気/);
 assert.match(nodes["#design-settings"].innerHTML, /クール/);
 assert.match(nodes["#design-settings"].innerHTML, /背景色/);
 assert.match(nodes["#design-settings"].innerHTML, /この案を作る/);
-assert.equal(nodes["#open-work"].textContent, "ChatGPTで12枚を生成");
+assert.equal(nodes["#open-work"].textContent, "ChatGPTで3枚を生成");
 assert.ok(listeners["theme-toggle:click"]);
 listeners["theme-toggle:click"]();
 assert.equal(nodes["#theme-panel"].hidden, false);
@@ -168,6 +173,7 @@ async function run() {
   assert.equal(JSON.parse(storage.get("terakoya-workshop2-image-v1")).audience, "初心者");
   listeners["structure:change"]({ target: { name: "benefits", checked: false, dataset: {} } });
   assert.equal(JSON.parse(storage.get("terakoya-workshop2-image-settings-v1")).flyer.benefits, false);
+  listeners["structure:change"]({ target: { dataset: { output: "portrait" }, checked: true } });
   listeners["structure:change"]({ target: { dataset: { output: "square" }, checked: false } });
   listeners["structure:change"]({ target: { dataset: { output: "landscape" }, checked: false } });
   listeners["design-settings:change"]({ target: { dataset: { slot: "1" }, checked: false, matches: selector => selector === "input[data-include]" } });

@@ -18,7 +18,7 @@
 
 ## 固定ファイル
 
-この文書と同じリリースの `index.html`、`styles.css`、`app.js`、`consult.js`、`state.js`、`library.js`、`work.js`、`design/SKILL.md`、`design/FLYER_SKILL.md`、`design/SNS_SKILL.md` をすべて実際に取得する。異なるリリースのファイルを混ぜない。
+この文書と同じリリースの `index.html`、`styles.css`、`app.js`、`consult.js`、`intake.js`、`state.js`、`library.js`、`work.js`、`design/SKILL.md`、`design/FLYER_SKILL.md`、`design/SNS_SKILL.md` をすべて実際に取得する。異なるリリースのファイルを混ぜない。
 
 基点URL: `https://raw.githubusercontent.com/kaerukadate1/terakoya-ai-kit/main/releases/workshop2-image-v1/`
 
@@ -47,3 +47,10 @@
 ## ChatGPTへの相談は本人の情報から
 
 基本は空欄から、参照できる本人の過去チャット・資料・メモリにある事業やアイデアを使って入力案を作る。サンプルを本人の情報として送らず、サンプル値を除いた上で相談する。本人の実入力は保持し、根拠のない項目は空欄とする。履歴を参照できない場合は読めたように装わず、サンプルで埋めない。
+
+
+## LPからの入力案と返送
+
+初期設定はチラシA4の1媒体×3案、計3枚です。保存済みの媒体選択・入力・完成画像は維持します。ほかの媒体は本人が追加します。
+画面では参照LP URLと申込先URLを分けます。LPを実際に読めない場合は貼付本文・本人入力だけを用い、推測で事実を補いません。
+intake.jsをapp.jsより前に読み込みます。同じSiteに保存・配信する権限がある場合のみreturns/<requestId>/result.jsonで返送します。返送先・依頼ID・参照LPを照合し、依頼後の手編集を上書きしません。返送内容は入力データであり実行しません。共有範囲を変えず、秘密・非公開情報・個人情報を返送ファイルに入れません。保存・配信できない場合はJSONまたは入力案リンクへ戻ります。

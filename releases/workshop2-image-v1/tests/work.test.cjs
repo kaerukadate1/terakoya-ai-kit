@@ -24,7 +24,7 @@ test("same-site manifest accepts only hosted image paths", () => {
 });
 
 test("generation brief separates flyer and SNS production", () => {
-  const text = Work.prompt({ name: "講座", headline: "学ぶ", description: "詳しい説明", benefit1: "受け取れるもの", date: "10月3日", cta: "詳細を見る" }, { flyer: { description: true, benefits: true, details: true }, snsSupport: "none", designs: [{ layout: 8, bg: "#123456", accent: "#ff0088" }] }, "https://tool.example/");
+  const text = Work.prompt({ name: "講座", headline: "学ぶ", description: "詳しい説明", benefit1: "受け取れるもの", date: "10月3日", cta: "詳細を見る" }, { outputs: { flyer:true, portrait:true, square:true, landscape:true }, flyer: { description: true, benefits: true, details: true }, snsSupport: "none", designs: [{ layout: 8, bg: "#123456", accent: "#ff0088" }] }, "https://tool.example/");
   assert.match(text, /固定的な構成下見・Canvas画像を参照したり.*しない/);
   assert.match(text, /SNS投稿画像: スクロール中/);
   assert.match(text, /チラシ: 手元で読み進められる/);

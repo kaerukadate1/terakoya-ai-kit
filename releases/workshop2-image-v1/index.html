@@ -33,13 +33,14 @@
         <div class="panel-head"><div><p class="eyebrow">01 / CONTENT</p><h1 id="info-title">伝えたいことを整理する</h1><p class="sub">自分の事業にも、お客様の仕事にも使えます。</p></div><div class="head-actions"><button id="consult" class="subtle-button" type="button" aria-controls="consult-panel" aria-expanded="false">ChatGPTに相談</button><button id="load-sample" class="subtle-button" type="button">記入例</button></div></div>
         <section id="consult-panel" class="consult-panel" hidden aria-labelledby="consult-title">
           <h2 id="consult-title">ChatGPTから入力案を受け取る</h2>
-          <p>新しいタブで相談し、返ってきたJSONを貼り付けてください。未確認の情報は空欄のままにします。</p>
+          <p>同じSiteへ保存・配信できた結果は自動で受け取ります。できない場合は入力案リンク、または下のJSON貼付を使ってください。手入力済みの内容は自動では上書きしません。</p>
           <label for="consult-answer">ChatGPTの回答</label>
           <textarea id="consult-answer" rows="6" placeholder='{"fields":{"name":"...","audience":"..."}}'></textarea>
           <label class="consult-overwrite"><input id="consult-overwrite" type="checkbox">入力済みの項目も置き換える</label>
           <div class="inline-actions"><button id="apply-consult" class="primary-button" type="button">入力案を反映</button><button id="close-consult" class="subtle-button" type="button">閉じる</button></div>
           <p id="consult-status" role="status" aria-live="polite"></p>
         </section>
+        <section class="consult-panel" aria-labelledby="lp-title"><h2 id="lp-title">LPから作る</h2><p>参照するLPをChatGPTで読み、確認できた内容を入力案にします。まずは1媒体×3案の3枚。保存済みの選択は保持します。</p><label>参照LP URL<input id="lp-source-url" type="url" maxlength="2000" placeholder="https://..."></label><label>LP本文（読めないときの代わり）<textarea id="lp-source-text" rows="3" maxlength="12000" placeholder="LP本文を貼り付けられます"></textarea></label><button id="lp-import" type="button" class="primary-button">LPから入力案を作る</button><p id="lp-status" role="status" aria-live="polite"></p><p>返送JSONは同じSiteに保存されます。共有範囲を確認し、非公開の顧客情報や個人情報は返送用データに含めないでください。LPの画像・ロゴは自動転載しません。</p></section>
         <form id="brief-form" class="form-grid">
           <label>サービス・イベント名 <b>必須</b><input name="name" maxlength="70" autocomplete="off" required placeholder="例：はじめてのAI画像講座"></label>
           <label>対象者<input name="audience" maxlength="90" placeholder="例：自分のお店を紹介したい方"></label>
@@ -70,9 +71,9 @@
             <p class="structure-note">家庭用プリンタでA4に印刷します。端の文字が切れないよう、余白を残して印刷してください。</p>
           </fieldset>
           <fieldset class="structure-list" id="sns-fields"><legend>SNS告知画像</legend>
-            <label><span><strong>4:5</strong><small>1080×1350。縦長のフィード投稿</small></span><input name="output-portrait" type="checkbox" checked data-output="portrait"></label>
-            <label><span><strong>正方形</strong><small>1080×1080。正方形のフィード投稿</small></span><input name="output-square" type="checkbox" checked data-output="square"></label>
-            <label><span><strong>横長</strong><small>1200×630。タイムラインとリンク共有</small></span><input name="output-landscape" type="checkbox" checked data-output="landscape"></label>
+            <label><span><strong>4:5</strong><small>1080×1350。縦長のフィード投稿</small></span><input name="output-portrait" type="checkbox" data-output="portrait"></label>
+            <label><span><strong>正方形</strong><small>1080×1080。正方形のフィード投稿</small></span><input name="output-square" type="checkbox" data-output="square"></label>
+            <label><span><strong>横長</strong><small>1200×630。タイムラインとリンク共有</small></span><input name="output-landscape" type="checkbox" data-output="landscape"></label>
             <label class="support-select">見出しの補足に載せる情報<select id="sns-support"><option value="none">載せない</option><option value="audience">対象者</option><option value="benefit1">伝えたいこと 1</option><option value="date">日時</option></select></label>
             <p class="structure-note">3種類は同じ画像の切り抜きにしません。今日作るものだけオンにしてください。</p>
           </fieldset>
@@ -89,7 +90,7 @@
       <section id="generate" class="panel" aria-labelledby="generate-title">
         <div class="panel-head"><div><p class="eyebrow">04 / GENERATE</p><h1 id="generate-title">ChatGPTで画像を仕上げる</h1></div></div>
         <p class="sub">オンにした案と種類だけを、別々の構図で生成します。チラシは家庭用プリンタで印刷するA4のPNGです。写真を使う場合は、開いた会話に写真を添付してください。</p>
-        <div class="generate-actions"><button id="open-work" class="primary-button" type="button">ChatGPTで12枚を生成</button><button id="copy-work" class="subtle-button" type="button">依頼文をコピー</button></div>
+        <div class="generate-actions"><button id="open-work" class="primary-button" type="button">ChatGPTで3枚を生成</button><button id="copy-work" class="subtle-button" type="button">依頼文をコピー</button></div>
         <p id="work-status" role="status" aria-live="polite"></p>
         <div class="bottom-actions"><button class="primary-button next-step" data-next="library" type="button">完成画像を見る</button></div>
       </section>
@@ -108,6 +109,7 @@
   <script src="state.js"></script>
   <script src="library.js"></script>
   <script src="work.js"></script>
+  <script src="intake.js"></script>
   <script src="app.js"></script>
 </body>
 </html>

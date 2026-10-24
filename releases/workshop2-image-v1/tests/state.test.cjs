@@ -7,7 +7,7 @@ test("settings migrate safely and keep three editable designs", () => {
   assert.equal(defaults.designs.length, 3);
   assert.deepEqual(defaults.designs.map(item => item.layout), [0, 1, 2]);
   assert.ok(defaults.designs.every(item => item.include));
-  assert.deepEqual(defaults.outputs, { flyer: true, portrait: true, square: true, landscape: true });
+  assert.deepEqual(defaults.outputs, { flyer: true, portrait: false, square: false, landscape: false });
   const forced = State.normalize({
     outputs: { flyer: false, portrait: false, square: false, landscape: false },
     designs: [{ include: false }, { include: false }, { include: false }]
@@ -49,7 +49,7 @@ test("nine layouts and independent custom colors survive normalization", () => {
   assert.equal(State.normalize({ designs: [{ bg: "red", accent: "javascript:1" }] }).designs[0].bg, State.PALETTES.coral.bg);
 });
 
-test("ten palette presets stay selectable without dropping four-size defaults", () => {
+test("ten palette presets stay selectable while keeping one-medium defaults", () => {
   const keys = ["coral", "gold", "green", "blue", "lavender", "rose", "citrus", "sky", "charcoal", "terracotta"];
   assert.deepEqual(Object.keys(State.PALETTES), keys);
   const lavender = State.normalize({ designs: [{ palette: "lavender", include: true }] });
@@ -57,7 +57,7 @@ test("ten palette presets stay selectable without dropping four-size defaults", 
   assert.equal(lavender.designs[0].bg, State.PALETTES.lavender.bg);
   assert.equal(lavender.designs[0].accent, State.PALETTES.lavender.accent);
   assert.equal(lavender.designs[0].include, true);
-  assert.deepEqual(lavender.outputs, { flyer: true, portrait: true, square: true, landscape: true });
+  assert.deepEqual(lavender.outputs, { flyer: true, portrait: false, square: false, landscape: false });
   assert.equal(State.palette({ palette: "charcoal" }).bg, "#25282c");
   assert.equal(State.palette({ palette: "charcoal" }).ink, "#ffffff");
 });

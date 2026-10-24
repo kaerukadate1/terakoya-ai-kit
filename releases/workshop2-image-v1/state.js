@@ -22,7 +22,7 @@
   const OUTPUTS = ["flyer", "portrait", "square", "landscape"];
   const DEFAULT = {
     flyer: { description: true, benefits: true, details: true, url: true },
-    outputs: { flyer: true, portrait: true, square: true, landscape: true },
+    outputs: { flyer: true, portrait: false, square: false, landscape: false },
     snsSupport: "none",
     designs: [{ layout: 0, palette: "coral", include: true }, { layout: 1, palette: "gold", include: true }, { layout: 2, palette: "green", include: true }]
   };
@@ -40,7 +40,7 @@
   function normalize(input) {
     const flyer = Object.fromEntries(Object.keys(DEFAULT.flyer).map(key => [key, typeof input?.flyer?.[key] === "boolean" ? input.flyer[key] : true]));
     const snsSupport = ["none", "audience", "benefit1", "date"].includes(input?.snsSupport) ? input.snsSupport : "none";
-    const outputs = Object.fromEntries(OUTPUTS.map(id => [id, typeof input?.outputs?.[id] === "boolean" ? input.outputs[id] : true]));
+    const outputs = Object.fromEntries(OUTPUTS.map(id => [id, typeof input?.outputs?.[id] === "boolean" ? input.outputs[id] : DEFAULT.outputs[id]]));
     if (!OUTPUTS.some(id => outputs[id])) outputs.flyer = true;
     const designs = DEFAULT.designs.map((fallback, index) => {
       const item = input?.designs?.[index];
