@@ -1,0 +1,4 @@
+interface:
+  display_name: "natural-japanese"
+  short_description: "仕事の日本語を読みやすくわかりやすく書く・直す"
+  default_prompt: "議事録・レポート・企画書などの日本語を、natural-japanese の工程で書いて直してください。"
