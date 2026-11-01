@@ -1,0 +1,17 @@
+{
+  "allowedTargets": ["releases/character-studio-v1"],
+  "files": [
+    {"source":"app/index.html","target":"releases/character-studio-v1/dist/index.html"},
+    {"source":"app/styles.css","target":"releases/character-studio-v1/dist/styles.css"},
+    {"source":"app/core.js","target":"releases/character-studio-v1/dist/core.js"},
+    {"source":"app/app.js","target":"releases/character-studio-v1/dist/app.js"},
+    {"source":"app/assets/terakoya-logo.jpg","target":"releases/character-studio-v1/dist/assets/terakoya-logo.jpg"},
+    {"source":"app/assets/lucide.min.js","target":"releases/character-studio-v1/dist/assets/lucide.min.js"},
+    {"source":"app/assets/LICENSE","target":"releases/character-studio-v1/dist/assets/LICENSE"},
+    {"source":"prompts/BUILD_PROMPT.md","target":"releases/character-studio-v1/BUILD_PROMPT.md"},
+    {"source":"prompts/RELEASE_README.md","target":"releases/character-studio-v1/README.md"},
+    {"source":"開始文.txt","target":"releases/character-studio-v1/STARTER_PROMPT.txt"},
+    {"source":"skills/persona-design/SKILL.md","target":"releases/character-studio-v1/skills/persona-design/SKILL.md"},
+    {"source":"skills/work-execution/SKILL.md","target":"releases/character-studio-v1/skills/work-execution/SKILL.md"}
+  ]
+}

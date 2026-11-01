@@ -1,0 +1,2 @@
+寺子屋AIの第4回「キャラクター設計ツール」を作ってください。下記の案内からビルドプロンプト・スキル・同じ版の固定ファイルを実際に読み、制作と動作確認をしてください。設定を作る画面と、仕事を実行するChatGPT Workは区別してください。取得できない資料があれば、その場所を報告して止めてください。
+https://github.com/kaerukadate1/terakoya-ai-kit/tree/main/character-studio

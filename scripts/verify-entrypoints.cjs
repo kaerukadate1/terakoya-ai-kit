@@ -8,6 +8,7 @@ const entries = [
   ['flyer-sns', 'releases/workshop2-image-v1/STARTER_PROMPT.txt'],
   ['my-site', 'releases/mytools-v5/STARTER_PROMPT.txt'],
   ['note-article', 'releases/note-article-v1/STARTER_PROMPT.txt'],
+  ['character-studio', 'releases/character-studio-v1/STARTER_PROMPT.txt'],
 ];
 const required = [
   'README.md', '運用ルール.md',
@@ -58,6 +59,6 @@ if (errors.length) {
   console.error('FAIL: entrypoint compatibility\n' + errors.join('\n'));
   process.exitCode = 1;
 } else {
-  console.log('PASS: ' + checks + ' files exist; all 4 starter pairs are byte-identical.');
+  console.log('PASS: ' + checks + ' files exist; all '+entries.length+' starter pairs are byte-identical.');
   console.log('Local path checks only. No URL, browser, release-hash or generation tests were run.');
 }

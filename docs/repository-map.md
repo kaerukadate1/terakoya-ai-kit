@@ -10,6 +10,7 @@
 | 画像 | [flyer-sns](../flyer-sns/README.md) | [開発](../flyer-sns/開発.md) | releases/workshop2-image-v1/ |
 | note | [note-article](../note-article/README.md) | [開発](../note-article/開発.md) | releases/note-article-v1/ |
 | マイサイト | [my-site](../my-site/README.md) | [開発](../my-site/開発.md) | releases/mytools-v5/ |
+| キャラクター設計 第4回 | [character-studio](../character-studio/README.md) | [開発](../character-studio/開発.md) | releases/character-studio-v1/ |
 
 ## 各ツールの中
 

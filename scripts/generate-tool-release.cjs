@@ -1,7 +1,7 @@
 'use strict';
 const fs = require('node:fs');
 const path = require('node:path');
-const TOOLS = ['lp', 'note-article', 'my-site'];
+const TOOLS = ['lp', 'note-article', 'my-site', 'character-studio'];
 function run({tool, root=path.resolve(__dirname, '..'), write=false}={}) {
   if (!TOOLS.includes(tool)) throw Error('Unknown tool');
   const config=JSON.parse(fs.readFileSync(path.join(root,tool,'release-map.json'),'utf8'));
@@ -20,7 +20,7 @@ function run({tool, root=path.resolve(__dirname, '..'), write=false}={}) {
 if(require.main===module){
  const [tool,mode='--check',...extra]=process.argv.slice(2);
  try{
-  if(extra.length||!['--check','--write'].includes(mode))throw Error('Usage: node scripts/generate-tool-release.cjs <lp|note-article|my-site> [--check|--write]');
+  if(extra.length||!['--check','--write'].includes(mode))throw Error('Usage: node scripts/generate-tool-release.cjs <lp|note-article|my-site|character-studio> [--check|--write]');
   const result=run({tool,write:mode==='--write'});
   if(!result.write&&result.changed.length){console.error('FAIL: '+result.changed.join(', '));process.exitCode=1;}
   else console.log(`PASS: ${tool}: ${result.files} files, ${result.changed.length} ${result.write?'updated':'differences'}.`);
