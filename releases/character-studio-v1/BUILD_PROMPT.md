@@ -1,10 +1,10 @@
 # AIアシスタント設計ツール ビルドプロンプト
 
-寺子屋AI 第4回 v0.3.0。「自分だけのAIアシスタントを作ろう」。事業・プロジェクトの準備を必須にせず、汎用アシスタントの作成・保管を主役にする。
+寺子屋AI 第4回 v0.3.1。「自分だけのAIアシスタントを作ろう」。事業・プロジェクトの準備を必須にせず、汎用アシスタントの作成・保管を主役にする。
 
 ## 読む順番
 
-同じGit refのcharacter-studio/README.md、手順.md、スキル.md、skills/persona-design/SKILL.md、skills/work-execution/SKILL.mdを読む。次にlp/skills/terakoya-web-design/SKILL.mdとそのreferences/work-sites-guidance.md、character-studio/app/のindex.html・styles.css・core.js・bridge.js・app.js・assets一式、tests/core.test.cjs・tests/bridge.test.cjsを読む。通常ページを読めなければ同じrefのraw URLを試せる。取得できなければ報告して止め、古い仕様を混ぜない。
+同じGit refのcharacter-studio/README.md、手順.md、スキル.md、skills/persona-design/SKILL.md、skills/work-execution/SKILL.mdを読む。次にlp/skills/terakoya-web-design/SKILL.mdとそのreferences/work-sites-guidance.md、character-studio/app/のindex.html・styles.css・tool-ui.css・core.js・bridge.js・app.js・assets一式、tests/core.test.cjs・tests/bridge.test.cjsを読む。通常ページを読めなければ同じrefのraw URLを試せる。取得できなければ報告して止め、古い仕様を混ぜない。
 
 ## 固定の仕様
 
@@ -13,6 +13,7 @@
 - 5カテゴリー各6担当、計30担当。話し方10、判断方針8、任せる範囲3、相談タイミング3。任意カスタム役割・自由な性格入力は追加しない。名前は自由入力。
 - 見た目は表現5・モチーフ5・雰囲気6・世界観・デザイン6。各64色と自由色。世界観は服装を強制せず、形・質感・装飾にも反映する。保存互換のためフィールド名outfitと既存の6つのIDは維持する。
 - 画面の標準色は第2回と同じ青緑 #086c7e、金 #b78b3c。青緑のナビと明るい作業面。ライト・ダーク・システムと利用者が選んだカスタム色は保つ。
+- 画面はWebの紹介ページでなく作業ツールとして構成する。app/tool-ui.cssをstyles.cssの後に必ず読み込む。上部ツールバー・工程ナビ・編集面・右の設定確認パネル、入力コントロールと主操作・補助操作・選択中の視覚差を固定ファイルどおり保つ。モバイルの操作領域は44pxを基本とし、横はみ出しを検証する。機能や保存形式は見た目の変更に伴って変えない。
 - 21,600の仕事設定、3,686,400の見た目設定、合計79,626,240,000は設定の組み合わせ数。能力・実証済み品質・ユニーク画像の数とは表現しない。
 - プロフィール・任意の画像・Markdown設定ファイル・短い呼び出し文をひとまとめに保存する。Markdownと呼び出し文は同じ設定から生成し、ファイル名を一致させる。
 - 事業情報、既存プロジェクト、初仕事は保存の必須条件にしない。一覧は初期状態で空。
