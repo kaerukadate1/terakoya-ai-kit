@@ -83,6 +83,7 @@
   $('avatar-input').addEventListener('change',()=>{if(job?.assistantId===state.draft.id){job=null;keepJob();productionMessage='手動の画像を優先し、返送待ちを解除しました。';if(step==='package')productionStatus();}});
   $('remove-avatar').addEventListener('click',()=>{uploadToken++;if(job?.assistantId===state.draft.id){job=null;keepJob();}state.draft.avatar='';state.draft.avatarSpec='';productionMessage='';changed();});
   document.querySelector('.nav-foot small').textContent='v'+C.VERSION;
+  $('combination-count').textContent='約'+new Intl.NumberFormat('ja-JP',{notation:'compact',maximumFractionDigits:0}).format(C.counts.total)+'通り';
   $('download-avatar').addEventListener('click',()=>{const d=state.draft;if(!d.avatar)return;const [meta,data]=d.avatar.split(','),type=meta.match(/^data:(.*);base64$/)[1],ext=type.split('/')[1],bytes=Uint8Array.from(atob(data),c=>c.charCodeAt(0));download(bytes,C.filename(d).replace(/\.md$/,'_画像.'+ext),type);});
   $('theme-toggle').addEventListener('click',()=>{const visible=$('theme-panel').hidden;$('theme-panel').hidden=!visible;$('theme-toggle').setAttribute('aria-expanded',String(visible));});
   document.querySelectorAll('.upload-label[tabindex]').forEach(el=>el.addEventListener('keydown',e=>{if(['Enter',' '].includes(e.key)){e.preventDefault();el.querySelector('input').click();}}));

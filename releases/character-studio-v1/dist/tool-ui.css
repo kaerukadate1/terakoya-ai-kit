@@ -17,6 +17,12 @@ main{padding:0;min-width:0}.workspace{max-width:none;margin:0;gap:0;grid-templat
 .panel{max-width:1060px;margin:0 auto}.panel-head{padding-bottom:17px;margin-bottom:22px;border-bottom:1px solid var(--border);align-items:center;gap:12px}
 .eyebrow{font-size:10px;margin-bottom:5px}h1{font-size:22px;line-height:1.5}h2{font-size:17px}
 .panel-head>.badge{margin-top:0}.badge{font-size:10px;border-radius:3px}
+.combination-intro{display:flex;align-items:flex-start;gap:12px;padding:0 0 19px;margin:0 0 22px;border-bottom:2px solid var(--accent)}
+.combination-intro>svg{width:21px;height:21px;flex:none;margin-top:4px;color:var(--brand-text,var(--brand))}
+.combination-intro p{font-size:15px;font-weight:600;line-height:1.8;margin:0 0 5px;overflow-wrap:anywhere}
+.combination-intro strong{font-size:21px;color:var(--brand-text,var(--brand));white-space:nowrap}
+.combination-intro small{font-size:11px;color:var(--muted);display:block;line-height:1.7}
+.intro-break{display:none}
 .character-preview{position:sticky;top:60px;height:calc(100vh - 60px);align-self:start;overflow:auto;margin:0;padding:22px 18px;border:0;border-left:1px solid var(--border);border-radius:0;box-shadow:none;background:var(--page)}
 .preview-top{padding-bottom:14px;border-bottom:1px solid var(--border)}
 .character-preview .portrait{width:144px;height:144px;margin:22px auto 16px}
@@ -63,6 +69,7 @@ input:focus-visible,textarea:focus-visible,select:focus-visible{border-color:var
   .steps{position:static;height:auto;flex-direction:row;padding:7px 8px;overflow-x:auto;overflow-y:hidden;gap:5px}
   .steps>button{min-height:42px;padding:8px 10px;font-size:12px}.steps>button span{width:20px;height:20px}.steps>button.active{box-shadow:inset 0 -3px var(--accent)}
   .editor{padding:22px 16px 0}.panel-head{padding-bottom:15px;margin-bottom:19px}h1{font-size:21px}
+  .combination-intro{gap:9px;padding-bottom:16px;margin-bottom:19px}.combination-intro p{font-size:14px}.combination-intro strong{font-size:20px}.intro-break{display:initial}
   .button{min-height:44px}.icon-button{width:42px;height:42px;min-height:42px}.bottom-actions .button{font-size:12px;padding:9px 12px}
   .category-options button{font-size:12px;min-height:42px}.category-options{margin-bottom:15px}.role-grid{grid-template-columns:1fr}.role-option{min-height:120px}
   .form-grid{grid-template-columns:1fr}.work-choice{padding:12px}.notice{padding:10px 16px}.bottom-actions{padding:12px 0;min-height:69px}
