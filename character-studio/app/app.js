@@ -3,16 +3,16 @@
   const C=window.CharacterCore,B=window.AssistantBridge,KEY='terakoya-character-studio-v1',THEME='terakoya-character-theme-v1',RECOVERY=KEY+'-before-v2',JOB=KEY+'-portrait-job';
   const $=id=>document.getElementById(id),icons=()=>window.lucide?.createIcons();
   const esc=v=>String(v).replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
-  let state={schemaVersion:2,draft:C.blank(),assistants:[]},theme={mode:'system',brand:'#086c7e',accent:'#b78b3c'},category='publish',step='role',confirmAction=null,timer=null,storageLocked=false,uploadToken=0,job=null,checking=false,productionMessage='';
+  let state={schemaVersion:2,draft:C.blank(),assistants:[]},theme={mode:'system',brand:'#086c7e',accent:'#b78b3c'},category='publish',step='role',confirmAction=null,timer=null,storageLocked=false,dirty=false,uploadToken=0,job=null,checking=false,productionMessage='';
   function show(message,error=false){$('notice').textContent=message;$('notice').classList.toggle('error',error);$('notice').hidden=false;}
   try{const saved=localStorage.getItem(KEY);if(saved){const raw=JSON.parse(saved);if(![1,2].includes(raw?.schemaVersion))throw Error('未対応の保存形式');if(raw.schemaVersion===1&&!localStorage.getItem(RECOVERY))localStorage.setItem(RECOVERY,saved);state.draft=C.normalize(raw.draft);const rows=raw.assistants||raw.characters;if(!Array.isArray(rows)||rows.length>100)throw Error('一覧の形式');state.assistants=rows.map(C.normalize);if(raw.schemaVersion===1)show('以前の設定を保管したまま読み込みました。選択肢への置き換え内容をご確認ください。');}}catch{storageLocked=true;show('既存データを保護するため自動保存を停止しました。下書きと一覧はバックアップで保存できます。元の保存データは変更しません。',true);}
   try{const raw=JSON.parse(localStorage.getItem(THEME)||'null');if(raw&&['system','light','dark'].includes(raw.mode)){theme.mode=raw.mode;for(const k of ['brand','accent'])if(/^#[0-9a-f]{6}$/i.test(raw[k]))theme[k]=raw[k];}}catch{}
   if(theme.brand==='#167567'&&theme.accent==='#b75b40'){theme.brand='#086c7e';theme.accent='#b78b3c';}
   try{const raw=JSON.parse(localStorage.getItem(JOB)||'null');if(B.validJob(raw)&&raw.targetSite===location.origin)job=raw;}catch{}
   function keepJob(){try{if(job)localStorage.setItem(JOB,JSON.stringify(job));else localStorage.removeItem(JOB);}catch{show('返送待ちの状態を保存できません。画面を閉じずにお待ちください。',true);}}
-  function productionStatus(){const active=job&&job.assistantId===state.draft.id;const expired=job&&Date.now()-job.createdAt>B.WINDOW_MS;$('check-return').hidden=!active;$('cancel-return').hidden=!job;$('produce-package').disabled=!!job&&!expired;$('production-status').textContent=job&&!active?'別のアシスタントの返送待ちです。ここから待ちを解除して新しく制作できます。':active?(expired?'返送待ちが60分を超えました。「返送を確認」で再確認するか、待ちを解除して制作し直せます。':B.matches(job,state.draft)?productionMessage||'ChatGPTで制作中です。戻ると画像を自動で確認します。':'見た目が変更されています。前の依頼は自動反映しません。返送待ちを解除して制作し直してください。'):productionMessage;}
-  function persist(){clearTimeout(timer);if(storageLocked){$('save-status').textContent='自動保存停止中';return false;}try{localStorage.setItem(KEY,JSON.stringify(state));$('save-status').textContent='このブラウザに保存済み';return true;}catch{$('save-status').textContent='未保存';show('保存容量が足りないか、保存が許可されていません。バックアップをダウンロードしてください。',true);return false;}}
-  function changed(){state.draft.updatedAt=new Date().toISOString();renderPreview();timer=setTimeout(persist,200);}
+  function productionStatus(){const active=job&&job.assistantId===state.draft.id,matching=job&&B.matches(job,state.draft),expired=job&&Date.now()-job.createdAt>B.WINDOW_MS;$('check-return').hidden=!matching;$('check-return').disabled=checking;$('resume-return').hidden=!job||!!matching||!job.snapshot;$('cancel-return').hidden=!job;$('produce-package').disabled=!!job&&!expired;$('production-status').textContent=job&&!active?'別のアシスタントの返送待ちです。「依頼時の設定を開く」で確認できます。':active?(expired?'自動確認の時間を過ぎました。「返送をもう一度確認」または手動アップロードで続けられます。':!matching?'見た目が変更されています。前の画像は自動反映しません。依頼時の設定に戻すか、手動でアップロードできます。':checking?'返送された画像を確認しています…':productionMessage||(Date.now()-job.createdAt>90000?'画像の返送待ちです。ChatGPTで完成済みなら再確認、または手動でアップロードできます。':'画像の返送待ちです。ツールへ戻った時にも自動で確認します。')):productionMessage;}
+  function persist(){clearTimeout(timer);timer=null;if(storageLocked){$('save-status').textContent='自動保存停止中';return false;}try{localStorage.setItem(KEY,JSON.stringify(state));dirty=false;$('save-status').textContent='このブラウザに保存済み';return true;}catch{$('save-status').textContent='未保存';show('保存容量が足りないか、保存が許可されていません。バックアップをダウンロードしてください。',true);return false;}}
+  function changed(){clearTimeout(timer);dirty=true;state.draft.updatedAt=new Date().toISOString();renderPreview();timer=setTimeout(persist,200);}
   function ink(hex){const rgb=[1,3,5].map(i=>parseInt(hex.slice(i,i+2),16)/255).map(v=>v<=.04045?v/12.92:((v+.055)/1.055)**2.4);return rgb[0]*.2126+rgb[1]*.7152+rgb[2]*.0722>.179?'#10251e':'#fff';}
   function applyTheme(){document.documentElement.dataset.theme=theme.mode;for(const k of ['brand','accent']){document.documentElement.style.setProperty('--'+k,theme[k]);document.documentElement.style.setProperty('--'+k+'-ink',ink(theme[k]));$(k).value=theme[k];}$('theme').value=theme.mode;try{localStorage.setItem(THEME,JSON.stringify(theme));}catch{}}
   function portrait(target,d){target.replaceChildren();if(d.avatar){const im=new Image();im.src=d.avatar;im.alt=(d.name||'アシスタント')+'のプロフィール画像';target.append(im);}else{const i=document.createElement('i');i.dataset.lucide=C.named(C.MOTIFS,d.motif).detail;target.append(i);}target.style.setProperty('--portrait-main',d.mainColor);target.style.setProperty('--portrait-accent',d.accentColor);}
@@ -56,37 +56,40 @@
   $('produce-package').addEventListener('click',()=>{
     if(C.missing(state.draft).length){show('アシスタント名を入力してください。',true);navigate('personality');return;}
     if(job&&job.assistantId!==state.draft.id){show('別のアシスタントの返送待ちです。そのパッケージで確認するか、返送待ちを解除してください。',true);return;}
-    const next=B.request(state.draft,location.href),prompt=B.wrap(state.draft,next);
+    const next=B.request(state.draft,location.href),prompt=B.wrap(state.draft,next),previous=job;
+    job=next;productionMessage='';keepJob();persist();
     const opened=window.open('https://chatgpt.com/?q='+encodeURIComponent(prompt),'_blank');
-    if(!opened){show('ChatGPTを開けませんでした。このサイトのポップアップを許可して、もう一度押してください。',true);return;}
+    if(!opened){job=previous;keepJob();productionStatus();show('ChatGPTを開けませんでした。このサイトのポップアップを許可して、もう一度押してください。',true);return;}
     try{opened.opener=null;}catch{}
-    job=next;productionMessage='';keepJob();persist();productionStatus();
+    productionStatus();
   });
   async function avatarFromBlob(blob){
-    if(!['image/png','image/jpeg','image/webp'].includes(blob.type)||blob.size>8000000)throw Error('8MB以下のPNG・JPEG・WebPを選んでください。');
+    blob=await B.checkedImage(blob);
     const url=URL.createObjectURL(blob);try{const img=new Image();img.src=url;await img.decode();if(img.width*img.height>50000000)throw Error('画像の縦横サイズを小さくしてください。');const canvas=document.createElement('canvas'),scale=Math.min(1,512/Math.max(img.width,img.height));canvas.width=Math.max(1,Math.round(img.width*scale));canvas.height=Math.max(1,Math.round(img.height*scale));canvas.getContext('2d').drawImage(img,0,0,canvas.width,canvas.height);const avatar=canvas.toDataURL('image/webp',.82);if(!C.normalize({...state.draft,avatar}).avatar)throw Error('画像容量を小さくしてください。');return avatar;}finally{URL.revokeObjectURL(url);}
   }
   async function checkReturn(manual=false){
     if(checking||!job||!B.matches(job,state.draft)||(!manual&&Date.now()-job.createdAt>B.WINDOW_MS))return;
-    checking=true;const current=job,token=uploadToken;
-    try{const result=await B.read(current);if(!result){if(manual)productionMessage='まだ返送されていません。ChatGPTでの制作・保存結果をご確認ください。';return;}
-      const response=await fetch(result.imageUrl+'?v='+Date.now(),{cache:'no-store',credentials:'same-origin',redirect:'error',signal:AbortSignal.timeout(15000)});if(!response.ok)throw Error('返送画像を読み込めません。');if(Number(response.headers.get('content-length'))>8000000)throw Error('返送画像が大きすぎます。');const avatar=await avatarFromBlob(await response.blob());
+    checking=true;if(step==='package')productionStatus();const current=job,token=uploadToken;
+    try{const result=await B.receive(current);if(!result){if(manual)productionMessage='まだ画像を確認できません。ChatGPTで完成した画像を保存し、「画像を手動でアップロード」から追加することもできます。';return;}
+      const avatar=await avatarFromBlob(result.blob);
       if(job!==current||token!==uploadToken||!B.matches(current,state.draft))return;
-      state.draft.avatar=avatar;state.draft.avatarSpec=current.visualKey;job=null;keepJob();changed();productionMessage='画像を受け取りました。「保存して一覧へ」で保管できます。';show(productionMessage);
-    }catch(err){if(job===current)productionMessage=err.message;}finally{checking=false;if(step==='package')renderPackage();}
+      state.draft.avatar=avatar;state.draft.avatarSpec=current.visualKey;changed();const saved=persist();if(saved){job=null;keepJob();}productionMessage=saved?'画像を受け取りました。「保存して一覧へ」で保管できます。':'画像を受け取りましたがブラウザへ保存できません。バックアップを保存してください。';show(productionMessage,!saved);
+    }catch(err){if(job===current)productionMessage=(err.name==='TimeoutError'||err.name==='TypeError'?'通信が一時的に途切れました。自動で再確認します。':err.message)+' 手動アップロードでも続けられます。';}finally{checking=false;if(step==='package')renderPackage();}
   }
   $('check-return').addEventListener('click',()=>checkReturn(true));
+  $('upload-avatar').addEventListener('click',()=>$('avatar-input').click());
+  $('resume-return').addEventListener('click',()=>{const current=job;if(!current?.snapshot)return;ask('現在の下書きを依頼時の設定に戻します。今の下書きを残す場合は、先に一覧へ保存してください。',()=>{if(job!==current)return;const d=C.normalize(current.snapshot);if(!B.matches(current,d)){show('依頼時の設定を復元できません。画像を手動でアップロードしてください。',true);return;}uploadToken++;state.draft=d;productionMessage='';fill();persist();navigate('package');checkReturn(true);});});
   $('cancel-return').addEventListener('click',()=>{job=null;keepJob();productionMessage='返送待ちを解除しました。現在の画像は残っています。';productionStatus();});
   setInterval(()=>{if(step==='package')productionStatus();checkReturn();},15000);
-  window.addEventListener('focus',()=>checkReturn());document.addEventListener('visibilitychange',()=>{if(!document.hidden)checkReturn();});
-  $('avatar-input').addEventListener('change',async e=>{const file=e.target.files[0];e.target.value='';if(!file)return;const token=++uploadToken,id=state.draft.id,spec=C.visualKey(state.draft);try{if(!['image/png','image/jpeg','image/webp'].includes(file.type)||file.size>8000000)throw Error('8MB以下のPNG・JPEG・WebPを選んでください。');const url=URL.createObjectURL(file);try{const img=new Image();img.src=url;await img.decode();if(img.width*img.height>50000000)throw Error('画像の縦横サイズを小さくしてください。');const canvas=document.createElement('canvas'),scale=Math.min(1,512/Math.max(img.width,img.height));canvas.width=Math.max(1,Math.round(img.width*scale));canvas.height=Math.max(1,Math.round(img.height*scale));canvas.getContext('2d').drawImage(img,0,0,canvas.width,canvas.height);const avatar=canvas.toDataURL('image/webp',.82);if(!C.normalize({...state.draft,avatar}).avatar)throw Error('画像容量を小さくしてください。');if(token!==uploadToken||id!==state.draft.id)return;state.draft.avatar=avatar;state.draft.avatarSpec=spec;changed();}finally{URL.revokeObjectURL(url);}}catch(err){show(err.message,true);}});
-  $('avatar-input').addEventListener('change',()=>{if(job?.assistantId===state.draft.id){job=null;keepJob();productionMessage='手動の画像を優先し、返送待ちを解除しました。';if(step==='package')productionStatus();}});
+  window.addEventListener('focus',()=>checkReturn());window.addEventListener('pageshow',()=>checkReturn());document.addEventListener('visibilitychange',()=>{if(!document.hidden)checkReturn();});
+  window.addEventListener('storage',e=>{if(e.key===JOB){try{const next=e.newValue?JSON.parse(e.newValue):null;if(next&&(!B.validJob(next)||next.targetSite!==location.origin))return;job=next;productionMessage='';if(step==='package')productionStatus();checkReturn();}catch{}}if(e.key===KEY&&e.newValue&&!dirty){try{const raw=JSON.parse(e.newValue);if(raw.schemaVersion!==2||!Array.isArray(raw.assistants)||raw.assistants.length>100)return;state.assistants=raw.assistants.map(C.normalize);const d=C.normalize(raw.draft);if(d.id===state.draft.id&&d.updatedAt>state.draft.updatedAt&&C.visualKey(d)===C.visualKey(state.draft))state.draft=d;fill();if(step==='library')renderLibrary();}catch{}}});
+  $('avatar-input').addEventListener('change',async e=>{const file=e.target.files[0];e.target.value='';if(!file)return;const token=++uploadToken,id=state.draft.id,spec=C.visualKey(state.draft);try{const avatar=await avatarFromBlob(file);if(token!==uploadToken||id!==state.draft.id||spec!==C.visualKey(state.draft))return;state.draft.avatar=avatar;state.draft.avatarSpec=spec;changed();const saved=persist();if(saved&&job?.assistantId===id){job=null;keepJob();}productionMessage=saved?'画像をアップロードしました。「保存して一覧へ」で保管できます。':'画像は読み込めましたがブラウザへ保存できません。バックアップを保存してください。';show(productionMessage,!saved);if(step==='package')productionStatus();}catch(err){show(err.message,true);}});
   $('remove-avatar').addEventListener('click',()=>{uploadToken++;if(job?.assistantId===state.draft.id){job=null;keepJob();}state.draft.avatar='';state.draft.avatarSpec='';productionMessage='';changed();});
   document.querySelector('.nav-foot small').textContent='v'+C.VERSION;
   $('combination-count').textContent='約'+new Intl.NumberFormat('ja-JP',{notation:'compact',maximumFractionDigits:0}).format(C.counts.total)+'通り';
   $('download-avatar').addEventListener('click',()=>{const d=state.draft;if(!d.avatar)return;const [meta,data]=d.avatar.split(','),type=meta.match(/^data:(.*);base64$/)[1],ext=type.split('/')[1],bytes=Uint8Array.from(atob(data),c=>c.charCodeAt(0));download(bytes,C.filename(d).replace(/\.md$/,'_画像.'+ext),type);});
   $('theme-toggle').addEventListener('click',()=>{const visible=$('theme-panel').hidden;$('theme-panel').hidden=!visible;$('theme-toggle').setAttribute('aria-expanded',String(visible));});
   document.querySelectorAll('.upload-label[tabindex]').forEach(el=>el.addEventListener('keydown',e=>{if(['Enter',' '].includes(e.key)){e.preventDefault();el.querySelector('input').click();}}));
-  window.addEventListener('pagehide',persist);window.addEventListener('hashchange',()=>navigate(location.hash.slice(1)));
-  applyTheme();fill();navigate(location.hash.slice(1)||'role');if(state.assistants.length&&!storageLocked)$('save-status').textContent='このブラウザに保存済み';icons();
+  window.addEventListener('pagehide',()=>{if(dirty)persist();});window.addEventListener('hashchange',()=>navigate(location.hash.slice(1)));
+  applyTheme();fill();navigate(location.hash.slice(1)||'role');if(state.assistants.length&&!storageLocked)$('save-status').textContent='このブラウザに保存済み';icons();setTimeout(()=>checkReturn(),0);
 })();
