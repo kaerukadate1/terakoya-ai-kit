@@ -1,9 +1,5 @@
-# 寺子屋AI キャラクター設計ツール 配布版
+# AIアシスタント設計ツール 配布版
 
-第4回ワークショップ用 v0.1.0。
+寺子屋AI 第4回 v0.2.0。STARTER_PROMPT.txtとBUILD_PROMPT.mdを使う。画面はdist/、正本はリポジトリのcharacter-studio/。
 
-[STARTER_PROMPT.txt](STARTER_PROMPT.txt) と [BUILD_PROMPT.md](BUILD_PROMPT.md) を使う。画面はdist/。編集元はリポジトリのcharacter-studio/で、このフォルダは生成コピー。
-
-Workで設計画面を作り、役割・ペルソナ・仕事の進め方を設定する。出力した指示を本人が専用プロジェクトに貼り、Workへ最初の仕事を任せる。自動登録、機能・権限の追加、定期実行はしない。
-
-データはブラウザ内。初期一覧は空。バックアップはJSON。実ユーザーの入力やSite IDは同梱しない。
+事業・プロジェクトの事前準備なしでアシスタントを設計し、プロフィール・画像・Markdown・呼び出し文を保管する。プロジェクト作成は任意。画像はChatGPTで生成して手動で取り込む。自動返送は含まない。
