@@ -417,18 +417,25 @@
         try { const url=new URL(entry.url,location.href);if(url.origin!==location.origin || !/^\/completed-articles\/[a-zA-Z0-9-]{10,100}\/article\.json$/.test(url.pathname) || url.search || url.hash) continue;
         const res=await fetch(url,{cache:'no-store',credentials:'same-origin',redirect:'error'});if(!res.ok)continue;const body=await res.text();if(body.length>300000)continue;const value=JSON.parse(body);if(value.requestId!==entry.id || !['article','polish'].includes(value.type))continue;
           const next=C.normalize(value.input);next.article=X.article(value.data,next);
-          collected.push({id:entry.id,state:next,createdAt:entry.createdAt,kind:'Siteに保存された記事',origin:'site',images:{},sourceDraftId:''});
+          collected.push({id:entry.id,state:next,createdAt:entry.createdAt,kind:'Siteに保存された記事',origin:'site',images:{},remoteImages:value.images || {},sourceDraftId:''});
         } catch { /* One invalid article must not hide the other stock. */ }
       }
       remoteStock=collected;lastStockLoad=Date.now();
     })().finally(()=>{stockLoad=null;}); return stockLoad;
   }
-  async function stockImage(item,slotId) { return item.images?.[slotId] || (item.sourceDraftId ? await A.get(`${item.sourceDraftId}:${slotId}`) : null); }
+  async function stockImage(item,slotId) {
+    const local=item.images?.[slotId] || (item.sourceDraftId ? await A.get(`${item.sourceDraftId}:${slotId}`) : null);if(local)return local;
+    if(item.imageCache?.[slotId])return item.imageCache[slotId];
+    const url=H.stockImageUrl(item.remoteImages?.[slotId],slotId,location.origin);if(!url)return null;
+    try{const res=await fetch(url,{cache:'no-store',credentials:'same-origin',redirect:'error',signal:AbortSignal.timeout(15000)});if(!res.ok || !/^image\/(png|jpeg|webp)(?:;|$)/i.test(res.headers.get('content-type')||'') || Number(res.headers.get('content-length'))>10*1024*1024)return null;
+      const blob=await res.blob();if(blob.size>10*1024*1024)return null;(item.imageCache ||= {})[slotId]=blob;return blob;
+    }catch{return null;}
+  }
   async function openStock(item) {
     currentStock=item;for(const url of stockUrls)URL.revokeObjectURL(url);stockUrls=[];
     $('#stock-title').textContent=item.state.article.title;$('#stock-meta').textContent=`${item.createdAt ? new Date(item.createdAt).toLocaleString('ja-JP') : ''} / ${item.kind || '記事'} / ${C.markdown(item.state.article,false).length.toLocaleString()}字`;
     const reader=$('#stock-reader');reader.replaceChildren();const article=item.state.article;
-    const cover=await stockImage(item,'cover');if(cover){const url=URL.createObjectURL(cover);stockUrls.push(url);reader.append(imageNode(url,article.thumbnail.alt));}
+    const cover=await stockImage(item,'cover');if(cover){const url=URL.createObjectURL(cover);stockUrls.push(url);reader.append(imageNode(url,article.thumbnail.alt),button('サムネイルを保存',()=>download(cover,`${safeName(article.title)}_サムネイル.png`)));}
     reader.append(el('h1',article.title),el('p',article.lead,'lead'));
     for(const section of article.sections){reader.append(el('h2',section.heading));appendBody(reader,section.body);const image=await stockImage(item,section.id);if(image){const url=URL.createObjectURL(image);stockUrls.push(url);reader.append(imageNode(url,section.image?.alt || section.heading));}}
     if(article.sources?.length){reader.append(el('h2','出典'));for(const src of article.sources){const line=el('p',`${src.name} / 公開日: ${src.publishedAt || '未確認'} `),link=el('a',src.url);link.href=src.url;link.target='_blank';link.rel='noopener noreferrer';line.append(link);reader.append(line);}}

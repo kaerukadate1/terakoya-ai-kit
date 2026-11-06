@@ -43,3 +43,11 @@ test('disabled learning keeps saved rules while excluding them from the effectiv
   const p = H.preferences({ enabled: false, defaults: { length: 'invalid' } });
   assert.equal(p.enabled, false); assert.equal(p.defaults.length, '2000');
 });
+
+test('stock images only load approved same-site paths without redirects, query strings or external origins',()=>{
+ const origin='https://participant.example.org';
+ assert.equal(H.stockImageUrl('/completed-articles/abcdefghij/cover.png','cover',origin),origin+'/completed-articles/abcdefghij/cover.png');
+ assert.equal(H.stockImageUrl('/returns/abcdefghij/image.png','s1',origin),origin+'/returns/abcdefghij/image.png');
+ for(const bad of ['https://outside.example.org/returns/abcdefghij/image.png','/returns/abcdefghij/image.png?x=1','/returns/abcdefghij/image.png#x','/private/file.png','https://name@participant.example.org/returns/abcdefghij/image.png'])assert.equal(H.stockImageUrl(bad,'cover',origin),'');
+ assert.equal(H.stockImageUrl('/returns/abcdefghij/image.png','bad',origin),'');
+});

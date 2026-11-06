@@ -1,13 +1,13 @@
 # 寺子屋AI note記事制作ツール / ビルドプロンプト
 
-第3回ワークショップ用。固定版1.1.0 / 2026-11-07。
+第3回ワークショップ用。固定版1.1.1 / 2026-11-07。
 
 ## 完成条件
 
 参加者本人の新しいSiteに、記事ストック・変更履歴・学習と設定を最初から備えたツールを作る。完成した本文は、制作中の入力を復元せずに読め、コピー・txt/md書き出し・続きの編集に使える。完成条件は保存と配信を確認したSite URLを返すこと。
 
 基点URL:
-`https://raw.githubusercontent.com/kaerukadate1/terakoya-ai-kit/note-article-v1-20261107-stock/releases/note-article-v1/`
+`https://raw.githubusercontent.com/kaerukadate1/terakoya-ai-kit/note-article-v1-20261107-stock-images/releases/note-article-v1/`
 
 ## 取得・検証
 
@@ -52,7 +52,7 @@
 Workは生成直後に、追加の「返送してください」を待たず、同じSiteのreturns/<requestId>/result.jsonへ制作JSONをdataオブジェクトとして保存し、そのSiteを同じアクセス範囲で配信する。相談・ニュースもtypeを変更しない。確認取り込みはツールで行う。
 
 - articleとpolishでは、completed-articles/<requestId>/article.jsonへ確認済みinputと生成したdataを保存する。completed-articles.jsonのentriesへid/title/createdAt/urlを追記し、以前の記事は残す。
-- imageでは生成・検品したPNGを同じ依頼フォルダのimage.pngへ先に保存する。未設定の画像欄は自動挿入し、既存画像の差し替えは確認と前の画像への復帰を残す。
+- imageでは生成・検品したPNGを同じ依頼フォルダのimage.pngへ先に保存する。対応する記事ストックのimagesにも相対URLを保存し、本文と画像を一緒に残す。未設定の画像欄は自動挿入し、既存画像の差し替えは確認と前の画像への復帰を残す。
 - 表示中15秒ごと、画面への復帰、「結果を確認」で受信する。待機は最大24時間。一時的な通信エラーは再確認する。
 - 依頼ID・対象Site・記事や章・関連する入力が一致しない結果は、制作中の内容へ上書きせず履歴に保存する。学習の返送判定は記事本文の変更から分離する。
 - ローカルURLへWorkから保存できるとは説明しない。別Siteや外部Library画像を自動取得しない。Site編集・配信ができない場合は理由と制作JSON/画像を返し、自動返送成功とは報告しない。
