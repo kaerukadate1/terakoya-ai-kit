@@ -5,6 +5,8 @@
     "sns": {
       "id": "sns",
       "title": "媒体別SNS発信",
+      "name": "social",
+      "description": "媒体に合わせて、目を引く導入・投稿本文・次の行動を作る。",
       "input": "対象媒体・読者・目的・利用できる事実や素材",
       "output": "媒体 / フック / 投稿本文 / CTA / 使用素材 / 確認事項",
       "workflow": [
@@ -28,6 +30,8 @@
     "announcement": {
       "id": "announcement",
       "title": "告知・公開の段階設計",
+      "name": "launch",
+      "description": "予告・公開当日・再案内・締切前で伝え方を変える。",
       "input": "告知対象・開始日・期限・対象者・確定した申込先",
       "output": "段階 / 掲載時期案 / 件名・見出し / 告知本文 / 申込先 / 未確定事項",
       "workflow": [
@@ -51,6 +55,8 @@
     "editor": {
       "id": "editor",
       "title": "文章の段階別編集",
+      "name": "copy-editing",
+      "description": "構成・分かりやすさ・具体性・言い回しを順番に整える。",
       "input": "元原稿・目的・読者・維持したい文体や表現",
       "output": "編集済み原稿 / 元表現 / 修正表現 / 修正理由 / 要確認",
       "workflow": [
@@ -74,6 +80,8 @@
     "repurpose": {
       "id": "repurpose",
       "title": "素材を媒体別に再構成",
+      "name": "content-strategy",
+      "description": "一つの素材をSNS・LINE・メール向けに書き分ける。",
       "input": "元コンテンツ・対象媒体・読者・誘導先",
       "output": "元の主張 / 展開の切り口 / 媒体 / 原稿 / 誘導先 / 出典",
       "workflow": [
@@ -97,6 +105,8 @@
     "product": {
       "id": "product",
       "title": "価値と証拠から商品を紹介",
+      "name": "copywriting",
+      "description": "機能の羅列ではなく、顧客のメリットと根拠で紹介する。",
       "input": "商品情報・対象者・特徴・根拠・購入条件",
       "output": "商品見出し / 課題 / 便益 / 根拠 / 向く人・向かない人 / CTA",
       "workflow": [
@@ -120,6 +130,8 @@
     "calendar": {
       "id": "calendar",
       "title": "指標付きの発信計画",
+      "name": "marketing-plan",
+      "description": "テーマ・投稿予定・制作負担・効果を見る指標を整理する。",
       "input": "目的・制作に使える時間・媒体・過去の発信記録",
       "output": "日付案 / テーマ / 読者課題 / 媒体 / 原稿担当 / 指標 / 見直し条件",
       "workflow": [
@@ -143,6 +155,8 @@
     "proposal": {
       "id": "proposal",
       "title": "判断につながる提案資料",
+      "name": "board-deck-builder",
+      "description": "相手に判断してほしいことから、結論・根拠・実施案を組む。",
       "input": "提案先・課題・提案内容・根拠データ・決めてほしいこと",
       "output": "提案要旨 / ページ構成 / 結論見出し / 根拠 / 実施案 / 判断事項",
       "workflow": [
@@ -166,6 +180,8 @@
     "slides": {
       "id": "slides",
       "title": "発表時間からスライドを設計",
+      "name": "md-slides",
+      "description": "一枚一メッセージで、画面の文字と発表原稿を分ける。",
       "input": "聴衆・発表目的・持ち時間・元資料",
       "output": "番号 / 結論見出し / 画面の要素 / 図の案 / 発表者ノート / 時間",
       "workflow": [
@@ -189,6 +205,8 @@
     "manual": {
       "id": "manual",
       "title": "5W2Hの作業手順化",
+      "name": "knowledge-ops",
+      "description": "前提・手順・例外・完了確認を整理する。",
       "input": "作業メモ・担当者・入力資料・完了条件・例外",
       "output": "対象作業 / 前提 / 手順 / 分岐 / 完了チェック / 確認先 / 出典",
       "workflow": [
@@ -212,6 +230,8 @@
     "faq": {
       "id": "faq",
       "title": "根拠を追えるFAQ編集",
+      "name": "help-documentation",
+      "description": "実際の質問に短く答え、条件・操作・参照元を示す。",
       "input": "実際の質問・回答根拠・公開範囲・読者",
       "output": "分類 / 質問 / 短い回答 / 条件・例外 / 参照元 / 成功状態 / 関連質問",
       "workflow": [
@@ -235,6 +255,8 @@
     "teaching": {
       "id": "teaching",
       "title": "到達目標から教材を設計",
+      "name": "lesson-plan-builder",
+      "description": "到達目標から逆算し、説明・練習・理解確認を設計する。",
       "input": "受講者・学習後にできること・時間・使える教材",
       "output": "到達目標 / 前提 / 時間付き構成 / ワーク / 理解確認と判断基準 / 終了課題 / 解答例",
       "workflow": [
@@ -258,6 +280,8 @@
     "proofread": {
       "id": "proofread",
       "title": "誤りと説明不足の品質点検",
+      "name": "copy-editing",
+      "description": "誤字・表記ゆれ・矛盾・説明不足を検出し、修正案を出す。",
       "input": "点検する原稿・表記ルール・事実確認資料",
       "output": "箇所 / 原文 / 問題種別 / 修正案 / 根拠 / 確認要否",
       "workflow": [
@@ -281,6 +305,8 @@
     "ideas": {
       "id": "ideas",
       "title": "制約に合う企画の絞り込み",
+      "name": "marketing-ideas",
+      "description": "目的・予算・時間に合う企画を比較し、小さく試す方法を出す。",
       "input": "目的・対象者・使える時間と予算・既存施策",
       "output": "企画名 / 仕組み / 対象 / 準備 / 小さな検証 / 指標 / 注意点",
       "workflow": [
@@ -304,6 +330,8 @@
     "service": {
       "id": "service",
       "title": "提供価値と範囲の設計",
+      "name": "offers",
+      "description": "提供価値・提供内容・対象外・利用の流れを整理する。",
       "input": "対象者・解決する課題・提供できる内容・運用負担",
       "output": "対象者 / 価値 / 提供内容 / 対象外 / 利用の流れ / 検証点",
       "workflow": [
@@ -327,6 +355,8 @@
     "competitor": {
       "id": "competitor",
       "title": "競合の根拠付きプロフィール",
+      "name": "competitor-profiling",
+      "description": "競合の特徴・価格・訴求を、出典と参照日付きで整理する。",
       "input": "調べる競合・比較の目的・対象市場・参照できるURL",
       "output": "競合 / 対象顧客 / 特徴 / 価格 / 根拠URL / 参照日 / 確度",
       "workflow": [
@@ -350,6 +380,8 @@
     "compare": {
       "id": "compare",
       "title": "条件別の公平な比較",
+      "name": "competitors",
+      "description": "同じ条件で候補を比べ、用途ごとの向き不向きを示す。",
       "input": "比較候補・必須条件・判断する人・利用場面",
       "output": "比較軸 / 候補別の事実 / 根拠 / 適合条件 / 推奨 / 未確認",
       "workflow": [
@@ -373,6 +405,8 @@
     "synthesize": {
       "id": "synthesize",
       "title": "出典付きの横断要約",
+      "name": "research-summarizer",
+      "description": "複数資料の共通点・相違点・矛盾を出典付きでまとめる。",
       "input": "複数資料・調べたい問い・要約の用途",
       "output": "論点 / 統合した要点 / 支持資料 / 反対資料 / 確度 / 未解決",
       "workflow": [
@@ -396,6 +430,8 @@
     "decision": {
       "id": "decision",
       "title": "決定と仮説を分ける判断メモ",
+      "name": "decision-logger",
+      "description": "選択肢・根拠・リスク・推奨を整理し、提案と正式決定を分ける。",
       "input": "判断したいこと・選択肢・制約・根拠資料",
       "output": "判断事項 / 選択肢 / 基準 / 根拠 / 推奨 / 承認状態 / 見直し条件",
       "workflow": [
@@ -419,6 +455,8 @@
     "tasks": {
       "id": "tasks",
       "title": "メモから次の行動を整理",
+      "name": "weekly-review",
+      "description": "メモを作業・確認待ち・保留に分け、次の行動を具体化する。",
       "input": "作業メモ・現在の担当・期限情報・完了済み事項",
       "output": "仕事 / 次の行動 / 担当 / 期限 / 状態 / 依存先",
       "workflow": [
@@ -442,6 +480,8 @@
     "priority": {
       "id": "priority",
       "title": "負担と根拠から優先順位を整理",
+      "name": "product-manager-toolkit",
+      "description": "期限・影響・確度・手間から着手順を考える。",
       "input": "作業候補・期限・影響範囲・作業量・見積もりの確度",
       "output": "候補 / 期限・必須条件 / 影響 / 確度 / 手間 / 着手順 / 理由",
       "workflow": [
@@ -465,6 +505,8 @@
     "meeting": {
       "id": "meeting",
       "title": "決めることから会議を準備",
+      "name": "meetings",
+      "description": "決めたいこと・議題・必要資料・時間配分を整理する。",
       "input": "会議目的・参加者・持ち時間・前回の決定と資料",
       "output": "議題 / 目的 / 判断事項 / 資料 / 時間 / 事前準備 / 記録担当",
       "workflow": [
@@ -488,6 +530,8 @@
     "minutes": {
       "id": "minutes",
       "title": "決定・提案・行動を分ける議事録",
+      "name": "meetings",
+      "description": "決定・提案・未解決・行動を分け、担当と期限を付ける。",
       "input": "文字起こしまたは会議メモ・参加者・会議日",
       "output": "要点 / 決定 / 提案 / 行動・担当・期限 / 未解決 / 根拠時刻",
       "workflow": [
@@ -511,6 +555,8 @@
     "progress": {
       "id": "progress",
       "title": "依存関係と停滞を可視化",
+      "name": "process-mapper",
+      "description": "工程の依存関係・待ち時間・停滞箇所を整理する。",
       "input": "工程・担当・現在状態・期限・待ち時間",
       "output": "工程 / 担当 / 状態 / 依存 / 待ち理由 / 次の行動 / リスク",
       "workflow": [
@@ -534,6 +580,8 @@
     "report": {
       "id": "report",
       "title": "実績と未確認を分ける報告書",
+      "name": "client-status-reporting",
+      "description": "完了成果・次の作業・停滞・判断依頼を短くまとめる。",
       "input": "対象期間・活動記録・成果物・報告先",
       "output": "対象期間 / 完了成果 / 次の作業 / 停滞と担当 / 判断依頼 / 確認済みの時間・予算",
       "workflow": [
@@ -557,6 +605,8 @@
     "clean": {
       "id": "clean",
       "title": "欠損・重複・整合性の点検",
+      "name": "data-quality-auditor",
+      "description": "欠損・重複・表記ゆれ・整合性を確認し、変更履歴を残す。",
       "input": "データのコピー・項目定義・主キー候補・利用目的",
       "output": "品質項目 / 検出数 / 対象箇所 / 修正案 / 変更履歴 / 照合結果",
       "workflow": [
@@ -580,6 +630,8 @@
     "sales": {
       "id": "sales",
       "title": "定義と母数を揃えた売上集計",
+      "name": "spreadsheet-model-builder",
+      "description": "元データ・条件・計算・結果を分け、合計や算式を照合する。",
       "input": "対象期間・売上データ・顧客や商談の状態定義・計上基準",
       "output": "集計軸 / 母数 / 件数 / 金額 / 算式 / 元データ / 除外条件 / 照合PASS・FAIL",
       "workflow": [
@@ -603,6 +655,8 @@
     "survey": {
       "id": "survey",
       "title": "顧客の声を件数と引用で分析",
+      "name": "customer-research",
+      "description": "回答を分類し、件数・母数・代表的な発言から傾向を読む。",
       "input": "回答データ・設問・回答者数・分析目的",
       "output": "テーマ / 件数・母数 / 代表引用 / 反例 / 読み取り / 改善候補",
       "workflow": [
@@ -626,6 +680,8 @@
     "retrospective": {
       "id": "retrospective",
       "title": "事実から次の実験へ振り返る",
+      "name": "weekly-review",
+      "description": "目的と実績を比べ、続けること・変えることを整理する。",
       "input": "当初の目的・実施内容・結果・制約・本人の気づき",
       "output": "目的 / 実績 / 良かった点 / 停滞 / 原因仮説 / 次回実験 / 観測方法",
       "workflow": [
@@ -649,6 +705,8 @@
     "learning": {
       "id": "learning",
       "title": "原典に沿った解説と練習",
+      "name": "study-system",
+      "description": "資料から練習問題を作り、間違いの記録と復習につなげる。",
       "input": "学びたい資料・現在の理解・目標・使える時間",
       "output": "学習目標 / 根拠箇所 / 一問単位の練習 / 解答と理由 / 誤り記録 / 復習予定案",
       "workflow": [
@@ -672,6 +730,8 @@
     "diff": {
       "id": "diff",
       "title": "意味の変化を拾う資料比較",
+      "name": "doc-compare",
+      "description": "新旧資料の追加・削除だけでなく、意味や影響の変化を示す。",
       "input": "旧版・新版・版の日付・比較する範囲",
       "output": "箇所 / 旧記載 / 新記載 / 変更種別 / 意味・影響 / 確認要否",
       "workflow": [

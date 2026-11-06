@@ -25,3 +25,13 @@ test('onboarding stays prominent while optional invocation is collapsed',()=>{
   assert.match(html,/<details id="invocation-help" class="invocation-help">/);
   assert.match(html,/id="download-settings"[^>]*data-download="markdown"/);
 });
+test('skill display covers all roles and sits between portrait and settings file',()=>{
+  const display=require('../skill-display.json');
+  for(const r of C.ROLES){const s=C.skillFor(r.id),raw=fs.readFileSync(path.join(__dirname,'../skills/roles',r.id,'references/upstream.md'),'utf8');
+    assert.equal(s.name,display[r.id].name);assert.equal(s.description,display[r.id].description);assert.ok(s.description.length>10);
+    const original=raw.match(/^name:\s*(.+)$/m)[1].trim().replace(/^["']|["']$/g,'');assert.equal(s.name,original);
+  }
+  const html=fs.readFileSync(path.join(__dirname,'../app/index.html'),'utf8');
+  assert.ok(html.indexOf('id="package-skill"')>html.indexOf('id="package-image-state"'));
+  assert.ok(html.indexOf('id="package-skill"')<html.indexOf('id="markdown-filename"'));
+});

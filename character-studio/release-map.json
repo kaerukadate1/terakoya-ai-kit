@@ -72,6 +72,10 @@
       "target": "releases/character-studio-v1/role-catalog.json"
     },
     {
+      "source": "skill-display.json",
+      "target": "releases/character-studio-v1/skill-display.json"
+    },
+    {
       "source": "skills/roles/sources.lock.json",
       "target": "releases/character-studio-v1/skills/roles/sources.lock.json"
     },

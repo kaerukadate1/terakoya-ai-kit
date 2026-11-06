@@ -66,6 +66,7 @@ input:focus-visible,textarea:focus-visible,select:focus-visible{border-color:var
 .use-assistant .use-assistant-note{font-size:11px;color:var(--muted);line-height:1.8;margin:12px 0 0}
 .use-assistant>.button{max-width:100%;white-space:normal;text-align:left}.invocation-help{border-bottom:1px solid var(--border);padding:8px 0}
 .package-rows>div{padding:15px 0;gap:12px}.package-rows h2{font-size:14px}.package-rows p{font-size:12px}
+.package-rows #package-skill>section{grid-column:2/-1}.package-rows .skill-name{font-size:14px;font-weight:600;color:var(--text);margin:5px 0 4px}.package-rows #package-skill-description{font-size:13px;line-height:1.7}
 .output-head{margin-top:22px}.note{font-size:12px}.library-filter{gap:12px;margin-bottom:20px}.library-list{gap:16px}.library-card-body{padding:17px}.library-card h2{font-size:18px}
 .theme-panel{position:sticky;top:60px;z-index:15;box-shadow:0 4px 8px #0000000a;padding:12px 20px;gap:18px}
 @media(min-width:1500px){.editor{padding:28px 34px 0}}
