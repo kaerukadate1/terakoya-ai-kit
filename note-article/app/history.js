@@ -26,6 +26,12 @@
       const key=JSON.stringify({article:item.state.article,settings:item.state.settings});if(seen.has(key))return false;seen.add(key);return true;
     });
   }
+  function stockImageUrl(value, slotId, origin) {
+    if (typeof value !== 'string' || !/^(cover|s[1-8])$/.test(slotId)) return '';
+    try { const u = new URL(value, origin);
+      return u.origin === new URL(origin).origin && !u.username && !u.password && !u.search && !u.hash && /^\/(?:completed-articles\/[a-zA-Z0-9-]{10,100}\/(?:cover|s[1-8])\.png|returns\/[a-zA-Z0-9-]{10,100}\/image\.png)$/.test(u.pathname) ? u.href : '';
+    } catch { return ''; }
+  }
   let connection;
   function db() {
     if (!connection) connection = new Promise((resolve, reject) => {
@@ -53,5 +59,5 @@
       for (const id of ids) { const request = store.get(id); request.onsuccess = () => { if (request.result) store.put({ ...request.result, trashedAt: restore ? null : new Date().toISOString() }); }; }
     });
   }
-  return { preferences, effectiveRules, learningContext, fingerprint, create, saveEntry, stockItems, add, get, list, trash };
+  return { preferences, effectiveRules, learningContext, fingerprint, create, saveEntry, stockItems, stockImageUrl, add, get, list, trash };
 });

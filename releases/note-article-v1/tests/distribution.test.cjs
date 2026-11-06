@@ -17,7 +17,7 @@ test('two participant sites use their own identity and never the instructor site
  const app=fs.readFileSync(asset('app.js'),'utf8');assert.doesNotMatch(app,/appgprj_[a-zA-Z0-9]{20,}/);assert.doesNotMatch(app,/terakoya-note-workshop3-hayashi/);
 });
 test('starter and skills use one new immutable release with all referenced files',()=>{
- assert.equal(K.version,'1.1.0');assert.match(K.base,/note-article-v1-20261107-stock\/releases\/note-article-v1\/$/);
+ assert.equal(K.version,'1.1.1');assert.match(K.base,/note-article-v1-20261107-stock-images\/releases\/note-article-v1\/$/);
  const starter=fs.existsSync(path.join(root,'STARTER_PROMPT.txt'))?'STARTER_PROMPT.txt':'開始文.txt';
  assert.ok(fs.readFileSync(path.join(root,starter),'utf8').includes(K.base+'BUILD_PROMPT.md'));
  const html=fs.readFileSync(asset('index.html'),'utf8');

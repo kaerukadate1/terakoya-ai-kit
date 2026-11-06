@@ -21,8 +21,8 @@ description: 企画・構成・本文・画像を依頼元の同じSiteへ保存
 
 1. 対象IDのSiteと最新ソースを取得する。既存ファイル、設定、他依頼の結果を保持する。
 2. 静的配信フォルダの`returns/<requestId>/`へ保存。JSONは依頼文のenvelopeに制作JSONをdataオブジェクトで格納する。依頼ID等を変えない。
-3. 画像は先にimage.pngを保存し、result.jsonのimageUrlは同じ依頼フォルダを指す。
-4. article/polishでは、依頼文に示されたinputと制作dataを`completed-articles/<requestId>/article.json`へ保存する。`completed-articles.json`のentriesにid/title/createdAt/urlを追記し、以前の記事を消さない。
+3. 画像は先にimage.pngを保存し、result.jsonのimageUrlは同じ依頼フォルダを指す。同じdraftIdと記事本文に対応するcompleted-articlesの記録があれば、そのimages[slotId]にもこの画像の相対URLを保存する。本文が一致する記事を特定できなければ、推測で他の記事へ画像を付けない。
+4. article/polishでは、依頼文に示されたinputと制作dataを`completed-articles/<requestId>/article.json`へdraftIdも含めて保存する。`completed-articles.json`のentriesにid/title/createdAt/urlを追記し、以前の記事を消さない。
 5. 最後にresult.jsonを保存して、同じSiteを更新・配信する。ローカルにファイルを書くだけで完了にしない。
 6. 依頼ID、対象Site、返送ファイルを確認する。可能ならツール画面で返送を確認する。画面が未確認なら配信完了と分けて報告する。
 
