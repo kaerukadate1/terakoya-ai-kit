@@ -86,6 +86,142 @@
     {
       "source": "tests/core.test.cjs",
       "target": "releases/note-article-v1/tests/core.test.cjs"
+    },
+    {
+      "source": "app/extensions.js",
+      "target": "releases/note-article-v1/dist/extensions.js"
+    },
+    {
+      "source": "app/history.js",
+      "target": "releases/note-article-v1/dist/history.js"
+    },
+    {
+      "source": "app/workspace.css",
+      "target": "releases/note-article-v1/dist/workspace.css"
+    },
+    {
+      "source": "app/completed-articles.json",
+      "target": "releases/note-article-v1/dist/completed-articles.json"
+    },
+    {
+      "source": "tests/extensions.test.cjs",
+      "target": "releases/note-article-v1/tests/extensions.test.cjs"
+    },
+    {
+      "source": "tests/history.test.cjs",
+      "target": "releases/note-article-v1/tests/history.test.cjs"
+    },
+    {
+      "source": "tests/feedback.test.cjs",
+      "target": "releases/note-article-v1/tests/feedback.test.cjs"
+    },
+    {
+      "source": "tests/distribution.test.cjs",
+      "target": "releases/note-article-v1/tests/distribution.test.cjs"
+    },
+    {
+      "source": "skills/natural-japanese/SKILL.md",
+      "target": "releases/note-article-v1/skills/natural-japanese/SKILL.md"
+    },
+    {
+      "source": "skills/natural-japanese/agents/openai.yaml",
+      "target": "releases/note-article-v1/skills/natural-japanese/agents/openai.yaml"
+    },
+    {
+      "source": "skills/natural-japanese/assets/style-profile-template.md",
+      "target": "releases/note-article-v1/skills/natural-japanese/assets/style-profile-template.md"
+    },
+    {
+      "source": "skills/natural-japanese/references/diagnose.md",
+      "target": "releases/note-article-v1/skills/natural-japanese/references/diagnose.md"
+    },
+    {
+      "source": "skills/natural-japanese/references/doctypes/guide.md",
+      "target": "releases/note-article-v1/skills/natural-japanese/references/doctypes/guide.md"
+    },
+    {
+      "source": "skills/natural-japanese/references/doctypes/memo.md",
+      "target": "releases/note-article-v1/skills/natural-japanese/references/doctypes/memo.md"
+    },
+    {
+      "source": "skills/natural-japanese/references/doctypes/minutes.md",
+      "target": "releases/note-article-v1/skills/natural-japanese/references/doctypes/minutes.md"
+    },
+    {
+      "source": "skills/natural-japanese/references/doctypes/report.md",
+      "target": "releases/note-article-v1/skills/natural-japanese/references/doctypes/report.md"
+    },
+    {
+      "source": "skills/natural-japanese/references/doctypes/slide.md",
+      "target": "releases/note-article-v1/skills/natural-japanese/references/doctypes/slide.md"
+    },
+    {
+      "source": "skills/natural-japanese/references/examples.md",
+      "target": "releases/note-article-v1/skills/natural-japanese/references/examples.md"
+    },
+    {
+      "source": "skills/natural-japanese/references/forbidden-patterns.md",
+      "target": "releases/note-article-v1/skills/natural-japanese/references/forbidden-patterns.md"
+    },
+    {
+      "source": "skills/natural-japanese/references/genre-notes.md",
+      "target": "releases/note-article-v1/skills/natural-japanese/references/genre-notes.md"
+    },
+    {
+      "source": "skills/natural-japanese/references/manual-checklist.md",
+      "target": "releases/note-article-v1/skills/natural-japanese/references/manual-checklist.md"
+    },
+    {
+      "source": "skills/natural-japanese/references/readability-antipatterns.md",
+      "target": "releases/note-article-v1/skills/natural-japanese/references/readability-antipatterns.md"
+    },
+    {
+      "source": "skills/natural-japanese/references/readability-principles.md",
+      "target": "releases/note-article-v1/skills/natural-japanese/references/readability-principles.md"
+    },
+    {
+      "source": "skills/natural-japanese/references/revision-guide.md",
+      "target": "releases/note-article-v1/skills/natural-japanese/references/revision-guide.md"
+    },
+    {
+      "source": "skills/natural-japanese/references/translationese.md",
+      "target": "releases/note-article-v1/skills/natural-japanese/references/translationese.md"
+    },
+    {
+      "source": "skills/natural-japanese/references/writing-constitution.md",
+      "target": "releases/note-article-v1/skills/natural-japanese/references/writing-constitution.md"
+    },
+    {
+      "source": "skills/natural-japanese/scripts/calibrate.py",
+      "target": "releases/note-article-v1/skills/natural-japanese/scripts/calibrate.py"
+    },
+    {
+      "source": "skills/natural-japanese/scripts/fixtures/ai-smelly.md",
+      "target": "releases/note-article-v1/skills/natural-japanese/scripts/fixtures/ai-smelly.md"
+    },
+    {
+      "source": "skills/natural-japanese/scripts/fixtures/natural.md",
+      "target": "releases/note-article-v1/skills/natural-japanese/scripts/fixtures/natural.md"
+    },
+    {
+      "source": "skills/natural-japanese/scripts/lint.py",
+      "target": "releases/note-article-v1/skills/natural-japanese/scripts/lint.py"
+    },
+    {
+      "source": "skills/natural-japanese/scripts/outline.py",
+      "target": "releases/note-article-v1/skills/natural-japanese/scripts/outline.py"
+    },
+    {
+      "source": "skills/natural-japanese/scripts/semantic.py",
+      "target": "releases/note-article-v1/skills/natural-japanese/scripts/semantic.py"
+    },
+    {
+      "source": "skills/natural-japanese/scripts/terms.py",
+      "target": "releases/note-article-v1/skills/natural-japanese/scripts/terms.py"
+    },
+    {
+      "source": "skills/natural-japanese/scripts/textcore.py",
+      "target": "releases/note-article-v1/skills/natural-japanese/scripts/textcore.py"
     }
   ]
 }
