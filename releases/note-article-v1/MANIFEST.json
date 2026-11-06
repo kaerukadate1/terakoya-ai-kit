@@ -25,8 +25,8 @@
     },
     {
       "path": "dist/app.js",
-      "bytes": 70472,
-      "sha256": "3bccf2a38f13a9d1b9edf134cbe1e3836747ba9ac5f81883574ae87a44fa6b55"
+      "bytes": 70530,
+      "sha256": "32583b0420d7240906b7c7d83cab8cbd9821f20fa2977b7fa18257457be858c1"
     },
     {
       "path": "dist/assets.js",

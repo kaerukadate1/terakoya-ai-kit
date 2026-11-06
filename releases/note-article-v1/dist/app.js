@@ -91,7 +91,7 @@
   function renderPreferences() {
     $('#writing-rules').value = savedRules(); $('#learning-enabled').checked = preferences.enabled; $('#learning-notes').value = preferences.notes;
     for (const [key, value] of Object.entries(preferences.defaults)) $('#default-settings-form').elements.namedItem(key).value = value;
-    $('#settings-updated').textContent = `最終保存: ${preferences.updatedAt ? new Date(preferences.updatedAt).toLocaleString('ja-JP') : '未保存（以前の決まりは引き継ぎ済み）'} / 保存元: ${preferences.source}`;
+    $('#settings-updated').textContent = `最終保存: ${preferences.updatedAt ? new Date(preferences.updatedAt).toLocaleString('ja-JP') : (savedRules() ? '未保存（以前の決まりは引き継ぎ済み）' : '未保存（決まりは未設定）')} / 保存元: ${preferences.source}`;
     $('#effective-settings').textContent = `適用先: 相談・ニュース・ネタ案・構成・本文・推敲の依頼文の先頭。${preferences.enabled ? 'ON' : 'OFF（決まりは保存したまま）'}。初期設定は新しい記事を始めたときに反映します。`;
     $('#effective-prompt').textContent = X.prefix(effectiveRules()); renderLearningSummary();
   }
