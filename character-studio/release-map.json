@@ -1,19 +1,455 @@
 {
-  "allowedTargets": ["releases/character-studio-v1"],
+  "allowedTargets": [
+    "releases/character-studio-v1"
+  ],
   "files": [
-    {"source":"app/index.html","target":"releases/character-studio-v1/dist/index.html"},
-    {"source":"app/styles.css","target":"releases/character-studio-v1/dist/styles.css"},
-    {"source":"app/tool-ui.css","target":"releases/character-studio-v1/dist/tool-ui.css"},
-    {"source":"app/core.js","target":"releases/character-studio-v1/dist/core.js"},
-    {"source":"app/bridge.js","target":"releases/character-studio-v1/dist/bridge.js"},
-    {"source":"app/app.js","target":"releases/character-studio-v1/dist/app.js"},
-    {"source":"app/assets/terakoya-logo.jpg","target":"releases/character-studio-v1/dist/assets/terakoya-logo.jpg"},
-    {"source":"app/assets/lucide.min.js","target":"releases/character-studio-v1/dist/assets/lucide.min.js"},
-    {"source":"app/assets/LICENSE","target":"releases/character-studio-v1/dist/assets/LICENSE"},
-    {"source":"prompts/BUILD_PROMPT.md","target":"releases/character-studio-v1/BUILD_PROMPT.md"},
-    {"source":"prompts/RELEASE_README.md","target":"releases/character-studio-v1/README.md"},
-    {"source":"開始文.txt","target":"releases/character-studio-v1/STARTER_PROMPT.txt"},
-    {"source":"skills/persona-design/SKILL.md","target":"releases/character-studio-v1/skills/persona-design/SKILL.md"},
-    {"source":"skills/work-execution/SKILL.md","target":"releases/character-studio-v1/skills/work-execution/SKILL.md"}
+    {
+      "source": "app/index.html",
+      "target": "releases/character-studio-v1/dist/index.html"
+    },
+    {
+      "source": "app/styles.css",
+      "target": "releases/character-studio-v1/dist/styles.css"
+    },
+    {
+      "source": "app/tool-ui.css",
+      "target": "releases/character-studio-v1/dist/tool-ui.css"
+    },
+    {
+      "source": "app/core.js",
+      "target": "releases/character-studio-v1/dist/core.js"
+    },
+    {
+      "source": "app/bridge.js",
+      "target": "releases/character-studio-v1/dist/bridge.js"
+    },
+    {
+      "source": "app/app.js",
+      "target": "releases/character-studio-v1/dist/app.js"
+    },
+    {
+      "source": "app/assets/terakoya-logo.jpg",
+      "target": "releases/character-studio-v1/dist/assets/terakoya-logo.jpg"
+    },
+    {
+      "source": "app/assets/lucide.min.js",
+      "target": "releases/character-studio-v1/dist/assets/lucide.min.js"
+    },
+    {
+      "source": "app/assets/LICENSE",
+      "target": "releases/character-studio-v1/dist/assets/LICENSE"
+    },
+    {
+      "source": "prompts/BUILD_PROMPT.md",
+      "target": "releases/character-studio-v1/BUILD_PROMPT.md"
+    },
+    {
+      "source": "prompts/RELEASE_README.md",
+      "target": "releases/character-studio-v1/README.md"
+    },
+    {
+      "source": "開始文.txt",
+      "target": "releases/character-studio-v1/STARTER_PROMPT.txt"
+    },
+    {
+      "source": "skills/persona-design/SKILL.md",
+      "target": "releases/character-studio-v1/skills/persona-design/SKILL.md"
+    },
+    {
+      "source": "skills/work-execution/SKILL.md",
+      "target": "releases/character-studio-v1/skills/work-execution/SKILL.md"
+    },
+    {
+      "source": "app/role-skills.js",
+      "target": "releases/character-studio-v1/dist/role-skills.js"
+    },
+    {
+      "source": "skills/work-return/SKILL.md",
+      "target": "releases/character-studio-v1/skills/work-return/SKILL.md"
+    },
+    {
+      "source": "role-catalog.json",
+      "target": "releases/character-studio-v1/role-catalog.json"
+    },
+    {
+      "source": "skills/roles/sources.lock.json",
+      "target": "releases/character-studio-v1/skills/roles/sources.lock.json"
+    },
+    {
+      "source": "skills/licenses/marketing-MIT.txt",
+      "target": "releases/character-studio-v1/skills/licenses/marketing-MIT.txt"
+    },
+    {
+      "source": "skills/licenses/operations-MIT.txt",
+      "target": "releases/character-studio-v1/skills/licenses/operations-MIT.txt"
+    },
+    {
+      "source": "skills/licenses/practice-MIT.txt",
+      "target": "releases/character-studio-v1/skills/licenses/practice-MIT.txt"
+    },
+    {
+      "source": "skills/licenses/documents-MIT.txt",
+      "target": "releases/character-studio-v1/skills/licenses/documents-MIT.txt"
+    },
+    {
+      "source": "skills/roles/sns/SKILL.md",
+      "target": "releases/character-studio-v1/skills/roles/sns/SKILL.md"
+    },
+    {
+      "source": "skills/roles/sns/references/upstream.md",
+      "target": "releases/character-studio-v1/skills/roles/sns/references/upstream.md"
+    },
+    {
+      "source": "skills/roles/sns/references/LICENSE.txt",
+      "target": "releases/character-studio-v1/skills/roles/sns/references/LICENSE.txt"
+    },
+    {
+      "source": "skills/roles/announcement/SKILL.md",
+      "target": "releases/character-studio-v1/skills/roles/announcement/SKILL.md"
+    },
+    {
+      "source": "skills/roles/announcement/references/upstream.md",
+      "target": "releases/character-studio-v1/skills/roles/announcement/references/upstream.md"
+    },
+    {
+      "source": "skills/roles/announcement/references/LICENSE.txt",
+      "target": "releases/character-studio-v1/skills/roles/announcement/references/LICENSE.txt"
+    },
+    {
+      "source": "skills/roles/editor/SKILL.md",
+      "target": "releases/character-studio-v1/skills/roles/editor/SKILL.md"
+    },
+    {
+      "source": "skills/roles/editor/references/upstream.md",
+      "target": "releases/character-studio-v1/skills/roles/editor/references/upstream.md"
+    },
+    {
+      "source": "skills/roles/editor/references/LICENSE.txt",
+      "target": "releases/character-studio-v1/skills/roles/editor/references/LICENSE.txt"
+    },
+    {
+      "source": "skills/roles/repurpose/SKILL.md",
+      "target": "releases/character-studio-v1/skills/roles/repurpose/SKILL.md"
+    },
+    {
+      "source": "skills/roles/repurpose/references/upstream.md",
+      "target": "releases/character-studio-v1/skills/roles/repurpose/references/upstream.md"
+    },
+    {
+      "source": "skills/roles/repurpose/references/LICENSE.txt",
+      "target": "releases/character-studio-v1/skills/roles/repurpose/references/LICENSE.txt"
+    },
+    {
+      "source": "skills/roles/product/SKILL.md",
+      "target": "releases/character-studio-v1/skills/roles/product/SKILL.md"
+    },
+    {
+      "source": "skills/roles/product/references/upstream.md",
+      "target": "releases/character-studio-v1/skills/roles/product/references/upstream.md"
+    },
+    {
+      "source": "skills/roles/product/references/LICENSE.txt",
+      "target": "releases/character-studio-v1/skills/roles/product/references/LICENSE.txt"
+    },
+    {
+      "source": "skills/roles/calendar/SKILL.md",
+      "target": "releases/character-studio-v1/skills/roles/calendar/SKILL.md"
+    },
+    {
+      "source": "skills/roles/calendar/references/upstream.md",
+      "target": "releases/character-studio-v1/skills/roles/calendar/references/upstream.md"
+    },
+    {
+      "source": "skills/roles/calendar/references/LICENSE.txt",
+      "target": "releases/character-studio-v1/skills/roles/calendar/references/LICENSE.txt"
+    },
+    {
+      "source": "skills/roles/proposal/SKILL.md",
+      "target": "releases/character-studio-v1/skills/roles/proposal/SKILL.md"
+    },
+    {
+      "source": "skills/roles/proposal/references/upstream.md",
+      "target": "releases/character-studio-v1/skills/roles/proposal/references/upstream.md"
+    },
+    {
+      "source": "skills/roles/proposal/references/LICENSE.txt",
+      "target": "releases/character-studio-v1/skills/roles/proposal/references/LICENSE.txt"
+    },
+    {
+      "source": "skills/roles/slides/SKILL.md",
+      "target": "releases/character-studio-v1/skills/roles/slides/SKILL.md"
+    },
+    {
+      "source": "skills/roles/slides/references/upstream.md",
+      "target": "releases/character-studio-v1/skills/roles/slides/references/upstream.md"
+    },
+    {
+      "source": "skills/roles/slides/references/LICENSE.txt",
+      "target": "releases/character-studio-v1/skills/roles/slides/references/LICENSE.txt"
+    },
+    {
+      "source": "skills/roles/manual/SKILL.md",
+      "target": "releases/character-studio-v1/skills/roles/manual/SKILL.md"
+    },
+    {
+      "source": "skills/roles/manual/references/upstream.md",
+      "target": "releases/character-studio-v1/skills/roles/manual/references/upstream.md"
+    },
+    {
+      "source": "skills/roles/manual/references/LICENSE.txt",
+      "target": "releases/character-studio-v1/skills/roles/manual/references/LICENSE.txt"
+    },
+    {
+      "source": "skills/roles/faq/SKILL.md",
+      "target": "releases/character-studio-v1/skills/roles/faq/SKILL.md"
+    },
+    {
+      "source": "skills/roles/faq/references/upstream.md",
+      "target": "releases/character-studio-v1/skills/roles/faq/references/upstream.md"
+    },
+    {
+      "source": "skills/roles/faq/references/LICENSE.txt",
+      "target": "releases/character-studio-v1/skills/roles/faq/references/LICENSE.txt"
+    },
+    {
+      "source": "skills/roles/teaching/SKILL.md",
+      "target": "releases/character-studio-v1/skills/roles/teaching/SKILL.md"
+    },
+    {
+      "source": "skills/roles/teaching/references/upstream.md",
+      "target": "releases/character-studio-v1/skills/roles/teaching/references/upstream.md"
+    },
+    {
+      "source": "skills/roles/teaching/references/LICENSE.txt",
+      "target": "releases/character-studio-v1/skills/roles/teaching/references/LICENSE.txt"
+    },
+    {
+      "source": "skills/roles/proofread/SKILL.md",
+      "target": "releases/character-studio-v1/skills/roles/proofread/SKILL.md"
+    },
+    {
+      "source": "skills/roles/proofread/references/upstream.md",
+      "target": "releases/character-studio-v1/skills/roles/proofread/references/upstream.md"
+    },
+    {
+      "source": "skills/roles/proofread/references/LICENSE.txt",
+      "target": "releases/character-studio-v1/skills/roles/proofread/references/LICENSE.txt"
+    },
+    {
+      "source": "skills/roles/ideas/SKILL.md",
+      "target": "releases/character-studio-v1/skills/roles/ideas/SKILL.md"
+    },
+    {
+      "source": "skills/roles/ideas/references/upstream.md",
+      "target": "releases/character-studio-v1/skills/roles/ideas/references/upstream.md"
+    },
+    {
+      "source": "skills/roles/ideas/references/LICENSE.txt",
+      "target": "releases/character-studio-v1/skills/roles/ideas/references/LICENSE.txt"
+    },
+    {
+      "source": "skills/roles/service/SKILL.md",
+      "target": "releases/character-studio-v1/skills/roles/service/SKILL.md"
+    },
+    {
+      "source": "skills/roles/service/references/upstream.md",
+      "target": "releases/character-studio-v1/skills/roles/service/references/upstream.md"
+    },
+    {
+      "source": "skills/roles/service/references/LICENSE.txt",
+      "target": "releases/character-studio-v1/skills/roles/service/references/LICENSE.txt"
+    },
+    {
+      "source": "skills/roles/competitor/SKILL.md",
+      "target": "releases/character-studio-v1/skills/roles/competitor/SKILL.md"
+    },
+    {
+      "source": "skills/roles/competitor/references/upstream.md",
+      "target": "releases/character-studio-v1/skills/roles/competitor/references/upstream.md"
+    },
+    {
+      "source": "skills/roles/competitor/references/LICENSE.txt",
+      "target": "releases/character-studio-v1/skills/roles/competitor/references/LICENSE.txt"
+    },
+    {
+      "source": "skills/roles/compare/SKILL.md",
+      "target": "releases/character-studio-v1/skills/roles/compare/SKILL.md"
+    },
+    {
+      "source": "skills/roles/compare/references/upstream.md",
+      "target": "releases/character-studio-v1/skills/roles/compare/references/upstream.md"
+    },
+    {
+      "source": "skills/roles/compare/references/LICENSE.txt",
+      "target": "releases/character-studio-v1/skills/roles/compare/references/LICENSE.txt"
+    },
+    {
+      "source": "skills/roles/synthesize/SKILL.md",
+      "target": "releases/character-studio-v1/skills/roles/synthesize/SKILL.md"
+    },
+    {
+      "source": "skills/roles/synthesize/references/upstream.md",
+      "target": "releases/character-studio-v1/skills/roles/synthesize/references/upstream.md"
+    },
+    {
+      "source": "skills/roles/synthesize/references/LICENSE.txt",
+      "target": "releases/character-studio-v1/skills/roles/synthesize/references/LICENSE.txt"
+    },
+    {
+      "source": "skills/roles/decision/SKILL.md",
+      "target": "releases/character-studio-v1/skills/roles/decision/SKILL.md"
+    },
+    {
+      "source": "skills/roles/decision/references/upstream.md",
+      "target": "releases/character-studio-v1/skills/roles/decision/references/upstream.md"
+    },
+    {
+      "source": "skills/roles/decision/references/LICENSE.txt",
+      "target": "releases/character-studio-v1/skills/roles/decision/references/LICENSE.txt"
+    },
+    {
+      "source": "skills/roles/tasks/SKILL.md",
+      "target": "releases/character-studio-v1/skills/roles/tasks/SKILL.md"
+    },
+    {
+      "source": "skills/roles/tasks/references/upstream.md",
+      "target": "releases/character-studio-v1/skills/roles/tasks/references/upstream.md"
+    },
+    {
+      "source": "skills/roles/tasks/references/LICENSE.txt",
+      "target": "releases/character-studio-v1/skills/roles/tasks/references/LICENSE.txt"
+    },
+    {
+      "source": "skills/roles/priority/SKILL.md",
+      "target": "releases/character-studio-v1/skills/roles/priority/SKILL.md"
+    },
+    {
+      "source": "skills/roles/priority/references/upstream.md",
+      "target": "releases/character-studio-v1/skills/roles/priority/references/upstream.md"
+    },
+    {
+      "source": "skills/roles/priority/references/LICENSE.txt",
+      "target": "releases/character-studio-v1/skills/roles/priority/references/LICENSE.txt"
+    },
+    {
+      "source": "skills/roles/meeting/SKILL.md",
+      "target": "releases/character-studio-v1/skills/roles/meeting/SKILL.md"
+    },
+    {
+      "source": "skills/roles/meeting/references/upstream.md",
+      "target": "releases/character-studio-v1/skills/roles/meeting/references/upstream.md"
+    },
+    {
+      "source": "skills/roles/meeting/references/LICENSE.txt",
+      "target": "releases/character-studio-v1/skills/roles/meeting/references/LICENSE.txt"
+    },
+    {
+      "source": "skills/roles/minutes/SKILL.md",
+      "target": "releases/character-studio-v1/skills/roles/minutes/SKILL.md"
+    },
+    {
+      "source": "skills/roles/minutes/references/upstream.md",
+      "target": "releases/character-studio-v1/skills/roles/minutes/references/upstream.md"
+    },
+    {
+      "source": "skills/roles/minutes/references/LICENSE.txt",
+      "target": "releases/character-studio-v1/skills/roles/minutes/references/LICENSE.txt"
+    },
+    {
+      "source": "skills/roles/progress/SKILL.md",
+      "target": "releases/character-studio-v1/skills/roles/progress/SKILL.md"
+    },
+    {
+      "source": "skills/roles/progress/references/upstream.md",
+      "target": "releases/character-studio-v1/skills/roles/progress/references/upstream.md"
+    },
+    {
+      "source": "skills/roles/progress/references/LICENSE.txt",
+      "target": "releases/character-studio-v1/skills/roles/progress/references/LICENSE.txt"
+    },
+    {
+      "source": "skills/roles/report/SKILL.md",
+      "target": "releases/character-studio-v1/skills/roles/report/SKILL.md"
+    },
+    {
+      "source": "skills/roles/report/references/upstream.md",
+      "target": "releases/character-studio-v1/skills/roles/report/references/upstream.md"
+    },
+    {
+      "source": "skills/roles/report/references/LICENSE.txt",
+      "target": "releases/character-studio-v1/skills/roles/report/references/LICENSE.txt"
+    },
+    {
+      "source": "skills/roles/clean/SKILL.md",
+      "target": "releases/character-studio-v1/skills/roles/clean/SKILL.md"
+    },
+    {
+      "source": "skills/roles/clean/references/upstream.md",
+      "target": "releases/character-studio-v1/skills/roles/clean/references/upstream.md"
+    },
+    {
+      "source": "skills/roles/clean/references/LICENSE.txt",
+      "target": "releases/character-studio-v1/skills/roles/clean/references/LICENSE.txt"
+    },
+    {
+      "source": "skills/roles/sales/SKILL.md",
+      "target": "releases/character-studio-v1/skills/roles/sales/SKILL.md"
+    },
+    {
+      "source": "skills/roles/sales/references/upstream.md",
+      "target": "releases/character-studio-v1/skills/roles/sales/references/upstream.md"
+    },
+    {
+      "source": "skills/roles/sales/references/LICENSE.txt",
+      "target": "releases/character-studio-v1/skills/roles/sales/references/LICENSE.txt"
+    },
+    {
+      "source": "skills/roles/survey/SKILL.md",
+      "target": "releases/character-studio-v1/skills/roles/survey/SKILL.md"
+    },
+    {
+      "source": "skills/roles/survey/references/upstream.md",
+      "target": "releases/character-studio-v1/skills/roles/survey/references/upstream.md"
+    },
+    {
+      "source": "skills/roles/survey/references/LICENSE.txt",
+      "target": "releases/character-studio-v1/skills/roles/survey/references/LICENSE.txt"
+    },
+    {
+      "source": "skills/roles/retrospective/SKILL.md",
+      "target": "releases/character-studio-v1/skills/roles/retrospective/SKILL.md"
+    },
+    {
+      "source": "skills/roles/retrospective/references/upstream.md",
+      "target": "releases/character-studio-v1/skills/roles/retrospective/references/upstream.md"
+    },
+    {
+      "source": "skills/roles/retrospective/references/LICENSE.txt",
+      "target": "releases/character-studio-v1/skills/roles/retrospective/references/LICENSE.txt"
+    },
+    {
+      "source": "skills/roles/learning/SKILL.md",
+      "target": "releases/character-studio-v1/skills/roles/learning/SKILL.md"
+    },
+    {
+      "source": "skills/roles/learning/references/upstream.md",
+      "target": "releases/character-studio-v1/skills/roles/learning/references/upstream.md"
+    },
+    {
+      "source": "skills/roles/learning/references/LICENSE.txt",
+      "target": "releases/character-studio-v1/skills/roles/learning/references/LICENSE.txt"
+    },
+    {
+      "source": "skills/roles/diff/SKILL.md",
+      "target": "releases/character-studio-v1/skills/roles/diff/SKILL.md"
+    },
+    {
+      "source": "skills/roles/diff/references/upstream.md",
+      "target": "releases/character-studio-v1/skills/roles/diff/references/upstream.md"
+    },
+    {
+      "source": "skills/roles/diff/references/LICENSE.txt",
+      "target": "releases/character-studio-v1/skills/roles/diff/references/LICENSE.txt"
+    }
   ]
 }

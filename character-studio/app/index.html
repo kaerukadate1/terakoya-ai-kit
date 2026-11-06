@@ -27,23 +27,29 @@
 </section>
 <section class="panel" id="package" hidden>
   <div class="panel-head"><div><p class="eyebrow">04 / ASSISTANT PACKAGE</p><h1>アシスタントパッケージ</h1></div></div>
-  <section class="package-overview"><div id="package-avatar" class="portrait"></div><div><h2 id="package-name"></h2><p id="package-role"></p><p id="package-summary" class="note"></p></div></section>
+  <section class="package-overview"><div id="package-avatar" class="portrait"></div><div><h2 id="package-name"></h2><p id="package-role"></p><p id="package-summary" class="note"></p><p id="package-specialization" class="note"></p></div></section>
   <div class="production-actions"><button class="button primary" id="produce-package"><i data-lucide="sparkles"></i>パッケージを制作</button><button class="button quiet" id="check-return" hidden><i data-lucide="refresh-cw"></i>返送をもう一度確認</button><button class="button quiet" id="resume-return" hidden><i data-lucide="undo-2"></i>依頼時の設定を開く</button><button class="icon-button" id="cancel-return" title="返送待ちを解除" aria-label="返送待ちを解除" hidden><i data-lucide="x"></i></button></div>
   <p id="production-status" class="note" role="status" aria-live="polite"></p>
   <div class="manual-image-actions"><button class="button quiet" id="upload-avatar"><i data-lucide="upload"></i>画像を手動でアップロード</button><input id="avatar-input" type="file" accept="image/png,image/jpeg,image/webp,.png,.jpg,.jpeg,.webp" hidden><button class="icon-button" id="remove-avatar" title="画像を外す" aria-label="画像を外す" hidden><i data-lucide="x"></i></button></div>
   <p class="manual-image-note">自動返送されない場合は、ChatGPTで完成した画像を保存して、ここから選んでください。PNG・JPEG・WebP、20MBまで。</p>
+  <section class="use-assistant" aria-labelledby="use-assistant-title">
+    <div class="use-assistant-heading"><i data-lucide="file-down" aria-hidden="true"></i><div><p class="eyebrow">次にやること</p><h2 id="use-assistant-title">設定ファイルをChatGPTへ</h2></div></div>
+    <p>役割・話し方・専門スキルを、1つのMarkdownファイルにまとめています。</p>
+    <ol><li>下のボタンで設定ファイルをダウンロード</li><li>使いたいプロジェクトの新しいチャットへ添付</li><li>この担当にやってほしい仕事を送信</li></ol>
+    <button class="button primary" id="download-settings" data-download="markdown"><i data-lucide="download"></i>アシスタント設定をダウンロード</button>
+    <p class="use-assistant-note">ファイルの追加だけで常に自動適用されるわけではありません。反映されない場合だけ、下の短い起動文を送ってください。</p>
+  </section>
   <div class="package-rows">
     <div><i data-lucide="contact-round"></i><section><h2>プロフィール</h2><p id="package-profile"></p></section><button class="icon-button" data-download="profile" title="プロフィールを保存" aria-label="プロフィールを保存"><i data-lucide="download"></i></button></div>
     <div><i data-lucide="image"></i><section><h2>プロフィール画像</h2><p id="package-image-state"></p></section><button class="icon-button" id="download-avatar" title="画像を保存" aria-label="画像を保存"><i data-lucide="download"></i></button></div>
     <div><i data-lucide="file-text"></i><section><h2>設定ファイル</h2><p id="markdown-filename"></p></section><button class="icon-button" data-download="markdown" title="Markdownを保存" aria-label="Markdownを保存"><i data-lucide="download"></i></button></div>
   </div>
-  <div class="output-head"><h2>呼び出しプロンプト</h2><div class="inline"><button class="icon-button" id="copy-invocation" title="呼び出し文をコピー" aria-label="呼び出し文をコピー"><i data-lucide="copy"></i></button><button class="icon-button" data-download="invocation" title="呼び出し文を保存" aria-label="呼び出し文を保存"><i data-lucide="download"></i></button></div></div>
-  <textarea id="invocation-output" class="code-output" rows="5" readonly aria-label="呼び出しプロンプト"></textarea>
+  <details id="invocation-help" class="invocation-help"><summary>設定が反映されないとき・短い起動文</summary><div class="output-head"><h2>起動文</h2><div class="inline"><button class="icon-button" id="copy-invocation" title="起動文をコピー" aria-label="起動文をコピー"><i data-lucide="copy"></i></button><button class="icon-button" data-download="invocation" title="起動文を保存" aria-label="起動文を保存"><i data-lucide="download"></i></button></div></div><textarea id="invocation-output" class="code-output" rows="4" readonly aria-label="起動文"></textarea></details>
   <div class="inline separated"><button class="button quiet" data-download="package"><i data-lucide="package"></i>パッケージをバックアップ</button></div>
   <div class="bottom-actions"><button class="button quiet" data-next="appearance"><i data-lucide="arrow-left"></i>戻る</button><button class="button primary" id="finish-assistant">保存して一覧へ<i data-lucide="check"></i></button></div>
 </section>
 <section class="panel" id="library" hidden><div class="panel-head"><div><p class="eyebrow">05 / LIBRARY</p><h1>アシスタント一覧</h1></div><div class="inline"><button class="icon-button" id="export-all" title="一覧をバックアップ" aria-label="一覧をバックアップ"><i data-lucide="download"></i></button><label class="icon-button upload-label" title="バックアップを読み込む" aria-label="バックアップを読み込む" tabindex="0"><i data-lucide="upload"></i><input id="import-all" type="file" accept="application/json,.json" hidden></label></div></div><div class="library-filter"><label class="search-label"><i data-lucide="search"></i><input id="library-search" placeholder="名前・担当で検索" aria-label="アシスタントを検索"></label><select id="library-category" aria-label="カテゴリーで絞り込み"><option value="all">すべてのカテゴリー</option></select></div><div id="library-list" class="library-list"></div></section>
 </div><aside class="character-preview" aria-label="現在のアシスタント"><div class="preview-top"><span class="eyebrow">YOUR ASSISTANT</span><span id="draft-badge" class="badge">作成中</span></div><div class="portrait" id="portrait"></div><h2 id="preview-name"></h2><p id="preview-role" class="preview-role"></p><p id="preview-mission" class="preview-mission"></p><dl><div><dt>話し方</dt><dd id="preview-tone"></dd></div><div><dt>判断方針</dt><dd id="preview-judgment"></dd></div><div><dt>任せる範囲</dt><dd id="preview-scope"></dd></div><div><dt>相談</dt><dd id="preview-consult"></dd></div></dl><div class="inline preview-colors"><span id="preview-main"></span><span id="preview-accent"></span></div></aside></div></main></div>
 <dialog id="confirm-dialog" aria-labelledby="confirm-title"><div class="dialog-head"><h2 id="confirm-title">確認</h2><button class="icon-button" data-close="confirm-dialog" aria-label="閉じる" title="閉じる"><i data-lucide="x"></i></button></div><p id="confirm-message"></p><div class="inline"><button class="button quiet" data-close="confirm-dialog">キャンセル</button><button class="button primary" id="confirm-ok">続ける</button></div></dialog>
-<script src="assets/lucide.min.js"></script><script src="core.js"></script><script src="bridge.js"></script><script src="app.js"></script>
+<script src="assets/lucide.min.js"></script><script src="role-skills.js"></script><script src="core.js"></script><script src="bridge.js"></script><script src="app.js"></script>
 </body></html>
