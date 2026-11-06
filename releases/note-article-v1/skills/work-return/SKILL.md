@@ -1,47 +1,37 @@
 ---
 name: terakoya-note-work-return
-description: ChatGPT Workが制作したnote企画・構成・本文・画像を、依頼元の同じSiteの依頼ID別フォルダへ保存して自動返送する。投稿や権限変更は行わない。
+description: 企画・構成・本文・画像を依頼元の同じSiteへ保存・配信し、完成本文を記事ストックへ残す。
 ---
 
-# 依頼元ツールへの自動返送
+# 同じツールへの返送と記事ストック
 
-## 前提
+依頼文の対象Site ID、targetSite、requestId、draftId、type、slotIdをそのまま使う。別Siteの新規作成、公開範囲・認証の変更はしない。本文と画像は「完成」、相談とニュースは「構成」の返送である。
 
-依頼文にある`targetSite / requestId / draftId / type / slotId`を使用する。IDや戻り先を推測しない。対象は依頼元の同じSiteだけ。Sites等の利用可能な正規の編集・配信機能を使い、権限がない場合は停止する。
+## 返送のタイミング
+
+- `consult` と `news`: 本人との対話で構成1案がまとまったら、article:nullのJSONを生成直後に返送する。本文は作らない。構成・文体・字数・画像枚数・色はツール側で確認する。
+- `topics` と `lp-outline`: 指定されたネタ・構成だけを返す。
+- `article` と `polish`: 確認済み構成・設定から本文を制作したら、追加の「返送してください」を待たず返送する。確認取り込みはツールで行う。
+- `learn`: 本人が確認したrulesを返す。
+- `image`: 実際に生成・検品した画像を返す。
+
+サービス案内は任意。未入力なら記事単体の締めで完結し、案内情報不足を理由に返送を止めない。ニュースは実際に読んだ出典をsourcesに含め、公開日不明を推定しない。
 
 ## 保存と配信
 
-1. 対象Siteを正確に特定し、最新ソース・静的配信フォルダを取得する。サイトの所有者・アクセス範囲は維持する。
-2. 静的配信フォルダの`returns/<requestId>/`を新規作成する。既存の異なる依頼のフォルダ・コード・画像を消さない。
-3. 画像なら実際に生成したPNGを`image.png`へ保存する。本文・企画・構成なら指定形式のJSONオブジェクトを準備する。
-4. 最後に`result.json`を保存する。形式は次節。`complete`は実際の成果物が揃った時だけ。JSONに秘密情報・認証トークンを含めない。
-5. 保存した同じSiteのソースを配信へ反映する。別の新規Siteを作ったり、アクセス制限を緩めたりしない。
-6. 正規のアクセスで`result.json`、画像なら`image.png`も取得できるかを確認する。JSONの依頼ID・画像URL・対象Siteを照合する。
-7. 「自動返送の保存と配信を確認」と報告し、元ツールのリンクを返す。ブラウザ側の挿入まで見ていなければ「画面での挿入は未確認」と分ける。
+1. 対象IDのSiteと最新ソースを取得する。既存ファイル、設定、他依頼の結果を保持する。
+2. 静的配信フォルダの`returns/<requestId>/`へ保存。JSONは依頼文のenvelopeに制作JSONをdataオブジェクトで格納する。依頼ID等を変えない。
+3. 画像は先にimage.pngを保存し、result.jsonのimageUrlは同じ依頼フォルダを指す。
+4. article/polishでは、依頼文に示されたinputと制作dataを`completed-articles/<requestId>/article.json`へ保存する。`completed-articles.json`のentriesにid/title/createdAt/urlを追記し、以前の記事を消さない。
+5. 最後にresult.jsonを保存して、同じSiteを更新・配信する。ローカルにファイルを書くだけで完了にしない。
+6. 依頼ID、対象Site、返送ファイルを確認する。可能ならツール画面で返送を確認する。画面が未確認なら配信完了と分けて報告する。
 
-## JSON
+形式:
 
 ```json
-{
-  "schemaVersion": 1,
-  "requestId": "依頼文の値",
-  "type": "topics | lp-outline | article | image の指定値",
-  "draftId": "依頼文の値",
-  "slotId": "画像なら cover または s1 等、その他は空文字",
-  "targetSite": "依頼文のorigin。末尾スラッシュなし",
-  "status": "complete",
-  "data": { "articleまたはtopicsとsource": "指定されたJSONをそのままオブジェクトで入れる" }
-}
+{"schemaVersion":1,"requestId":"依頼の値","type":"topics|lp-outline|consult|news|article|polish|learn|imageの指定値","draftId":"依頼の値","slotId":"指定値","targetSite":"依頼のorigin","status":"complete","data":{"生成したJSON":"文字列ではなくオブジェクト"}}
 ```
 
-画像では`data`の代わりに`"imageUrl":"/returns/<requestId>/image.png"`を入れる。外部Library URL、ローカルパス、別SiteのURLを画像URLとして返さない。
+修正依頼は、同じrequestIdの結果だけを更新してよい。他の依頼や記事は上書きしない。同時更新は最新ソースへ自分の依頼フォルダを追加し直す。force pushはしない。
 
-## 失敗・競合
-
-保存できない・配信できない・認証が必要・画像生成できない場合は、迂回せず「自動返送できなかった」と理由を報告し、成果物JSONまたは画像ファイルを返す。成功の偽装は禁止。
-
-同時更新でソースが競合した場合、force pushや古いサイト一式での上書きをしない。最新ソースを読み直し、自分の新規依頼フォルダだけを追加して再度検証する。解消不能なら停止。
-
-ツール側は依頼ID・記事ID・章ID・依頼時点の内容を照合する。依頼後に記事が変わった結果は自動反映せず保留する。未保存画像だけ自動で挿入し、既存画像の差し替えと本文の確定は本人確認を残す。
-
-noteへの投稿・公開、GitHubの共有範囲変更、購入・追加課金、認証・権限変更はこの手順に含まれない。
+保存・配信権限がない、検索・画像生成ができない場合はその事実を伝え、正しい制作JSONと理由を返す。自動返送の成功を装わない。ローカルURLへWorkから保存しない。noteへ投稿しない。

@@ -2,14 +2,16 @@
 <html lang="ja">
 <head>
   <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="site-project-id" content="">
   <meta name="color-scheme" content="light dark">
   <title>寺子屋AI note記事制作ツール</title>
   <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="workspace.css?v=3">
 </head>
 <body>
   <header class="app-header">
     <div class="identity"><span class="identity-mark" aria-hidden="true">寺</span><div><strong>寺子屋AI</strong><span class="identity-sub">note記事制作ツール</span></div><span class="edition">WORKSHOP 03</span></div>
-    <div class="header-actions"><span id="save-status" role="status">この端末に保存</span><button id="theme-toggle" class="quiet" aria-expanded="false" aria-controls="theme-panel">画面の見た目</button><button id="new-project" class="quiet">新しい記事</button></div>
+    <div class="header-actions"><span id="save-status" role="status">この端末に保存</span><button id="undo-clear" class="quiet" hidden>クリアを元に戻す</button><button id="clear-draft" class="quiet">入力をクリア</button><button id="theme-toggle" class="quiet" aria-expanded="false" aria-controls="theme-panel">画面の見た目</button><button id="new-project" class="quiet">新しい記事</button></div>
   </header>
   <section id="theme-panel" hidden class="theme-panel"><label>表示モード<select id="theme"><option value="system">システム</option><option value="light">ライト</option><option value="dark">ダーク</option></select></label></section>
   <div class="shell">
@@ -18,22 +20,30 @@
       <button data-step="topics"><span>02</span>ネタを選ぶ</button>
       <button data-step="outline"><span>03</span>構成を決める</button>
       <button data-step="write"><span>04</span>記事と画像を仕上げる</button>
-      <button data-step="library"><span>05</span>完成記事</button>
-      <div class="nav-bottom"><span class="status-dot"></span>ワークスペース<div>本文・設定はこの端末に保存</div></div>
+      <button data-step="library"><span>05</span>記事ストック</button>
+      <button data-step="history"><span aria-hidden="true">↶</span>変更履歴</button>
+      <button data-step="preferences"><span aria-hidden="true">⚙</span>学習・設定</button>
+      <div class="nav-bottom"><span class="status-dot"></span>ワークスペース<div>編集履歴・設定はこの端末に保存</div></div>
     </nav>
     <main>
       <p id="notice" role="status" aria-live="polite" hidden></p>
       <section id="return-tray" class="return-tray" aria-label="Workからの制作結果" hidden><div class="return-head"><strong>Workからの制作結果</strong><button id="check-returns" class="quiet" type="button">結果を確認</button></div><div id="return-list" aria-live="polite"></div></section>
       <section id="brief" class="panel active" aria-labelledby="brief-heading">
         <div class="panel-head"><div><p class="eyebrow">01 / BRIEF</p><h1 id="brief-heading">記事の出発点を決める</h1></div><button id="sample" class="quiet">記入例</button></div>
+        <div class="inline">
+          <button class="quiet" data-ai="consult">ChatGPTと相談しながら記事を作る</button>
+          <button class="quiet" data-ai="news">今日のニュースから記事を作る</button>
+          <button class="quiet" data-ai="learn">学習させる</button>
+        </div>
+        <div class="learning-summary separated"><p id="learning-summary" class="muted"></p><button data-go="preferences" class="quiet">学習・設定を確認</button></div>
         <form id="brief-form">
           <div class="segmented" role="group" aria-label="始め方"><label><input type="radio" name="mode" value="idea" checked>書きたいことから</label><label><input type="radio" name="mode" value="lp">LPから</label></div>
           <div id="idea-fields"><label>どんな記事を書きたいですか <b>必須</b><textarea name="idea" rows="3" maxlength="6000" placeholder="例：忙しくても運動を続けるコツを伝え、自宅トレーニングの案内につなげたい"></textarea></label></div>
           <div id="lp-fields" hidden><label>紹介したいLPのURL <b>必須</b><input name="lpUrl" type="url" maxlength="2000" placeholder="https://..."></label><label>LPの本文・補足 <span>任意</span><textarea name="sourceText" rows="3" maxlength="30000"></textarea></label></div>
           <div class="form-grid separated">
-            <label>サービス・活動名<input name="name" maxlength="300"></label>
+            <label>サービス・活動名（任意）<input name="name" maxlength="300"></label>
             <label>届けたい読者<input name="audience" maxlength="1000" placeholder="どんな悩みや状況の人か"></label>
-            <label class="wide">紹介したい内容<textarea name="offer" rows="2" maxlength="6000"></textarea></label>
+            <label class="wide">紹介したい内容（任意）<textarea name="offer" rows="2" maxlength="6000"></textarea></label>
             <label>誘導先URL <span>任意</span><input name="ctaUrl" type="url" maxlength="2000" placeholder="未入力の場合はLPのURL"></label>
             <label>案内の言葉<input name="ctaText" maxlength="300"></label>
             <label class="wide">使ってよい事実・経験<textarea name="facts" rows="3" maxlength="6000" placeholder="実際の経験、提供内容、確認済みの特徴など"></textarea></label>
@@ -68,17 +78,33 @@
       </section>
       <section id="write" class="panel" aria-labelledby="write-heading" hidden>
         <div class="panel-head"><div><p class="eyebrow" id="write-eyebrow">04 / EDITOR</p><h1 id="write-heading">記事と画像を仕上げる</h1></div><button data-ai="article" class="quiet">ChatGPTで記事を制作</button></div>
-        <div class="editor-toolbar"><div class="segmented" role="group" aria-label="表示"><button id="view-preview" type="button" aria-pressed="true">プレビュー</button><button id="view-edit" type="button" aria-pressed="false">本文を編集</button></div><span id="word-count"></span><button id="copy-article" class="quiet">本文をコピー</button></div>
-        <div id="article-empty" class="empty"><span class="empty-number">Aa</span><h2>構成から、読みたくなる記事へ。</h2><button data-ai="article" class="primary">ChatGPTで記事を制作</button></div>
+        <div class="editor-toolbar" id="editor-toolbar" hidden><div class="segmented" role="group" aria-label="表示"><button id="view-preview" type="button" aria-pressed="true">プレビュー</button><button id="view-edit" type="button" aria-pressed="false">本文を編集</button></div><button id="polish-article" data-ai="polish" class="quiet" disabled>文章を自然な日本語に整える</button><span id="word-count"></span><button id="copy-article" class="quiet">本文をコピー</button></div>
+        <div id="article-empty" class="empty"><span class="empty-number">Aa</span><h2>本文はまだ制作していません。</h2><p>確認した構成と設定を使い、次のボタンから本文を制作します。</p><button data-ai="article" class="primary">ChatGPTで記事を制作</button></div>
         <div class="editor-layout" id="article-layout" hidden><article id="preview" class="article-preview"></article><div id="article-edit" hidden></div><aside id="image-plan" class="image-plan"></aside></div>
         <div class="bottom-actions"><button class="quiet" data-go="outline">構成に戻る</button><button id="save-article" class="primary">完成記事に保存</button></div>
       </section>
       <section id="library" class="panel" aria-labelledby="library-heading" hidden>
-        <div class="panel-head"><div><p class="eyebrow" id="library-eyebrow">05 / LIBRARY</p><h1 id="library-heading">完成記事</h1></div><label class="file-button quiet">バックアップを読み込む<input id="import-project" type="file" accept="application/json,.json" hidden></label></div>
-        <div id="library-list" class="library-list"></div>
+        <div class="panel-head"><div><p class="eyebrow" id="library-eyebrow">05 / LIBRARY</p><h1 id="library-heading">記事ストック</h1></div><label class="file-button quiet">バックアップを読み込む<input id="import-project" type="file" accept="application/json,.json" hidden></label></div>
+        <p>作った記事をいつでも読んで、コピー・書き出し・続きの編集ができます。以前の本文も残します。</p><div class="form-grid"><label>記事を探す<input id="stock-search" type="search" placeholder="タイトル・本文"></label><label>保存場所<select id="stock-storage"><option value="all">すべて</option><option value="site">Siteに保存された記事</option><option value="local">このブラウザーの記事</option></select></label></div><button id="refresh-stock" class="quiet">記事ストックを更新</button><button id="unhide-stock" class="quiet" hidden>一覧から外した記事を戻す</button><p id="stock-status" role="status" class="muted"></p><div id="library-list" class="library-list"></div>
+      </section>
+      <section id="history" class="panel" aria-labelledby="history-heading" hidden>
+        <div class="panel-head"><div><p class="eyebrow">HISTORY</p><h1 id="history-heading">変更履歴</h1></div><button id="refresh-history" class="quiet">履歴を更新</button></div>
+        <p>記事本文は「記事ストック」からいつでも使えます。この画面は入力や設定の変更を見返し、必要な場合に元へ戻すための履歴です。</p>
+        <div class="form-grid"><label>履歴を検索<input id="history-search" type="search" placeholder="記事タイトル・操作内容"></label><label>表示する履歴<select id="history-filter"><option value="all">すべて</option><option value="article">記事・入力・画像</option><option value="settings">学習・設定</option><option value="trash">片付けた履歴</option></select></label></div>
+        <div class="inline"><button id="trash-history" class="quiet">表示中の履歴を片付ける</button><button id="untrash-history" class="quiet" hidden>表示中の履歴を戻す</button></div>
+        <p id="history-count" class="muted" role="status"></p><div id="history-list" class="history-list"></div>
+      </section>
+      <section id="preferences" class="panel" aria-labelledby="preferences-heading" hidden>
+        <div class="panel-head"><div><p class="eyebrow">LEARNING & SETTINGS</p><h1 id="preferences-heading">学習・設定</h1></div><button data-ai="learn" class="quiet">ChatGPTと決まりを整理する</button></div>
+        <p>「学習」はモデルの再学習ではなく、あなたが確認した決まりを保存し、次の依頼文へ添える機能です。過去の会話を勝手に読み込むことはありません。</p>
+        <div class="settings-card"><h2>記事を作るときの決まり</h2><label class="check"><input id="learning-enabled" type="checkbox" checked>保存した書き方の決まりを依頼文に入れる</label><label>書き方の好み・決まり<textarea id="writing-rules" rows="7" maxlength="10000" placeholder="例：結論から書く。未確認の数字や体験は加えない。"></textarea></label><label>学習の材料・確認したことのメモ（任意）<textarea id="learning-notes" rows="3" maxlength="6000" placeholder="例：自分の過去記事を読んで整理。2026年11月にこの3つを確認。"></textarea></label><p class="muted">このメモは「学習させる」の相談にだけ使います。記事の事実としては追加しません。</p><p id="settings-updated" class="muted"></p><div class="inline"><button id="save-rules" class="primary">学習設定を保存</button><button id="clear-rules" class="quiet">学習ルールをクリア</button><button id="settings-history" class="quiet">設定の変更履歴</button></div><p id="rules-status" class="muted" role="status"></p></div>
+        <div class="settings-card"><h2>新しい記事の初期設定</h2><p class="muted">新しく始める記事に使います。制作中の記事は「構成を決める」で個別に変更できます。</p><form id="default-settings-form" class="form-grid"><label>文章の雰囲気<select name="tone"><option>やさしく丁寧</option><option>親しみやすい会話調</option><option>簡潔で実務的</option><option>落ち着いた専門家調</option></select></label><label>本文の長さ<select name="length"><option value="1200">約1,200字</option><option value="2000">約2,000字</option><option value="3000">約3,000字</option></select></label><label>挿入画像<select name="imageCount"><option value="0">なし</option><option value="1">最大1枚</option><option value="2">最大2枚</option><option value="3">最大3枚</option></select></label><label>画像の雰囲気<select name="visualStyle"><option>写真中心・自然体</option><option>やわらかなイラスト</option><option>洗練された編集デザイン</option><option>わかりやすい図解</option><option>力強く印象的</option></select></label><label>メインカラー<input name="brand" type="color"></label><label>アクセントカラー<input name="accent" type="color"></label></form><div class="inline"><button id="save-defaults" class="primary">初期設定を保存</button><button id="reset-settings" class="quiet">設定を初期値に戻す</button></div></div>
+        <div class="settings-card"><h2>依頼文にどう反映されるか</h2><p id="effective-settings" class="muted"></p><pre id="effective-prompt" class="prompt-preview"></pre></div>
+        <div class="settings-card"><h2>保存とクリア</h2><p>現在の入力をクリアしても、完成記事と学習設定は残ります。クリア前の内容は履歴に保存します。履歴の「片付ける」は非表示にするだけで、あとから戻せます。</p><p class="muted">入力・変更履歴・学習設定は、この端末・このブラウザーに保存します。Workが同じSiteへ保存した完成本文は「記事ストック」に読み込みます。入力や設定の端末間同期、ChatGPTの会話全文の保存は行いません。ブラウザーのサイトデータを削除すると端末内の履歴は消えます。重要な内容はバックアップしてください。</p><button id="clear-draft-settings" class="quiet">現在の入力をクリア</button><button id="export-workspace" class="quiet">履歴と設定をバックアップ</button><label class="file-button quiet">履歴と設定を読み込む<input id="import-workspace" type="file" accept="application/json,.json" hidden></label></div>
       </section>
     </main>
   </div>
-  <dialog id="ai-dialog" aria-labelledby="ai-heading"><div class="dialog-head"><h2 id="ai-heading">ChatGPTに依頼</h2><button id="close-ai" class="icon" aria-label="閉じる" title="閉じる">×</button></div><p id="ai-help" class="muted"></p><label>依頼文<textarea id="ai-prompt" rows="7" readonly></textarea></label><div class="inline"><button id="open-chat" class="primary">依頼文付きでChatGPTを開き直す</button><button id="copy-prompt" class="quiet">依頼文をコピー</button></div><div id="answer-area" class="separated"><details id="manual-return"><summary>自動で戻らない場合の手動取り込み</summary><label>ChatGPTの回答（JSON全体）<textarea id="ai-answer" rows="5"></textarea></label><div class="inline"><button id="review-answer" class="primary">回答を確認する</button></div></details><div id="answer-review" hidden><div id="review-content"></div><label class="check"><input type="checkbox" id="confirm-answer">提案と事実・未確認事項を確認しました</label><button id="apply-answer" class="primary">確認した内容を取り込む</button></div></div><p id="ai-status" role="status" aria-live="polite"></p></dialog>
-  <script src="kit.js?v=1.0.1"></script><script src="core.js?v=1.0.1"></script><script src="assets.js"></script><script src="bridge.js?v=1.0.1"></script><script src="app.js?v=1.0.1"></script>
+  <dialog id="ai-dialog" aria-labelledby="ai-heading"><div class="dialog-head"><h2 id="ai-heading">ChatGPTに依頼</h2><button id="close-ai" class="icon" aria-label="閉じる" title="閉じる">×</button></div><p id="ai-help" class="muted"></p><label>依頼文<textarea id="ai-prompt" rows="7" readonly></textarea></label><div class="inline"><button id="open-chat" class="primary">依頼文付きでChatGPTを開き直す</button><button id="copy-prompt" class="quiet">依頼文をコピー</button></div><div id="answer-area" class="separated"><details id="manual-return"><summary>自動で戻らない場合の手動取り込み</summary><label>ChatGPTの回答（JSON全体）<textarea id="ai-answer" rows="5"></textarea></label><div class="inline"><button id="review-answer" class="primary">回答を確認する</button></div></details><div id="answer-review" hidden><div id="review-content"></div><label class="check"><input type="checkbox" id="confirm-answer">提案と事実・未確認事項を確認しました</label><button id="apply-answer" class="primary">確認した内容を取り込む</button></div></div><p id="ai-status" role="status" aria-live="polite"></p><button id="repair-answer" class="quiet" hidden>ChatGPTに修正を依頼</button></dialog>
+  <dialog id="stock-dialog" aria-labelledby="stock-title"><div class="dialog-head"><h2 id="stock-title">記事を読む</h2><button id="close-stock" class="icon" aria-label="記事を閉じる">×</button></div><p id="stock-meta" class="muted"></p><article id="stock-reader" class="article-preview"></article><div class="inline"><button id="stock-copy" class="primary">この記事をコピー</button><button id="stock-text" class="quiet">本文.txtを書き出す</button><button id="stock-markdown" class="quiet">挿入位置.mdを書き出す</button><button id="stock-edit" class="quiet">この記事の続きを編集</button></div><p id="stock-reader-status" role="status"></p></dialog>
+  <script src="kit.js?v=1.0.1"></script><script src="core.js?v=20261103"></script><script src="assets.js"></script><script src="bridge.js?v=20261103"></script><script src="extensions.js?v=20261103"></script><script src="history.js?v=20261103"></script><script src="app.js?v=20261103-stock2"></script>
 </body></html>
