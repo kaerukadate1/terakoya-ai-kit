@@ -1,32 +1,32 @@
 {
-  "version": "1.1.1",
-  "release": "note-article-v1-20261107-stock-images",
-  "baseUrl": "https://raw.githubusercontent.com/kaerukadate1/terakoya-ai-kit/note-article-v1-20261107-stock-images/releases/note-article-v1/",
+  "version": "1.2.0",
+  "release": "note-article-v1-20261107-imagegen",
+  "baseUrl": "https://raw.githubusercontent.com/kaerukadate1/terakoya-ai-kit/note-article-v1-20261107-imagegen/releases/note-article-v1/",
   "files": [
     {
       "path": "BUILD_PROMPT.md",
-      "bytes": 9702,
-      "sha256": "72589ec4693054e4d4dcad38b808e0e6d4902f5fcee051dbc1619d6843654034"
+      "bytes": 10023,
+      "sha256": "b0bc79cffb39cf1bf6180f3078608d9c3f812d21df34fa315ad74db448c7b74b"
     },
     {
       "path": "QA.md",
-      "bytes": 2065,
-      "sha256": "cc62874e9a525c790e016c907063fd2906aa887d6adaba30b1ff6b36b4e3690a"
+      "bytes": 2331,
+      "sha256": "cc17a6d4a69a656c2b7ed16f703b251dea9149fe906555997821a5350b5eb345"
     },
     {
       "path": "README.md",
       "bytes": 2249,
-      "sha256": "b9ff95dc9acd22f5acfc2d597807bbd5e4022b1bb0484feb2dc31f302e50ae78"
+      "sha256": "96330780c4ce2163ac0cf1f6b8fb6aa372d36b6f749943e78f33c3b5b7a0b63f"
     },
     {
       "path": "STARTER_PROMPT.txt",
-      "bytes": 1064,
-      "sha256": "fc1fea6b4ef2e1f3cd08f8e6495697771b6360d9fe5f2fb830c32a4608814142"
+      "bytes": 1060,
+      "sha256": "7742e6e6cd69827b104d0a82f0c1b7129530ffa6c02332d92c3d1632043c8009"
     },
     {
       "path": "dist/app.js",
-      "bytes": 70269,
-      "sha256": "874bc3974325f7bf74f8462af9bcf8737f26a0af06665a7fa2b0fc3d6e8c2bf0"
+      "bytes": 70472,
+      "sha256": "3bccf2a38f13a9d1b9edf134cbe1e3836747ba9ac5f81883574ae87a44fa6b55"
     },
     {
       "path": "dist/assets.js",
@@ -35,8 +35,8 @@
     },
     {
       "path": "dist/bridge.js",
-      "bytes": 8223,
-      "sha256": "b943688d548ce3c5fa060eb2429739571dd8d4c58f149f00f5d6b66d9f25aefe"
+      "bytes": 8383,
+      "sha256": "b62086baf630a33095e471dc17011692637b42c42906d0642485093985bc1ee1"
     },
     {
       "path": "dist/completed-articles.json",
@@ -45,13 +45,13 @@
     },
     {
       "path": "dist/core.js",
-      "bytes": 17211,
-      "sha256": "0d208d34c8dcdb98e18b525197ef2a920470916aa5c81996c5d03535caa79103"
+      "bytes": 18289,
+      "sha256": "dfc68ce36c289ed5d42bc95e0e6826a0af92705e45c09e70700e3e280e762430"
     },
     {
       "path": "dist/extensions.js",
-      "bytes": 9774,
-      "sha256": "ba1cbd3256a68775bd05fbb3b27dd7ebd6e9c3f8ac420c33bc92e13664a4a922"
+      "bytes": 9770,
+      "sha256": "731c83ea79e078759f72c428de4a22d25f5db860beb6ffb3c9339d6661bbc16f"
     },
     {
       "path": "dist/history.js",
@@ -65,8 +65,8 @@
     },
     {
       "path": "dist/kit.js",
-      "bytes": 743,
-      "sha256": "39e14d422292fb21248ceea92de14a36281ffb613f35f21e664deeaf4314a9fb"
+      "bytes": 739,
+      "sha256": "fc41d1e718b8edd5ba3ae2b0cd60865b2b1f392369b1c422e0bec10ea8048477"
     },
     {
       "path": "dist/returns/README.txt",
@@ -215,8 +215,18 @@
     },
     {
       "path": "skills/note-images/SKILL.md",
-      "bytes": 2426,
-      "sha256": "f4814a00a78c4fa7f8272ac5d14e235d121dceafd8d07b402f39a030d5cfd290"
+      "bytes": 4091,
+      "sha256": "08e42db89356c521846d40a1f5c5a472f5cec280de018bcdd6899379b95c6c9f"
+    },
+    {
+      "path": "skills/note-images/references/direction.md",
+      "bytes": 1575,
+      "sha256": "7d2d79f287f173c5a13a85d4450091d428a947cfc5fd051e759fe9160cb6e376"
+    },
+    {
+      "path": "skills/note-images/references/review.md",
+      "bytes": 1365,
+      "sha256": "772861065c18234fb239db19098253fa3e853daef59bdc84640cda8dd3e6cd00"
     },
     {
       "path": "skills/note-writing/SKILL.md",
@@ -225,8 +235,8 @@
     },
     {
       "path": "skills/work-return/SKILL.md",
-      "bytes": 3439,
-      "sha256": "269b9752783139b3c3638a98f3504cb2174e4b18067fea518266fef248dbe649"
+      "bytes": 3605,
+      "sha256": "55876fb4913d22fd9ed1391d7d3c9a4ecadbc7d34987e6c1fffc6e16e0d6014f"
     }
   ]
 }

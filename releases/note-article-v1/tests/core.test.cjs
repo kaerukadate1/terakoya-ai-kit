@@ -19,3 +19,5 @@ test('roundtrip restores editable project and strips unknown fields', () => { co
 test('unfinished outline survives reload but AI proposals still require headings', () => { const s = fixture(); s.topics[0].outline.push({ id: 's4', heading: '', purpose: '' }); assert.equal(C.normalize(s).topics[0].outline[3].heading, ''); assert.throws(() => C.topicsOf(s.topics)); });
 test('export supports clean text and insertion markers separately', () => { assert.match(C.markdown(article), /画像挿入/); assert.doesNotMatch(C.markdown(article, false), /画像挿入/); assert.match(C.markdown(article), /https:\/\/example.org\/consult/); });
 module.exports = { fixture, topic, article };
+
+test('image requests include article context, design guidance and surgical review',()=>{const s=fixture();s.article=C.articleOf(article,s.topics[0],s.brief);const p=C.imagePrompt(s,'s2');assert.ok(p.includes(article.sections[1].body));assert.match(p,/references\/direction.md/);assert.match(p,/references\/review.md/);assert.match(p,/一箇所ずつ/);assert.match(p,/実寸を明記/);});

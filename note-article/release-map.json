@@ -222,6 +222,14 @@
     {
       "source": "skills/natural-japanese/scripts/textcore.py",
       "target": "releases/note-article-v1/skills/natural-japanese/scripts/textcore.py"
+    },
+    {
+      "source": "skills/note-images/references/direction.md",
+      "target": "releases/note-article-v1/skills/note-images/references/direction.md"
+    },
+    {
+      "source": "skills/note-images/references/review.md",
+      "target": "releases/note-article-v1/skills/note-images/references/review.md"
     }
   ]
 }
