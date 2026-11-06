@@ -3,7 +3,7 @@
   const C = NoteCore, A = NoteAssets, B = NoteBridge, $ = selector => document.querySelector(selector);
   const KEY = 'terakoya-note-workshop3-v1', LIB = `${KEY}:library`, THEME = `${KEY}:theme`;
   let state = C.fresh(), draftId = C.uid(), library = [], stage = 'brief', aiMode = '', pending = null, signature = '', imageSlot = '', editMode = false, renderId = 0;
-  let jobs = [], assetVersions = {}, activeJobId = '', checkingReturns = false;
+  let jobs = [], assetVersions = {}, activeJobId = '', checkingReturns = false, libraryRenderGeneration = 0;
   const RULES = `${KEY}:writing-rules`;
   const PREFS = `${KEY}:preferences`, UNDO = `${KEY}:undo-clear`, MIGRATED = `${KEY}:history-migrated`;
   const H = NoteHistory;
@@ -91,7 +91,7 @@
   function renderPreferences() {
     $('#writing-rules').value = savedRules(); $('#learning-enabled').checked = preferences.enabled; $('#learning-notes').value = preferences.notes;
     for (const [key, value] of Object.entries(preferences.defaults)) $('#default-settings-form').elements.namedItem(key).value = value;
-    $('#settings-updated').textContent = `最終保存: ${preferences.updatedAt ? new Date(preferences.updatedAt).toLocaleString('ja-JP') : '未保存（以前の決まりは引き継ぎ済み）'} / 保存元: ${preferences.source}`;
+    $('#settings-updated').textContent = `最終保存: ${preferences.updatedAt ? new Date(preferences.updatedAt).toLocaleString('ja-JP') : (savedRules() ? '未保存（以前の決まりは引き継ぎ済み）' : '未保存（決まりは未設定）')} / 保存元: ${preferences.source}`;
     $('#effective-settings').textContent = `適用先: 相談・ニュース・ネタ案・構成・本文・推敲の依頼文の先頭。${preferences.enabled ? 'ON' : 'OFF（決まりは保存したまま）'}。初期設定は新しい記事を始めたときに反映します。`;
     $('#effective-prompt').textContent = X.prefix(effectiveRules()); renderLearningSummary();
   }
@@ -450,15 +450,16 @@
     state=C.normalize(item.state);draftId=id;articleId=item.articleId || (item.origin==='library' ? item.id : '');assetVersions={};editMode=false;syncForm();store();$('#stock-dialog').close();notice('この記事の続きを編集できます。切り替え前の作業も変更履歴に残っています。');navigate('write');
   }
   async function renderLibrary() {
-    await historyReady;await historyQueue;let loadError='';try{await loadRemoteStock();}catch(error){loadError=error.message;}
+    const generation=++libraryRenderGeneration;await historyReady;await historyQueue;let loadError='';try{await loadRemoteStock();}catch(error){loadError=error.message;}
+    const localHistory=await H.list();if(generation!==libraryRenderGeneration)return;
     const wrap=$('#library-list');wrap.replaceChildren();const query=$('#stock-search').value.trim().toLowerCase();
-    const storage=$('#stock-storage').value; const items=H.stockItems(storage==='site' ? [] : await H.list(),storage==='site' ? [] : library,storage==='local' ? [] : remoteStock).filter(item=>!hiddenStock.has(item.id) && !hiddenStock.has('title:' + item.state.article.title) && (!query || C.markdown(item.state.article,false).toLowerCase().includes(query)));
+    const storage=$('#stock-storage').value; const items=H.stockItems(storage==='site' ? [] : localHistory,storage==='site' ? [] : library,storage==='local' ? [] : remoteStock).filter(item=>!hiddenStock.has(item.id) && !hiddenStock.has('title:' + item.state.article.title) && (!query || C.markdown(item.state.article,false).toLowerCase().includes(query)));
     const groups=new Map();for(const item of items){const key=item.state.article.title;if(!groups.has(key))groups.set(key,[]);groups.get(key).push(item);}
     $('#unhide-stock').hidden=!hiddenStock.size; $('#stock-status').textContent=`${groups.size}記事 / 本文${items.length}件。${loadError || '同じ内容の記録はまとめ、異なる本文は以前の版として残しています。'}`;
     if(!items.length){wrap.append(el('p','本文を制作するとここに残ります。記事を読んだり、続きを編集したりできます。'));return;}
     for(const versions of groups.values()){
       const item=versions[0],article=item.state.article,card=el('section',undefined,'library-item'),body=el('div',undefined,'library-body');
-      const cover=await stockImage(item,'cover');if(cover){const url=URL.createObjectURL(cover),img=imageNode(url,article.thumbnail.alt);img.onload=()=>URL.revokeObjectURL(url);card.append(img);}else card.append(el('div','記事ストック','image-placeholder cover'));
+      const cover=await stockImage(item,'cover');if(generation!==libraryRenderGeneration)return;if(cover){const url=URL.createObjectURL(cover),img=imageNode(url,article.thumbnail.alt);img.onload=()=>URL.revokeObjectURL(url);card.append(img);}else card.append(el('div','記事ストック','image-placeholder cover'));
       body.append(el('h2',article.title),el('p',`${article.sections.length}章 / ${C.markdown(article,false).length.toLocaleString()}字 / 本文${versions.length}件`));
       function actionsFor(value){const actions=el('div',undefined,'inline');actions.append(button('記事を読む',attempt(()=>openStock(value)),'primary'),button('本文をコピー',()=>copy(C.markdown(value.state.article,false))),button('本文.txt',()=>download(new Blob([C.markdown(value.state.article,false)],{type:'text/plain;charset=utf-8'}),`${safeName(article.title)}.txt`)),button('続きを編集',attempt(()=>editStock(value))));return actions;}
       body.append(actionsFor(item));if(versions.length>1){const details=el('details');details.append(el('summary',`以前の本文を見る（${versions.length-1}件）`));for(const version of versions.slice(1)){const row=el('div',undefined,'stock-version');row.append(el('p',`${new Date(version.createdAt).toLocaleString('ja-JP')} / ${version.kind || '記事'}`),actionsFor(version));details.append(row);}body.append(details);}

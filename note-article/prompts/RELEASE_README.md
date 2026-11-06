@@ -1,4 +1,4 @@
-# 寺子屋AI note記事制作ツール / 1.1.1
+# 寺子屋AI note記事制作ツール / 1.2.0
 
 [開始文](STARTER_PROMPT.txt)をChatGPT Workへ送ると、記事ストック・変更履歴・学習と設定を備えた新しい本人用Siteを作ります。画面とスキルはMANIFEST.jsonの固定ファイルを使います。
 
