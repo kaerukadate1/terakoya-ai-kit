@@ -82,8 +82,8 @@
       details.append(el('div', record.scope === 'settings' ? `適用: ${record.preferences.enabled === false ? 'OFF' : 'ON'}\n${record.rules || '決まり未設定'}\n\n材料メモ: ${record.preferences.notes || 'なし'}\n初期設定: ${JSON.stringify(record.preferences.defaults || {}, null, 2)}` : record.state.article ? C.markdown(record.state.article, false) : JSON.stringify(record.state, null, 2), 'history-preview'));
       if (record.request) { const info = el('details'); info.append(el('summary', '依頼時の設定・依頼文'), el('p', `依頼ID: ${record.request.id}`), el('pre', `書き方の決まり: ${record.preferences.enabled === false ? '適用OFF' : '適用ON'}\n${record.rules || '未設定'}\n\n${record.request.prompt || '返送結果の記録です。依頼文は依頼時の履歴に残っています。'}`, 'prompt-preview')); details.append(info); }
       if (record.images?.cover) { const url = URL.createObjectURL(record.images.cover); const img = imageNode(url, '履歴に保存されたサムネイル'); img.onload = () => URL.revokeObjectURL(url); details.append(img); }
-      const actions = el('div', undefined, 'inline'); actions.append(button(record.scope === 'settings' ? 'この設定を復元' : 'この内容を復元', attempt(() => restoreHistory(record)), 'primary'));
-      actions.append(button(record.trashedAt ? '履歴へ戻す' : 'この履歴を片付ける', attempt(async () => { await H.trash([record.id], !!record.trashedAt); await renderHistory(); })));
+      const actions = el('div', undefined, 'inline'); actions.append(button(record.scope === 'settings' ? 'このときの設定に戻す' : 'この時点に戻す', attempt(() => restoreHistory(record)), 'primary'));
+      actions.append(button(record.trashedAt ? '一覧に戻す' : 'この履歴を非表示にする', attempt(async () => { await H.trash([record.id], !!record.trashedAt); await renderHistory(); })));
       card.append(details, actions); wrap.append(card);
     }
   }
@@ -447,7 +447,7 @@
   async function editStock(item) {
     await historyReady;await checkpoint('ストックの記事を編集する前','article',true);const id=C.uid();
     for(const slot of C.imageSlots(item.state.article)){const blob=await stockImage(item,slot.id);if(blob)await A.put(`${id}:${slot.id}`,blob);}
-    state=C.normalize(item.state);draftId=id;articleId=item.articleId || (item.origin==='library' ? item.id : '');assetVersions={};editMode=false;syncForm();store();$('#stock-dialog').close();notice('この記事の続きを編集できます。切り替え前の作業も変更履歴に残っています。');navigate('write');
+    state=C.normalize(item.state);draftId=id;articleId=item.articleId || (item.origin==='library' ? item.id : '');assetVersions={};editMode=false;syncForm();store();$('#stock-dialog').close();notice('この記事の続きを編集できます。切り替え前の作業も作業の履歴に残っています。');navigate('write');
   }
   async function renderLibrary() {
     const generation=++libraryRenderGeneration;await historyReady;await historyQueue;let loadError='';try{await loadRemoteStock();}catch(error){loadError=error.message;}
@@ -513,7 +513,7 @@
     $('#undo-clear').hidden = !localStorage.getItem(UNDO); $('#undo-clear').onclick = attempt(async () => { const record = await H.get(localStorage.getItem(UNDO)); if (!record) throw Error('復元する履歴が見つかりません。過去の履歴を開いてください。'); await restoreHistory(record); localStorage.removeItem(UNDO); $('#undo-clear').hidden = true; });
     $('#refresh-history').onclick = attempt(renderHistory); $('#history-search').oninput = attempt(renderHistory); $('#history-filter').onchange = attempt(renderHistory);
     $('#settings-history').onclick = () => { $('#history-search').value = ''; $('#history-filter').value = 'settings'; navigate('history'); };
-    $('#trash-history').onclick = attempt(async () => { await H.trash(visibleHistoryIds); notice('表示中の履歴を片付けました。「片付けた履歴」から戻せます。'); await renderHistory(); });
+    $('#trash-history').onclick = attempt(async () => { await H.trash(visibleHistoryIds); notice('表示中の履歴を非表示にしました。「非表示にした履歴」から一覧に戻せます。'); await renderHistory(); });
     $('#untrash-history').onclick = attempt(async () => { await H.trash(visibleHistoryIds, true); notice('履歴へ戻しました。'); await renderHistory(); });
     $('#export-workspace').onclick = attempt(exportWorkspace); $('#import-workspace').onchange = attempt(async () => { if ($('#import-workspace').files[0]) await importWorkspace($('#import-workspace').files[0]); $('#import-workspace').value = ''; });
     try { const savedJobs = JSON.parse(localStorage.getItem(JOBS) || '[]'); jobs = Array.isArray(savedJobs) ? savedJobs.filter(j => j && typeof j.id === 'string' && typeof j.type === 'string').slice(-20) : []; } catch { notice('制作結果の依頼履歴を読み込めませんでした。', true); }

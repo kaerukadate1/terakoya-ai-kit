@@ -6,7 +6,7 @@ const K=require(asset('kit.js'));
 test('fresh participant package includes stock, settings and learning modules with one illustrated sample and without prior returns',()=>{
  const html=fs.readFileSync(asset('index.html'),'utf8');
  for(const name of ['history.js','extensions.js','workspace.css','completed-articles.json'])assert.ok(fs.existsSync(asset(name)),name);
- assert.match(html,/記事ストック/);assert.match(html,/学習・設定/);assert.match(html,/変更履歴/);
+ assert.match(html,/記事ストック/);assert.match(html,/学習・設定/);assert.match(html,/作業の履歴/);
  const entries=JSON.parse(fs.readFileSync(asset('completed-articles.json'))).entries;
  assert.equal(entries.length,1);
  const [sample]=entries;
@@ -28,7 +28,7 @@ test('two participant sites use their own identity and never the instructor site
  const app=fs.readFileSync(asset('app.js'),'utf8');assert.doesNotMatch(app,/appgprj_[a-zA-Z0-9]{20,}/);assert.doesNotMatch(app,/terakoya-note-workshop3-hayashi/);
 });
 test('starter and skills use one new immutable release with all referenced files',()=>{
- assert.equal(K.version,'1.2.3');assert.match(K.base,/note-article-v1-20261107-title-cover\/releases\/note-article-v1\/$/);
+ assert.equal(K.version,'1.2.4');assert.match(K.base,/note-article-v1-20261107-history\/releases\/note-article-v1\/$/);
  const starter=fs.existsSync(path.join(root,'STARTER_PROMPT.txt'))?'STARTER_PROMPT.txt':'開始文.txt';
  assert.ok(fs.readFileSync(path.join(root,starter),'utf8').includes(K.base+'BUILD_PROMPT.md'));
  const html=fs.readFileSync(asset('index.html'),'utf8');
