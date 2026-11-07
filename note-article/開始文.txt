@@ -1,2 +1,2 @@
 寺子屋AIのnote記事制作ツールを、私の新しい本人用Siteとして完成させてください。下記の固定版ビルドプロンプトとMANIFESTにある全画面ファイル・スキルを実際に取得・検証し、保存・配信・動作確認まで進めて、開けるURLを返してください。記事ストック、変更履歴、学習・設定、クリアと元に戻すを最初から備え、記事アイデア・LP・相談・ニュースのどの入口でも構成と文章・画像の設定を確認してから本文を制作し、Workから同じSiteへ自動返送する形にしてください。新しいSiteのIDをそのSiteに設定し、講師や他の人のSite ID・記事・設定は流用しません。記事ストックと学習設定は空の状態で始めます。取得できない資料や検証できない機能は推測で補わず報告してください。
-https://raw.githubusercontent.com/kaerukadate1/terakoya-ai-kit/note-article-v1-20261107-imagegen/releases/note-article-v1/BUILD_PROMPT.md
+https://raw.githubusercontent.com/kaerukadate1/terakoya-ai-kit/note-article-v1-20261107-final/releases/note-article-v1/BUILD_PROMPT.md
