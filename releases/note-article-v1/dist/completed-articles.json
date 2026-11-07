@@ -1,1 +1,11 @@
-{"schemaVersion":1,"entries":[]}
+{
+  "schemaVersion": 1,
+  "entries": [
+    {
+      "id": "workshop3-sample",
+      "title": "【サンプル】お客さんからよく聞かれる質問を、noteの記事にする",
+      "createdAt": "2026-11-07T00:00:00Z",
+      "url": "/completed-articles/workshop3-sample/article.json"
+    }
+  ]
+}
