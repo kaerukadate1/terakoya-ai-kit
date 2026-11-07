@@ -4,7 +4,7 @@
   root.NoteCore = api;
 })(typeof globalThis !== 'undefined' ? globalThis : this, function () {
   'use strict';
-  const VERSION = '1.2.2';
+  const VERSION = '1.2.3';
   const LIMIT = 160000;
   const text = (v, n = 20000) => typeof v === 'string' ? v.trim().slice(0, n) : '';
   const uid = () => globalThis.crypto?.randomUUID?.() || `${Date.now()}-${Math.random().toString(36).slice(2)}`;
@@ -121,7 +121,7 @@
     const slot = imageSlots(state.article).find(s => s.id === slotId);
     if (!slot) throw Error('画像の制作箇所を選んでください。');
     const context = { reader: state.brief.audience, title: state.article.title, lead: state.article.lead, ...(slotId === 'cover' ? { headings: state.article.sections.map(s => s.heading) } : { section: state.article.sections.find(s => s.id === slotId) }) };
-    return `note記事「${state.article.title}」の${slot.label}を1枚制作してください。まず同梱note-imagesスキルとreferences/direction.md・references/review.mdを読みます。記事の文脈に合う主役と短い見出しを3方向だけ比べ、目的に合う1方向を選び、そのまま生成まで進めてください。採用理由を一文で残します。用途・主役・構図・正確な文字列・光と質感・余白・維持条件を整理し、Imagegenを実際に使って文字と絵を一体で制作する。既定の背景やAIロボットに固定しない。参照画像があれば役割を区別する。\n記事の文脈: ${JSON.stringify(context)}\n\nサイズ: ${slot.width}×${slot.height}px。見た目: ${state.settings.visualStyle}。基調色: ${state.settings.brand}、アクセント: ${state.settings.accent}。色だけを理由に可読性を落とさない。\n目的・制作指示: ${slot.brief}\n${slotId === 'cover' ? '写真・文字組み・装飾・余白を一体で画像生成し、機械的なゴシック文字の別重ねやテンプレートへ固定しない。短い見出しを中央寄りの安全域へ置き、記事の主題が小画面でも分かる構成。' : '本文の理解を助ける図やビジュアルにする。図の内容を捏造しない。読みやすいラベルを使い、内容が分からない装飾だけにしない。'}\n元のLP素材の権利は未確認です。無断転載せず新規制作してください。実績・数字・人物・効果・ロゴを勝手に追加しないでください。生成後に日本語の誤字、文字切れ、375px縮小時の可読性、最終ピクセルサイズを確認し、不備は修正してください。不備の修正では元画像を参照して一箇所ずつ変更し、構図・色・その他の文字を維持する。実際の寸法を計測し、指定寸法を出せない場合は実寸を明記する。完成PNGを返してください。noteへの投稿・公開は行いません。`;
+    return `note記事「${state.article.title}」の${slot.label}を1枚制作してください。まず同梱note-imagesスキルとreferences/direction.md・references/review.mdを読みます。記事の文脈に合う主役と構図を3方向だけ比べ、目的に合う1方向を選び、そのまま生成まで進めてください。採用理由を一文で残します。用途・主役・構図・正確な文字列・光と質感・余白・維持条件を整理し、Imagegenを実際に使って文字と絵を一体で制作する。既定の背景やAIロボットに固定しない。参照画像があれば役割を区別する。\n記事の文脈: ${JSON.stringify(context)}\n\nサイズ: ${slot.width}×${slot.height}px。見た目: ${state.settings.visualStyle}。基調色: ${state.settings.brand}、アクセント: ${state.settings.accent}。色だけを理由に可読性を落とさない。\n目的・制作指示: ${slot.brief}\n${slotId === 'cover' ? `写真・文字組み・装飾・余白を一体で画像生成し、機械的なゴシック文字の別重ねやテンプレートへ固定しない。画像内の主見出しには記事タイトル「${state.article.title}」を原文どおり一度入れる。改行は読みやすい位置で調整する。重要な文字を中央寄りの安全域に置き、スマートフォンの一覧でも読める大きさとコントラストにする。` : '本文の理解を助ける図やビジュアルにする。図の内容を捏造しない。読みやすいラベルを使い、内容が分からない装飾だけにしない。'}\n元のLP素材の権利は未確認です。無断転載せず新規制作してください。実績・数字・人物・効果・ロゴを勝手に追加しないでください。生成後に日本語の誤字、文字切れ、375px縮小時の可読性、最終ピクセルサイズを確認し、不備は修正してください。不備の修正では元画像を参照して一箇所ずつ変更し、構図・色・その他の文字を維持する。実際の寸法を計測し、指定寸法を出せない場合は実寸を明記する。完成PNGを返してください。noteへの投稿・公開は行いません。`;
   }
   function markdown(article, includeImages = true) {
     const parts = [`# ${article.title}`, article.lead];
