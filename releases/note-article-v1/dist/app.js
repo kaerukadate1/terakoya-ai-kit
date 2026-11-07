@@ -283,7 +283,7 @@
       const prompt = X.prefix(effectiveRules()) + B.wrap(basePrompt, job);
       const requestRecord = H.create(historyInput(), `ChatGPTへ依頼: ${X.labels[mode] || mode}`, mode === 'learn' ? 'settings' : 'article'); requestRecord.request = { id: job.id, type: mode, prompt }; await H.add(requestRecord);
       $('#ai-heading').textContent = X.labels[mode] || (mode === 'lp-outline' ? 'LPからおすすめ構成を制作' : mode === 'topics' ? '記事のネタを3案相談' : mode === 'article' ? '記事と画像計画を制作' : '画像を制作');
-      $('#ai-help').textContent = mode === 'image' ? 'Workが同じサイトへ保存できた画像は、元の挿入位置へ自動で戻ります。保存できなかった時だけ手動追加をご利用ください。' : 'Workが同じサイトへ保存できた結果は、貼り付け不要で確認画面へ戻ります。返送できなかった場合はJSONを手動で取り込めます。';
+      $('#ai-help').textContent = mode === 'image' ? 'ChatGPTで依頼文を確認して送信します。Workで保存できた画像はここに戻ります。「結果を確認」で受信を確認し、戻らない場合は「画像を追加」から取り込めます。' : 'ChatGPTで依頼文を確認して送信します。Workで保存できた結果が戻ったら、内容を確認して取り込んでください。戻らない場合はJSONを手動で取り込めます。';
       $('#ai-prompt').value = prompt; $('#ai-answer').value = ''; $('#ai-status').textContent = ''; $('#repair-answer').hidden = true; $('#answer-area').hidden = mode === 'image'; $('#answer-review').hidden = true; $('#confirm-answer').checked = false; $('#manual-return').open = !job.targetSite;
       $('#open-chat').hidden = false; $('#copy-prompt').hidden = false; $('#ai-dialog').showModal();
       openPrefilledChat(prompt);
@@ -385,7 +385,7 @@
       if (sources.get(slot.id)) item.append(imageNode(sources.get(slot.id), slot.alt));
       item.append(el('p', slot.brief || '本文に合う具体的なビジュアルを指定してください。'));
       const actions = el('div', undefined, 'inline'), label = el('label', '画像を追加', 'file-button quiet'), input = el('input'); input.type = 'file'; input.accept = 'image/png,image/jpeg,image/webp'; input.hidden = true; input.addEventListener('change', attempt(async () => { if (input.files[0]) await attach(slot, input.files[0]); })); label.append(input);
-      actions.append(button('ChatGPTで画像制作', () => openAI('image', slot.id)), label);
+      actions.append(button('ChatGPTで画像を作る', () => openAI('image', slot.id)), label);
       if (sources.get(slot.id)) { actions.append(button('画像を保存', attempt(async () => { const blob = await A.get(`${draftId}:${slot.id}`); const ext = { 'image/png': 'png', 'image/jpeg': 'jpg', 'image/webp': 'webp' }[blob.type] || 'png'; download(blob, `${slot.id}.${ext}`); }))); const remove = button('×', attempt(() => detach(slot.id)), 'icon'); remove.title = 'この記事から画像を外す'; remove.setAttribute('aria-label', remove.title); actions.append(remove); }
       item.append(actions, el('small', `${slot.width} × ${slot.height}px / ${slot.id === 'cover' ? 'note見出し画像' : '本文用の制作サイズ'}`)); plan.append(item);
     }
@@ -403,7 +403,7 @@
     const old = library; library = H.saveEntry(library, entry);
     try { saveLibrary(); } catch { library = old; throw Error('完成記事を保存できませんでした。空き容量を確認してください。'); }
     articleId = id; store(); await checkpoint(`完成記事を保存（第${library[0].version}版）`, 'article', true);
-    notice('記事ストックへ保存しました。前の本文もストックから読めます。noteへの投稿・公開は行っていません。'); navigate('library');
+    notice('このブラウザーの記事ストックに保存しました。以前の本文も記事ストックから開けます。'); navigate('library');
   }
   async function loadRemoteStock(force = false) {
     if (stockLoad) return stockLoad; if (!force && Date.now() - lastStockLoad < 60000) return;

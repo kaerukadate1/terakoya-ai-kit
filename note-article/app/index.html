@@ -33,9 +33,9 @@
         <div class="inline">
           <button class="quiet" data-ai="consult">ChatGPTと相談しながら記事を作る</button>
           <button class="quiet" data-ai="news">今日のニュースから記事を作る</button>
-          <button class="quiet" data-ai="learn">学習させる</button>
+          <button class="quiet" data-ai="learn">書き方の決まりを相談</button>
         </div>
-        <div class="learning-summary separated"><p id="learning-summary" class="muted"></p><button data-go="preferences" class="quiet">学習・設定を確認</button></div>
+        <p class="muted">題材が決まっていない方は、ChatGPTとの相談から始められます。</p><div class="learning-summary separated"><p id="learning-summary" class="muted"></p><button data-go="preferences" class="quiet">学習・設定を確認</button></div>
         <form id="brief-form">
           <div class="segmented" role="group" aria-label="始め方"><label><input type="radio" name="mode" value="idea" checked>書きたいことから</label><label><input type="radio" name="mode" value="lp">LPから</label></div>
           <div id="idea-fields"><label>どんな記事を書きたいですか <b>必須</b><textarea name="idea" rows="3" maxlength="6000" placeholder="例：忙しくても運動を続けるコツを伝え、自宅トレーニングの案内につなげたい"></textarea></label></div>
@@ -74,14 +74,14 @@
           <label>メインカラー<input type="color" name="brand"></label><label>アクセントカラー<input type="color" name="accent"></label>
         </form>
         </div>
-        <div class="bottom-actions"><button class="quiet" id="outline-back" data-go="topics">ネタに戻る</button><button class="primary" id="to-write">この構成で制作する <span aria-hidden="true">→</span></button></div>
+        <div class="bottom-actions"><button class="quiet" id="outline-back" data-go="topics">ネタに戻る</button><button class="primary" id="to-write">本文制作へ進む <span aria-hidden="true">→</span></button></div>
       </section>
       <section id="write" class="panel" aria-labelledby="write-heading" hidden>
-        <div class="panel-head"><div><p class="eyebrow" id="write-eyebrow">04 / EDITOR</p><h1 id="write-heading">記事と画像を仕上げる</h1></div><button data-ai="article" class="quiet">ChatGPTで記事を制作</button></div>
+        <div class="panel-head"><div><p class="eyebrow" id="write-eyebrow">04 / EDITOR</p><h1 id="write-heading">記事と画像を仕上げる</h1></div><button data-ai="article" class="quiet">ChatGPTで本文を作る</button></div>
         <div class="editor-toolbar" id="editor-toolbar" hidden><div class="segmented" role="group" aria-label="表示"><button id="view-preview" type="button" aria-pressed="true">プレビュー</button><button id="view-edit" type="button" aria-pressed="false">本文を編集</button></div><button id="polish-article" data-ai="polish" class="quiet" disabled>文章を自然な日本語に整える</button><span id="word-count"></span><button id="copy-article" class="quiet">本文をコピー</button></div>
-        <div id="article-empty" class="empty"><span class="empty-number">Aa</span><h2>本文はまだ制作していません。</h2><p>確認した構成と設定を使い、次のボタンから本文を制作します。</p><button data-ai="article" class="primary">ChatGPTで記事を制作</button></div>
+        <div id="article-empty" class="empty"><span class="empty-number">Aa</span><h2>本文はまだありません。</h2><p>ChatGPTで依頼文を確認して送信し、結果が戻ったら内容を確認して取り込みます。</p><button data-ai="article" class="primary">ChatGPTで本文を作る</button></div>
         <div class="editor-layout" id="article-layout" hidden><article id="preview" class="article-preview"></article><div id="article-edit" hidden></div><aside id="image-plan" class="image-plan"></aside></div>
-        <div class="bottom-actions"><button class="quiet" data-go="outline">構成に戻る</button><button id="save-article" class="primary">完成記事に保存</button></div>
+        <div class="bottom-actions"><button class="quiet" data-go="outline">構成に戻る</button><button id="save-article" class="primary">記事ストックに保存</button></div>
       </section>
       <section id="library" class="panel" aria-labelledby="library-heading" hidden>
         <div class="panel-head"><div><p class="eyebrow" id="library-eyebrow">05 / LIBRARY</p><h1 id="library-heading">記事ストック</h1></div><label class="file-button quiet">バックアップを読み込む<input id="import-project" type="file" accept="application/json,.json" hidden></label></div>
@@ -97,7 +97,7 @@
       <section id="preferences" class="panel" aria-labelledby="preferences-heading" hidden>
         <div class="panel-head"><div><p class="eyebrow">LEARNING & SETTINGS</p><h1 id="preferences-heading">学習・設定</h1></div><button data-ai="learn" class="quiet">ChatGPTと決まりを整理する</button></div>
         <p>「学習」はモデルの再学習ではなく、あなたが確認した決まりを保存し、次の依頼文へ添える機能です。過去の会話を勝手に読み込むことはありません。</p>
-        <div class="settings-card"><h2>記事を作るときの決まり</h2><label class="check"><input id="learning-enabled" type="checkbox" checked>保存した書き方の決まりを依頼文に入れる</label><label>書き方の好み・決まり<textarea id="writing-rules" rows="7" maxlength="10000" placeholder="例：結論から書く。未確認の数字や体験は加えない。"></textarea></label><label>学習の材料・確認したことのメモ（任意）<textarea id="learning-notes" rows="3" maxlength="6000" placeholder="例：自分の過去記事を読んで整理。2026年11月にこの3つを確認。"></textarea></label><p class="muted">このメモは「学習させる」の相談にだけ使います。記事の事実としては追加しません。</p><p id="settings-updated" class="muted"></p><div class="inline"><button id="save-rules" class="primary">学習設定を保存</button><button id="clear-rules" class="quiet">学習ルールをクリア</button><button id="settings-history" class="quiet">設定の変更履歴</button></div><p id="rules-status" class="muted" role="status"></p></div>
+        <div class="settings-card"><h2>記事を作るときの決まり</h2><label class="check"><input id="learning-enabled" type="checkbox" checked>保存した書き方の決まりを依頼文に入れる</label><label>書き方の好み・決まり<textarea id="writing-rules" rows="7" maxlength="10000" placeholder="例：結論から書く。未確認の数字や体験は加えない。"></textarea></label><label>学習の材料・確認したことのメモ（任意）<textarea id="learning-notes" rows="3" maxlength="6000" placeholder="例：自分の過去記事を読んで整理。2026年11月にこの3つを確認。"></textarea></label><p class="muted">このメモは「書き方の決まりを相談」の相談にだけ使います。記事の事実としては追加しません。</p><p id="settings-updated" class="muted"></p><div class="inline"><button id="save-rules" class="primary">学習設定を保存</button><button id="clear-rules" class="quiet">学習ルールをクリア</button><button id="settings-history" class="quiet">設定の変更履歴</button></div><p id="rules-status" class="muted" role="status"></p></div>
         <div class="settings-card"><h2>新しい記事の初期設定</h2><p class="muted">新しく始める記事に使います。制作中の記事は「構成を決める」で個別に変更できます。</p><form id="default-settings-form" class="form-grid"><label>文章の雰囲気<select name="tone"><option>やさしく丁寧</option><option>親しみやすい会話調</option><option>簡潔で実務的</option><option>落ち着いた専門家調</option></select></label><label>本文の長さ<select name="length"><option value="1200">約1,200字</option><option value="2000">約2,000字</option><option value="3000">約3,000字</option></select></label><label>挿入画像<select name="imageCount"><option value="0">なし</option><option value="1">最大1枚</option><option value="2">最大2枚</option><option value="3">最大3枚</option></select></label><label>画像の雰囲気<select name="visualStyle"><option>写真中心・自然体</option><option>やわらかなイラスト</option><option>洗練された編集デザイン</option><option>わかりやすい図解</option><option>力強く印象的</option></select></label><label>メインカラー<input name="brand" type="color"></label><label>アクセントカラー<input name="accent" type="color"></label></form><div class="inline"><button id="save-defaults" class="primary">初期設定を保存</button><button id="reset-settings" class="quiet">設定を初期値に戻す</button></div></div>
         <div class="settings-card"><h2>依頼文にどう反映されるか</h2><p id="effective-settings" class="muted"></p><pre id="effective-prompt" class="prompt-preview"></pre></div>
         <div class="settings-card"><h2>保存とクリア</h2><p>現在の入力をクリアしても、完成記事と学習設定は残ります。クリア前の内容は履歴に保存します。履歴の「片付ける」は非表示にするだけで、あとから戻せます。</p><p class="muted">入力・変更履歴・学習設定は、この端末・このブラウザーに保存します。Workが同じSiteへ保存した完成本文は「記事ストック」に読み込みます。入力や設定の端末間同期、ChatGPTの会話全文の保存は行いません。ブラウザーのサイトデータを削除すると端末内の履歴は消えます。重要な内容はバックアップしてください。</p><button id="clear-draft-settings" class="quiet">現在の入力をクリア</button><button id="export-workspace" class="quiet">履歴と設定をバックアップ</button><label class="file-button quiet">履歴と設定を読み込む<input id="import-workspace" type="file" accept="application/json,.json" hidden></label></div>
