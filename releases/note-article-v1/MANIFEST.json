@@ -1,32 +1,32 @@
 {
-  "version": "1.2.3",
-  "release": "note-article-v1-20261107-title-cover",
-  "baseUrl": "https://raw.githubusercontent.com/kaerukadate1/terakoya-ai-kit/note-article-v1-20261107-title-cover/releases/note-article-v1/",
+  "version": "1.2.4",
+  "release": "note-article-v1-20261107-history",
+  "baseUrl": "https://raw.githubusercontent.com/kaerukadate1/terakoya-ai-kit/note-article-v1-20261107-history/releases/note-article-v1/",
   "files": [
     {
       "path": "BUILD_PROMPT.md",
-      "bytes": 10302,
-      "sha256": "a50e1de961a700c6b343e687d1dda02f5b470160b050002679db093c1e991b31"
+      "bytes": 10313,
+      "sha256": "a7be1600585936c5e406e3ca3e3e82368ac24d167dcf990c5653da2fa1a874bd"
     },
     {
       "path": "QA.md",
       "bytes": 2383,
-      "sha256": "b0dbce0dfb61ae89eeb0cbc261d5f39e75b68761c4ae0d7c48c0d86afa0c843e"
+      "sha256": "47f660d8f11ce16974706a6ffecbd2cda12dcb0c53ec891628b7c92e925bc8af"
     },
     {
       "path": "README.md",
-      "bytes": 2401,
-      "sha256": "607bfa5b05b4a3e83cf4e7c97047cb3f355d37eed32a2f967da2b4a726a20cf5"
+      "bytes": 2407,
+      "sha256": "25c9f144cbcfcd92ce1eaead911e1d0f5584ceebff2148840ae146d6fa102f29"
     },
     {
       "path": "STARTER_PROMPT.txt",
-      "bytes": 1109,
-      "sha256": "831a009f6eb8eca8f06a8ec7fab28655c003e8828694bc6e807ac47b2d50c0dd"
+      "bytes": 1108,
+      "sha256": "a9d51d5f4ce8b1be68a22cce6c1958c7cb900b29089f932f9a63dcd153af5284"
     },
     {
       "path": "dist/app.js",
-      "bytes": 70600,
-      "sha256": "87e2aa3a823f95b977a5e81e2c8136ccc392f9f04600973e43b46f47851b7c8f"
+      "bytes": 70639,
+      "sha256": "8e6c3b7ba39522f767b954c05b86f6f12267c1aec25a372ffaf223d0a8cabf34"
     },
     {
       "path": "dist/assets.js",
@@ -56,12 +56,12 @@
     {
       "path": "dist/core.js",
       "bytes": 18476,
-      "sha256": "1f9d9e698b8a754236fc3b6f870e8f5f4cf5a8a6d077c44bd2a4622b60da4820"
+      "sha256": "86d6ca068a0693343b23606bc94b85191af33c26eb652abaf5ef826a3266101d"
     },
     {
       "path": "dist/extensions.js",
-      "bytes": 9788,
-      "sha256": "abd743dd2433aa327391d0d66e6f05bdc8fc07b067bbb74b1cdfd19b1f5deca5"
+      "bytes": 9784,
+      "sha256": "775e583cc799cfadc8624b464efc534bb285816bd78bf6b5ea7312f9d00579e1"
     },
     {
       "path": "dist/history.js",
@@ -70,13 +70,13 @@
     },
     {
       "path": "dist/index.html",
-      "bytes": 19282,
-      "sha256": "daad64c93335f94b1319a62cb78f73cb6ee7f0bcb153aa5637894fe47beadf99"
+      "bytes": 19336,
+      "sha256": "1cb3a8d454df8828811cdd08bc889e3824ea66847c9293a005233821e411e098"
     },
     {
       "path": "dist/kit.js",
-      "bytes": 742,
-      "sha256": "073beb3593d276a3507b60b74bf0afa36c8ec9ba2a11b11f0c5abef493e9fe76"
+      "bytes": 738,
+      "sha256": "a5c0d6037b09f178fd5540652b3521e5e86da670bdfe37cdf4ae216e2d08ecd3"
     },
     {
       "path": "dist/returns/README.txt",
