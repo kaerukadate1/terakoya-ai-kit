@@ -1,26 +1,26 @@
 # 寺子屋AI note記事制作ツール / ビルドプロンプト
 
-第3回ワークショップ用。固定版1.2.1 / 2026-11-07。
+第3回ワークショップ用。固定版1.2.2 / 2026-11-07。
 
 ## 完成条件
 
 参加者本人の新しいSiteに、記事ストック・変更履歴・学習と設定を最初から備えたツールを作る。完成した本文は、制作中の入力を復元せずに読め、コピー・txt/md書き出し・続きの編集に使える。完成条件は保存と配信を確認したSite URLを返すこと。
 
 基点URL:
-`https://raw.githubusercontent.com/kaerukadate1/terakoya-ai-kit/note-article-v1-20261107-final/releases/note-article-v1/`
+`https://raw.githubusercontent.com/kaerukadate1/terakoya-ai-kit/note-article-v1-20261107-sample/releases/note-article-v1/`
 
 ## 取得・検証
 
 同じ固定版のMANIFEST.jsonを実際に取得し、filesに載る全ファイルを取得してSHA-256とサイズを照合する。欠落・不一致・取得不能はパスと理由を報告する。旧版やmainへ切り替えたり、画面を推測して作り直したりしない。
 
-特にdist内のindex.html、styles.css、workspace.css、kit.js、core.js、assets.js、bridge.js、extensions.js、history.js、app.js、空のcompleted-articles.json、returns/README.txtを省略しない。skills内のnote-writing、note-images、work-return、natural-japaneseとその参照ファイル・スクリプトも取得する。取得したスキルの本文を読んで適用する。
+特にdist内のindex.html、styles.css、workspace.css、kit.js、core.js、assets.js、bridge.js、extensions.js、history.js、app.js、completed-articles.jsonとcompleted-articles/workshop3-sample/内の本文・見出し画像、returns/README.txtを省略しない。skills内のnote-writing、note-images、work-return、natural-japaneseとその参照ファイル・スクリプトも取得する。取得したスキルの本文を読んで適用する。
 
 ## 新しい参加者のSite
 
-1. 新規作成なら、本人の環境で新しいSiteを作る。同じ固定版のSiteがすでにあっても、この作成依頼では新しい空のSiteとする。
+1. 新規作成なら、本人の環境で新しいSiteを作る。同じ固定版のSiteがすでにあっても、この作成依頼では新しい本人用Siteとする。
 2. distの全ファイルを相対パスを保って静的配信フォルダへ置く。skillsはそのフォルダのskills/にも配置する。
 3. 新しく作成したSiteから返されたproject_idをそのままindex.htmlのmeta[name="site-project-id"]のcontentへ設定する。IDをURLから推測しない。この1項目は配布ファイルの照合後に設定する環境固有値。kit.jsの固定版URLは変更しない。
-4. 初期の記事ストック、変更履歴、学習ルールは空。林さんや他の参加者の記事・テスト記事・設定・Site ID・返送JSONを持ち込まない。completed-articles.jsonのentriesは空のまま始める。
+4. 初期の記事ストックには、MANIFESTに含まれる画像付きサンプル1件を表示する。completed-articles.jsonの同梱項目と、その本文・画像のパスをそのまま使う。変更履歴と学習ルールは空で始める。林さんや他の参加者の記事・設定・Site ID・返送JSONを持ち込まない。
 5. プラットフォームの標準アクセスを使い、本人用のまま配信する。独自の認証やメール判定は作らない。従量課金API・外部公開・共有範囲の拡張・noteへの投稿は追加しない。
 6. 保存だけで終わらず、新しいSiteの配信成功とURLを確認する。質問やZIPの解凍で完成を止めず、素材は完成した画面から入力できるようにする。
 
@@ -73,4 +73,4 @@ Workは生成直後に、追加の「返送してください」を待たず、�
 
 本文の仕上げは同梱natural-japaneseを実際に読み、指定の検査と通読を行う。yomiyasuへ置き換えない。画像制作ではnote-imagesのreferences/direction.mdとreferences/review.mdも読み、記事固有の場面・短い正確な文字列・構図・光と質感を設計する。方向を短く比較して1枚を生成し、不備だけ局所修正する。学習前後の図解は実際の決まりと修正文を使う。画像はサムネイル1280×670、本文画像1280×720。文字・絵・余白を一体で作り、誤字・サイズ・375px縮小時の可読性を確認する。
 
-新規作成後は、空のストック・空の学習設定、全入口、構成画面、制作前の本文非表示、本人のSiteへ向く依頼文、保存・再訪・クリア後の記事閲覧を検証する。確認した固定版、URL、実装内容、未検証点を報告する。本人のWorkで生成→同じSite保存→配信→画面受信を試していなければ、一周確認済みとは言わない。
+新規作成後は、記事ストックでサンプル1件と見出し画像が開くこと、空の学習設定、全入口、構成画面、制作前の本文非表示、本人のSiteへ向く依頼文、保存・再訪・クリア後の記事閲覧を検証する。確認した固定版、URL、実装内容、未検証点を報告する。本人のWorkで生成→同じSite保存→配信→画面受信を試していなければ、一周確認済みとは言わない。

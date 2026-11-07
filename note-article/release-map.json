@@ -230,6 +230,14 @@
     {
       "source": "skills/note-images/references/review.md",
       "target": "releases/note-article-v1/skills/note-images/references/review.md"
+    },
+    {
+      "source": "app/completed-articles/workshop3-sample/article.json",
+      "target": "releases/note-article-v1/dist/completed-articles/workshop3-sample/article.json"
+    },
+    {
+      "source": "app/completed-articles/workshop3-sample/cover.png",
+      "target": "releases/note-article-v1/dist/completed-articles/workshop3-sample/cover.png"
     }
   ]
 }
