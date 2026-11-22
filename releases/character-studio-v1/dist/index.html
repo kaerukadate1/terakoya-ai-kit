@@ -59,7 +59,7 @@
     <fieldset><legend>進め方</legend><div id="mode-options" class="choice-list" role="radiogroup" aria-label="進め方"></div></fieldset>
   </form>
   <div class="production-actions"><button class="button primary" id="work-send"><i data-lucide="send"></i>この担当に頼む</button><button class="button quiet" id="work-copy"><i data-lucide="copy"></i>依頼文をコピー</button><button class="button quiet" id="work-check" hidden><i data-lucide="refresh-cw"></i>結果をもう一度確認</button><button class="icon-button" id="work-cancel" title="結果待ちを解除" aria-label="結果待ちを解除" hidden><i data-lucide="x"></i></button></div>
-  <p class="note work-hint"><i data-lucide="info"></i>ChatGPTが開いたら、画面の上の「Work」を選んでから送信してください。</p><p id="work-status" class="note" role="status" aria-live="polite"></p>
+  <p class="note work-hint"><i data-lucide="info"></i>ChatGPTがWorkで開きます。上の表示が「Chat」になっていたら、「Work」に切り替えてから送信してください。</p><p id="work-status" class="note" role="status" aria-live="polite"></p>
   <details id="work-paste-help" class="invocation-help" hidden><summary>結果が戻らないとき</summary><p class="note">ChatGPTが出したコード（{ から } まで）をコピーして、ここへ貼り付けてください。</p><textarea id="work-paste" class="code-output" rows="5" aria-label="結果の貼り付け"></textarea><div class="inline separated"><button class="button quiet" id="work-import"><i data-lucide="download"></i>貼り付けた結果を取り込む</button></div></details>
   <div id="work-preview" class="work-list" hidden></div>
   <h2 class="work-list-title" id="work-list-title" hidden>この担当の作戦ボード</h2><div id="work-list" class="work-list"></div>
