@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "reviewedAt": "2026-11-06",
+  "reviewedAt": "2026-11-22",
   "files": [
     {
       "role": "sns",
@@ -241,6 +241,54 @@
       "sha256": "ae9660aa3101f74c5648347ef10558285a3c2ed2a9c0c99d5431fd232e75c218",
       "license": "MIT",
       "licenseSha256": "e0405db259f0d2b81063e659db6b324560948f54dcd98698ea98a76ad7f4d93d"
+    },
+    {
+      "role": "position",
+      "url": "https://raw.githubusercontent.com/coreyhaines31/marketingskills/5b2b400eec1e7e1cec76245a715d0b0d4fd2a9c1/skills/product-marketing/SKILL.md",
+      "commit": "5b2b400eec1e7e1cec76245a715d0b0d4fd2a9c1",
+      "sha256": "8dbccc22998b3cac194c3509fa93d119163b82c9b0a1ce573e6737e5a5ccf555",
+      "license": "MIT",
+      "licenseSha256": "b70d71e24e40fce5da8f4b6f9cd862096a048e433db7f3c8cac5e348e6d34591"
+    },
+    {
+      "role": "gap",
+      "url": "https://raw.githubusercontent.com/alirezarezvani/claude-skills/5909a72e62b5fbb809935fb6a55b58bdbe175074/marketing-skill/skills/marketing-strategy-pmm/SKILL.md",
+      "commit": "5909a72e62b5fbb809935fb6a55b58bdbe175074",
+      "sha256": "b029bdfac2003eb299a9b2a1f2ad6128bf2b99473eb87bd3b3786f41167dee1a",
+      "license": "MIT",
+      "licenseSha256": "a20126646f93d32a8989c3cf4772d59194f405034f7babe7daebeac22b8ab151"
+    },
+    {
+      "role": "idea",
+      "url": "https://raw.githubusercontent.com/alirezarezvani/claude-skills/5909a72e62b5fbb809935fb6a55b58bdbe175074/product-team/skills/product-discovery/SKILL.md",
+      "commit": "5909a72e62b5fbb809935fb6a55b58bdbe175074",
+      "sha256": "43e0cd33a839c94793ea6ad76df382e888aea2a7f1dd1e4d258492e1c43bf64a",
+      "license": "MIT",
+      "licenseSha256": "a20126646f93d32a8989c3cf4772d59194f405034f7babe7daebeac22b8ab151"
+    },
+    {
+      "role": "sell",
+      "url": "https://raw.githubusercontent.com/coreyhaines31/marketingskills/5b2b400eec1e7e1cec76245a715d0b0d4fd2a9c1/skills/pricing/SKILL.md",
+      "commit": "5b2b400eec1e7e1cec76245a715d0b0d4fd2a9c1",
+      "sha256": "4f0a939631eca1b4bbee22bf6bc88b35ac06c33bfa8e4e837c8767a4bf6f5b54",
+      "license": "MIT",
+      "licenseSha256": "b70d71e24e40fce5da8f4b6f9cd862096a048e433db7f3c8cac5e348e6d34591"
+    },
+    {
+      "role": "funnel",
+      "url": "https://raw.githubusercontent.com/coreyhaines31/marketingskills/5b2b400eec1e7e1cec76245a715d0b0d4fd2a9c1/skills/cro/SKILL.md",
+      "commit": "5b2b400eec1e7e1cec76245a715d0b0d4fd2a9c1",
+      "sha256": "0f8588aba125de102498ca3bbaa0151c8ebffa0a7ad85c14d992ef16db02fb2d",
+      "license": "MIT",
+      "licenseSha256": "b70d71e24e40fce5da8f4b6f9cd862096a048e433db7f3c8cac5e348e6d34591"
+    },
+    {
+      "role": "test",
+      "url": "https://raw.githubusercontent.com/alirezarezvani/claude-skills/5909a72e62b5fbb809935fb6a55b58bdbe175074/product-team/skills/experiment-designer/SKILL.md",
+      "commit": "5909a72e62b5fbb809935fb6a55b58bdbe175074",
+      "sha256": "d475583a646953e1e57b71711f8beea8845fc62d1fa6afc0538c89d9df957b31",
+      "license": "MIT",
+      "licenseSha256": "a20126646f93d32a8989c3cf4772d59194f405034f7babe7daebeac22b8ab151"
     }
   ]
 }

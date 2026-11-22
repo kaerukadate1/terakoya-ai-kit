@@ -1,10 +1,10 @@
 const test=require('node:test'),assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypto');
 const C=require('../app/core.js'),skills=require('../app/role-skills.js'),lock=require('../skills/roles/sources.lock.json');
 const hash=s=>crypto.createHash('sha256').update(s).digest('hex');
-test('30 roles have pinned, licensed, reproducible specialist workflows',()=>{
-  assert.deepEqual(Object.keys(skills.roles).sort(),C.ROLES.map(r=>r.id).sort());
-  assert.equal(new Set(lock.files.map(f=>f.url)).size,28);
-  for(const role of C.ROLES){const s=C.skillFor(role.id),f=lock.files.find(x=>x.role===role.id),base=path.join(__dirname,'../skills/roles',role.id);
+test('36 roles have pinned, licensed, reproducible specialist workflows',()=>{
+  const upstream=C.ROLES;assert.equal(upstream.length,36);assert.deepEqual(Object.keys(skills.roles).sort(),upstream.map(r=>r.id).sort());
+  assert.equal(new Set(lock.files.map(f=>f.url)).size,34);
+  for(const role of upstream){const s=C.skillFor(role.id),f=lock.files.find(x=>x.role===role.id),base=path.join(__dirname,'../skills/roles',role.id);
     assert.match(s.sourceUrl,new RegExp('/'+s.commit+'/'));assert.match(s.commit,/^[a-f0-9]{40}$/);assert.equal(s.license,'MIT');
     assert.equal(hash(fs.readFileSync(path.join(base,'references/upstream.md'),'utf8')),f.sha256);
     assert.equal(hash(s.licenseText),f.licenseSha256);assert.ok(s.licenseText.includes('Permission is hereby granted'));
