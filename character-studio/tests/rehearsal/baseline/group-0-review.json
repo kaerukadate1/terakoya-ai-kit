@@ -1,0 +1,274 @@
+{
+  "group": 0,
+  "reviewType": "実生成後の役割別レビュー",
+  "overall": "12件の実成果物を生成。ideaの原プロンプト形式はfail、他11件は条件付きpass",
+  "important_common_flaws": [
+    "JSONのstatus completeは成果物完成と返送成功を分離できない。返送成功とは報告していない",
+    "basisは確認/推測のみで、資料内の決定・発言・数値と外部未確認を区別できない",
+    "briefを残しつつ5項目各60字という制約では生の声・運営条件が圧縮される"
+  ],
+  "roles": [
+    {
+      "role": "position",
+      "output": "work/role-rehearsal/position.json",
+      "generation": "このモデルが担当として全成果物を実際に作成。固定サンプルのコピーなし",
+      "pass_fail": "pass",
+      "usable_specificity": "こむぎの新案・未定条件・顧客の声・稼働制約に当てはめた",
+      "evidence": "提供資料は架空。sources空、外部確認済み主張なし。申込を売上と同一視せず",
+      "scope": "制作と自己点検まで。公開・送信・Site更新・外部調査は実施していない",
+      "format": "job ID等の一致、JSON構文、文字数60以内、findings<=6、nextSteps<=3を確認",
+      "handoff": "許可されたroleを使用し具体的依頼を記載",
+      "original_prompt_flaws": [
+        "「自分だけ」の3点を要求するが、独自性を確定する資料がない。比較資料内と限定して処理",
+        "四つの力の専用欄がなく、findings6件と共通注意で情報が圧縮される"
+      ],
+      "invented_to_comply": [
+        "不足情報を確定事実にせず、仮説・条件付きの次の一手として補完",
+        "実配信は試験のため行わず、strategyは返送用JSONと貼付案内を別紙にも出力"
+      ],
+      "remaining_limitations": [
+        "実顧客の反応・実ページ表示・実公開の成功は試験していない"
+      ]
+    },
+    {
+      "role": "gap",
+      "output": "work/role-rehearsal/gap.json",
+      "generation": "このモデルが担当として全成果物を実際に作成。固定サンプルのコピーなし",
+      "pass_fail": "pass",
+      "usable_specificity": "こむぎの新案・未定条件・顧客の声・稼働制約に当てはめた",
+      "evidence": "提供資料は架空。sources空、外部確認済み主張なし。申込を売上と同一視せず",
+      "scope": "制作と自己点検まで。公開・送信・Site更新・外部調査は実施していない",
+      "format": "job ID等の一致、JSON構文、文字数60以内、findings<=6、nextSteps<=3を確認",
+      "handoff": "許可されたroleを使用し具体的依頼を記載",
+      "original_prompt_flaws": [
+        "軸と位置に不確実性を記録する専用欄がない。セル内に見立て・仮置きを明記",
+        "架空競合なのに公式調査を必須化している。外部確認済みを捏造せず未実施とした"
+      ],
+      "invented_to_comply": [
+        "不足情報を確定事実にせず、仮説・条件付きの次の一手として補完",
+        "実配信は試験のため行わず、strategyは返送用JSONと貼付案内を別紙にも出力"
+      ],
+      "remaining_limitations": [
+        "実顧客の反応・実ページ表示・実公開の成功は試験していない"
+      ]
+    },
+    {
+      "role": "idea",
+      "output": "work/role-rehearsal/idea.json",
+      "generation": "このモデルが担当として全成果物を実際に作成。固定サンプルのコピーなし",
+      "pass_fail": "fail",
+      "usable_specificity": "こむぎの新案・未定条件・顧客の声・稼働制約に当てはめた",
+      "evidence": "提供資料は架空。sources空、外部確認済み主張なし。申込を売上と同一視せず",
+      "scope": "制作と自己点検まで。公開・送信・Site更新・外部調査は実施していない",
+      "format": "job ID等の一致、JSON構文、文字数60以内、findings<=6、nextSteps<=3を確認",
+      "handoff": "許可されたroleを使用し具体的依頼を記載",
+      "original_prompt_flaws": [
+        "重大：JSON見本のright文字列が閉じずfindingsへ混入。rowsとfitの末尾は図の決まりへ脱落",
+        "望まれる・できる・続けられる・使えるの前提を保持する専用欄がない"
+      ],
+      "invented_to_comply": [
+        "不足情報を確定事実にせず、仮説・条件付きの次の一手として補完",
+        "実配信は試験のため行わず、strategyは返送用JSONと貼付案内を別紙にも出力",
+        "壊れたrows構造をleft/right/fitへ再構築。元見本のままではJSONにならない"
+      ],
+      "remaining_limitations": [
+        "実顧客の反応・実ページ表示・実公開の成功は試験していない",
+        "元プロンプトのJSON破損は未修正。生成モデルの復元能力に依存するため原プロンプトはfail"
+      ]
+    },
+    {
+      "role": "sell",
+      "output": "work/role-rehearsal/sell.json",
+      "generation": "このモデルが担当として全成果物を実際に作成。固定サンプルのコピーなし",
+      "pass_fail": "pass",
+      "usable_specificity": "こむぎの新案・未定条件・顧客の声・稼働制約に当てはめた",
+      "evidence": "提供資料は架空。sources空、外部確認済み主張なし。申込を売上と同一視せず",
+      "scope": "制作と自己点検まで。公開・送信・Site更新・外部調査は実施していない",
+      "format": "job ID等の一致、JSON構文、文字数60以内、findings<=6、nextSteps<=3を確認",
+      "handoff": "許可されたroleを使用し具体的依頼を記載",
+      "original_prompt_flaws": [
+        "仮定の競合価格に公式URLを要求。架空検証では達成不能",
+        "松竹梅の検討と一箇所だけ変更が混同されやすい。追加商品は検討止まりとした"
+      ],
+      "invented_to_comply": [
+        "不足情報を確定事実にせず、仮説・条件付きの次の一手として補完",
+        "実配信は試験のため行わず、strategyは返送用JSONと貼付案内を別紙にも出力"
+      ],
+      "remaining_limitations": [
+        "実顧客の反応・実ページ表示・実公開の成功は試験していない"
+      ]
+    },
+    {
+      "role": "funnel",
+      "output": "work/role-rehearsal/funnel.json",
+      "generation": "このモデルが担当として全成果物を実際に作成。固定サンプルのコピーなし",
+      "pass_fail": "pass",
+      "usable_specificity": "こむぎの新案・未定条件・顧客の声・稼働制約に当てはめた",
+      "evidence": "提供資料は架空。sources空、外部確認済み主張なし。申込を売上と同一視せず",
+      "scope": "制作と自己点検まで。公開・送信・Site更新・外部調査は実施していない",
+      "format": "job ID等の一致、JSON構文、文字数60以内、findings<=6、nextSteps<=3を確認",
+      "handoff": "許可されたroleを使用し具体的依頼を記載",
+      "original_prompt_flaws": [
+        "ページURLなしでもページの5秒理解・ボタン場所の点検を要求。現物検査不能",
+        "statusのstuckに実測か仮説かを区別する属性がない。全てunknownで出した"
+      ],
+      "invented_to_comply": [
+        "不足情報を確定事実にせず、仮説・条件付きの次の一手として補完",
+        "実配信は試験のため行わず、strategyは返送用JSONと貼付案内を別紙にも出力"
+      ],
+      "remaining_limitations": [
+        "実顧客の反応・実ページ表示・実公開の成功は試験していない"
+      ]
+    },
+    {
+      "role": "test",
+      "output": "work/role-rehearsal/test.json",
+      "generation": "このモデルが担当として全成果物を実際に作成。固定サンプルのコピーなし",
+      "pass_fail": "pass",
+      "usable_specificity": "こむぎの新案・未定条件・顧客の声・稼働制約に当てはめた",
+      "evidence": "提供資料は架空。sources空、外部確認済み主張なし。申込を売上と同一視せず",
+      "scope": "制作と自己点検まで。公開・送信・Site更新・外部調査は実施していない",
+      "format": "job ID等の一致、JSON構文、文字数60以内、findings<=6、nextSteps<=3を確認",
+      "handoff": "許可されたroleを使用し具体的依頼を記載",
+      "original_prompt_flaws": [
+        "最大3件のnextStepsでは主指標・停止指標・候補比較・7日計画・3分岐判定が圧縮される",
+        "講師の総稼働と発信に使える時間の区別がない。既存業務込みの超過停止を追加"
+      ],
+      "invented_to_comply": [
+        "不足情報を確定事実にせず、仮説・条件付きの次の一手として補完",
+        "実配信は試験のため行わず、strategyは返送用JSONと貼付案内を別紙にも出力"
+      ],
+      "remaining_limitations": [
+        "実顧客の反応・実ページ表示・実公開の成功は試験していない"
+      ]
+    },
+    {
+      "role": "sns",
+      "output": "work/role-rehearsal/sns.md",
+      "generation": "このモデルが担当として全成果物を実際に作成。固定サンプルのコピーなし",
+      "pass_fail": "pass",
+      "usable_specificity": "こむぎの新案・未定条件・顧客の声・稼働制約に当てはめた",
+      "evidence": "提供資料は架空。sources空、外部確認済み主張なし。申込を売上と同一視せず",
+      "scope": "制作と自己点検まで。公開・送信・Site更新・外部調査は実施していない",
+      "format": "専門手順の冒頭、実原稿、確認事項と次の担当を記載",
+      "handoff": "未定条件の確定と次の担当を明記",
+      "original_prompt_flaws": [
+        "申込URL・日程未定の事業目標と投稿の行動先が衝突。今回は保存を選ぶ必要がある"
+      ],
+      "invented_to_comply": [
+        "不足情報を確定事実にせず、仮説・条件付きの次の一手として補完",
+        "実配信は試験のため行わず、strategyは返送用JSONと貼付案内を別紙にも出力"
+      ],
+      "remaining_limitations": [
+        "実顧客の反応・実ページ表示・実公開の成功は試験していない"
+      ]
+    },
+    {
+      "role": "announcement",
+      "output": "work/role-rehearsal/announcement.md",
+      "generation": "このモデルが担当として全成果物を実際に作成。固定サンプルのコピーなし",
+      "pass_fail": "pass",
+      "usable_specificity": "こむぎの新案・未定条件・顧客の声・稼働制約に当てはめた",
+      "evidence": "提供資料は架空。sources空、外部確認済み主張なし。申込を売上と同一視せず",
+      "scope": "制作と自己点検まで。公開・送信・Site更新・外部調査は実施していない",
+      "format": "専門手順の冒頭、実原稿、確認事項と次の担当を記載",
+      "handoff": "未定条件の確定と次の担当を明記",
+      "original_prompt_flaws": [
+        "専門手順は4段階の案内作成、今回の依頼は予告と当日の2本。再案内の完成稿が必要か曖昧",
+        "未定情報を空欄とする指示では誤公開が起きる。要確認プレースホルダーを選んだ"
+      ],
+      "invented_to_comply": [
+        "不足情報を確定事実にせず、仮説・条件付きの次の一手として補完",
+        "実配信は試験のため行わず、strategyは返送用JSONと貼付案内を別紙にも出力"
+      ],
+      "remaining_limitations": [
+        "実顧客の反応・実ページ表示・実公開の成功は試験していない"
+      ]
+    },
+    {
+      "role": "editor",
+      "output": "work/role-rehearsal/editor.md",
+      "generation": "このモデルが担当として全成果物を実際に作成。固定サンプルのコピーなし",
+      "pass_fail": "pass",
+      "usable_specificity": "こむぎの新案・未定条件・顧客の声・稼働制約に当てはめた",
+      "evidence": "提供資料は架空。sources空、外部確認済み主張なし。申込を売上と同一視せず",
+      "scope": "制作と自己点検まで。公開・送信・Site更新・外部調査は実施していない",
+      "format": "専門手順の冒頭、実原稿、確認事項と次の担当を記載",
+      "handoff": "未定条件の確定と次の担当を明記",
+      "original_prompt_flaws": [
+        "「元の主張を維持」と誇張の除去が衝突。今回依頼を優先して成果保証を削除"
+      ],
+      "invented_to_comply": [
+        "不足情報を確定事実にせず、仮説・条件付きの次の一手として補完",
+        "実配信は試験のため行わず、strategyは返送用JSONと貼付案内を別紙にも出力"
+      ],
+      "remaining_limitations": [
+        "実顧客の反応・実ページ表示・実公開の成功は試験していない"
+      ]
+    },
+    {
+      "role": "repurpose",
+      "output": "work/role-rehearsal/repurpose.md",
+      "generation": "このモデルが担当として全成果物を実際に作成。固定サンプルのコピーなし",
+      "pass_fail": "pass",
+      "usable_specificity": "こむぎの新案・未定条件・顧客の声・稼働制約に当てはめた",
+      "evidence": "提供資料は架空。sources空、外部確認済み主張なし。申込を売上と同一視せず",
+      "scope": "制作と自己点検まで。公開・送信・Site更新・外部調査は実施していない",
+      "format": "専門手順の冒頭、実原稿、確認事項と次の担当を記載",
+      "handoff": "未定条件の確定と次の担当を明記",
+      "original_prompt_flaws": [
+        "誘導先が欠ける場合の媒体別CTAの扱いが未定義。保存・次回案内を仮の行動にした"
+      ],
+      "invented_to_comply": [
+        "不足情報を確定事実にせず、仮説・条件付きの次の一手として補完",
+        "実配信は試験のため行わず、strategyは返送用JSONと貼付案内を別紙にも出力"
+      ],
+      "remaining_limitations": [
+        "実顧客の反応・実ページ表示・実公開の成功は試験していない"
+      ]
+    },
+    {
+      "role": "product",
+      "output": "work/role-rehearsal/product.md",
+      "generation": "このモデルが担当として全成果物を実際に作成。固定サンプルのコピーなし",
+      "pass_fail": "pass",
+      "usable_specificity": "こむぎの新案・未定条件・顧客の声・稼働制約に当てはめた",
+      "evidence": "提供資料は架空。sources空、外部確認済み主張なし。申込を売上と同一視せず",
+      "scope": "制作と自己点検まで。公開・送信・Site更新・外部調査は実施していない",
+      "format": "専門手順の冒頭、実原稿、確認事項と次の担当を記載",
+      "handoff": "未定条件の確定と次の担当を明記",
+      "original_prompt_flaws": [
+        "根拠のある価値を要求する一方、根拠資料は架空で承認範囲も価格人数のみ。仮コピーの明記が必要"
+      ],
+      "invented_to_comply": [
+        "不足情報を確定事実にせず、仮説・条件付きの次の一手として補完",
+        "実配信は試験のため行わず、strategyは返送用JSONと貼付案内を別紙にも出力"
+      ],
+      "remaining_limitations": [
+        "実顧客の反応・実ページ表示・実公開の成功は試験していない"
+      ]
+    },
+    {
+      "role": "calendar",
+      "output": "work/role-rehearsal/calendar.md",
+      "generation": "このモデルが担当として全成果物を実際に作成。固定サンプルのコピーなし",
+      "pass_fail": "pass",
+      "usable_specificity": "こむぎの新案・未定条件・顧客の声・稼働制約に当てはめた",
+      "evidence": "提供資料は架空。sources空、外部確認済み主張なし。申込を売上と同一視せず",
+      "scope": "制作と自己点検まで。公開・送信・Site更新・外部調査は実施していない",
+      "format": "専門手順の冒頭、実原稿、確認事項と次の担当を記載",
+      "handoff": "未定条件の確定と次の担当を明記",
+      "original_prompt_flaws": [
+        "週3時間が総稼働か発信だけか不明。授業時間もなく実行可能性は確定できない",
+        "開催未定でも日付案が必須。制作日と開催日を明確に分離する必要がある"
+      ],
+      "invented_to_comply": [
+        "不足情報を確定事実にせず、仮説・条件付きの次の一手として補完",
+        "実配信は試験のため行わず、strategyは返送用JSONと貼付案内を別紙にも出力"
+      ],
+      "remaining_limitations": [
+        "実顧客の反応・実ページ表示・実公開の成功は試験していない"
+      ]
+    }
+  ]
+}

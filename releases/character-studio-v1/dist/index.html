@@ -35,7 +35,7 @@
   <section class="use-assistant" aria-labelledby="use-assistant-title">
     <div class="use-assistant-heading"><i data-lucide="file-down" aria-hidden="true"></i><div><p class="eyebrow">次にやること</p><h2 id="use-assistant-title">設定ファイルをChatGPTへ</h2></div></div>
     <p>役割・話し方・専門スキルを、1つのMarkdownファイルにまとめています。</p>
-    <ol><li>下のボタンで設定ファイルをダウンロード</li><li>使いたいプロジェクトの新しいチャットへ添付</li><li>この担当にやってほしい仕事を送信</li></ol>
+    <ol><li>下のボタンで設定ファイルをダウンロード</li><li>ChatGPTの新しいチャット（Work）へ添付</li><li>この担当にやってほしい仕事を送信</li></ol>
     <button class="button primary" id="download-settings" data-download="markdown"><i data-lucide="download"></i>アシスタント設定をダウンロード</button>
     <p class="use-assistant-note">ファイルの追加だけで常に自動適用されるわけではありません。反映されない場合だけ、下の短い起動文を送ってください。</p>
   </section>
@@ -59,6 +59,7 @@
     <fieldset><legend>進め方</legend><div id="mode-options" class="choice-list" role="radiogroup" aria-label="進め方"></div></fieldset>
   </form>
   <div class="production-actions"><button class="button primary" id="work-send"><i data-lucide="send"></i>この担当に頼む</button><button class="button quiet" id="work-copy"><i data-lucide="copy"></i>依頼文をコピー</button><button class="button quiet" id="work-check" hidden><i data-lucide="refresh-cw"></i>結果をもう一度確認</button><button class="icon-button" id="work-cancel" title="結果待ちを解除" aria-label="結果待ちを解除" hidden><i data-lucide="x"></i></button></div>
+  <textarea id="work-copy-output" class="code-output" rows="6" readonly hidden aria-label="手動コピー用の依頼文"></textarea>
   <p class="note work-hint"><i data-lucide="info"></i>ChatGPTがWorkで開きます。上の表示が「Chat」になっていたら、「Work」に切り替えてから送信してください。</p><p id="work-status" class="note" role="status" aria-live="polite"></p>
   <details id="work-paste-help" class="invocation-help" hidden><summary>結果が戻らないとき</summary><p class="note">ChatGPTが出したコード（{ から } まで）をコピーして、ここへ貼り付けてください。</p><textarea id="work-paste" class="code-output" rows="5" aria-label="結果の貼り付け"></textarea><div class="inline separated"><button class="button quiet" id="work-import"><i data-lucide="download"></i>貼り付けた結果を取り込む</button></div></details>
   <div id="work-preview" class="work-list" hidden></div>

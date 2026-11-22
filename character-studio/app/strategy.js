@@ -22,6 +22,13 @@
       example:'このアイデアを作り込む前に、1週間で確かめられることを決めてください。',
       diagram:'{"steps":[{"title":"1日目 など","detail":"その日にやること","status":"ok"}]}（stepsは3〜7個。最後のstepは「続ける・見直す・やめる」の目安。statusはすべて ok）'}
   ];
-  const roles={};for(const r of rows)roles[r.id]=r;
+  const roles={};for(const r of rows){
+    const end=r.diagram.lastIndexOf('}');
+    r.diagramExample=JSON.parse(r.diagram.slice(0,end+1));
+    r.diagramRules=r.diagram.slice(end+1).replace(/^（|）$/g,'');
+    if(r.id==='idea')r.diagramExample.rows=[{left:'お客さんの望み',right:'応える提供内容（なければ空）',fit:'弱い'},{left:'別の望み',right:'',fit:'空白'},{left:'もう一つの望み',right:'提供内容',fit:'強い'}];
+    if(r.kind==='flow')r.diagramExample.steps=[{title:'知る',detail:'最初の接点',status:'unknown'},{title:'比べる',detail:'判断材料',status:'unknown'},{title:'申し込む',detail:'申込先',status:'unknown'}].map(x=>r.id==='test'?{...x,status:'ok'}:x);
+    roles[r.id]=r;
+  }
   return {category:'strategy',order:rows.map(r=>r.id),handoff:HANDOFF,roles};
 })());
