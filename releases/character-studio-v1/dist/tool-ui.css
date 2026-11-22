@@ -104,3 +104,16 @@ input:focus-visible,textarea:focus-visible,select:focus-visible{border-color:var
 
 .note-steps{margin:10px 0 6px;padding-left:1.4em;font-size:12px;line-height:1.9;color:var(--text)}
 .work-hint{display:flex;gap:6px;align-items:center;color:var(--brand);font-weight:600}.work-hint svg{width:15px;height:15px;flex:none}
+
+/* メインのカテゴリー(事業の作戦)を目立たせる */
+.category-options button.cat-main{background:var(--brand);color:var(--brand-ink);font-weight:700;border-right-color:var(--brand);gap:6px}
+.category-options button.cat-main:hover{background:var(--brand);color:var(--brand-ink);filter:brightness(1.08)}
+.category-options button.cat-main[aria-selected=true]{background:var(--brand);color:var(--brand-ink);border-bottom-color:var(--accent)}
+.category-options button.cat-main[aria-selected=false]{opacity:.88}
+.cat-badge{font-size:10px;font-weight:700;background:var(--accent);color:var(--accent-ink,#fff);border-radius:9px;padding:1px 7px;margin-left:2px;line-height:1.5}
+.role-lead{display:flex;gap:9px;align-items:center;margin:-6px 0 14px;padding:10px 14px;border-left:4px solid var(--accent);background:color-mix(in srgb,var(--accent) 9%,var(--surface));border-radius:0 4px 4px 0;font-size:12.5px;color:var(--text)}
+.role-lead[hidden]{display:none}.role-lead svg{width:17px;height:17px;flex:none;color:var(--accent)}.role-lead strong{color:var(--brand-text,var(--brand))}
+.role-main .role-option{border-top:3px solid var(--accent)}
+/* 保存済みを編集中の表示 */
+.editing-note{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:0 0 14px;padding:9px 14px;border:1px solid var(--accent);border-radius:5px;background:color-mix(in srgb,var(--accent) 8%,var(--surface));font-size:12.5px}
+.editing-note[hidden]{display:none}.editing-note>svg{width:15px;height:15px;flex:none;color:var(--accent)}.editing-note>span{flex:1 1 240px}.editing-note .button{flex:none}
