@@ -19,7 +19,7 @@
   function normalize(raw,roleId){
     const role=C.strategyFor(roleId);if(!role)throw Error('この担当は作戦ボードを作りません。');
     if(!raw||typeof raw!=='object'||Array.isArray(raw))throw Error('作戦ボードの形式を確認してください。');
-    const b={schemaVersion:1,role:roleId,kind:role.kind,title:t(raw.title,60)||role.title,question:t(raw.question,90)||role.detail,answer:t(raw.answer,160),diagram:diagram(role.kind,raw.diagram),
+    const b={schemaVersion:1,role:roleId,kind:role.kind,title:t(raw.title,60)||C.skillFor(roleId).title,question:t(raw.question,90)||role.detail,answer:t(raw.answer,160),diagram:diagram(role.kind,raw.diagram),
       findings:list(raw.findings,6,f=>{const text=t(typeof f==='string'?f:f?.text,130);return text&&{text,basis:f?.basis==='確認'?'確認':'推測'};}),
       nextSteps:list(raw.nextSteps,3,s=>{const text=t(typeof s==='string'?s:s?.text,130);return text&&{text,when:t(s?.when,20),done:s?.done===true};}),
       handoff:null,brief:{},sources:list(raw.sources,8,s=>{const url=origin(s?.url)?String(s.url).slice(0,500):'';return url&&{title:t(s.title,80)||url,url,date:t(s.date,20)};})};

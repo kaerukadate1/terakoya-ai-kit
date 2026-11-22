@@ -28,7 +28,7 @@
 
 04のプロフィール画像と設定ファイルの間に「使用スキル」を表示。原典スキル名と、この担当での使い方を確認できます。表示文はskill-display.json、配信用データはapp/role-skills.jsから生成します。
 
-36担当すべてに専用の手順・成果物の型・品質チェックを組み込みます。「事業の作戦」の6担当は寺子屋AIオリジナルの手順（app/strategy.js、skills/strategy/）。ほかの30担当は次のとおりです。公開GitHubの28原典を30担当向けに日本語化・再構成した翻案です。同じ原典を別の仕事へ応用する担当もあります。「30個の別々の上流スキル」や「外部ツールのインストール」ではありません。
+36担当すべてに専用の手順・成果物の型・品質チェックを組み込みます。公開GitHubの34原典を36担当向けに日本語化・再構成した翻案です。同じ原典を別の仕事へ応用する担当もあります。「36個の別々の上流スキル」や「外部ツールのインストール」ではありません。「事業の作戦」の6担当は、product-marketing・marketing-strategy-pmm・product-discovery・pricing・cro・experiment-designer を原典にし、作戦ボードの図の形だけを app/strategy.js で決めています。
 
 - [担当と原典の対応](role-catalog.json) / [取得元とSHA-256](skills/roles/sources.lock.json)
 - 原典: [Corey Haines / marketingskills](https://github.com/coreyhaines31/marketingskills)、[Alireza Rezvani / claude-skills](https://github.com/alirezarezvani/claude-skills)、[SkillMedev / skills](https://github.com/SkillMedev/skills)、[Doculent / community](https://github.com/doculent/community)。4リポジトリともMIT。固定コミット、原文、許諾表示をskills/roles/とskills/licenses/に保存。

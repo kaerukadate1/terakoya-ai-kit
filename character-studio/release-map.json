@@ -72,30 +72,6 @@
       "target": "releases/character-studio-v1/dist/board-samples.js"
     },
     {
-      "source": "skills/strategy/position/SKILL.md",
-      "target": "releases/character-studio-v1/skills/strategy/position/SKILL.md"
-    },
-    {
-      "source": "skills/strategy/gap/SKILL.md",
-      "target": "releases/character-studio-v1/skills/strategy/gap/SKILL.md"
-    },
-    {
-      "source": "skills/strategy/idea/SKILL.md",
-      "target": "releases/character-studio-v1/skills/strategy/idea/SKILL.md"
-    },
-    {
-      "source": "skills/strategy/sell/SKILL.md",
-      "target": "releases/character-studio-v1/skills/strategy/sell/SKILL.md"
-    },
-    {
-      "source": "skills/strategy/funnel/SKILL.md",
-      "target": "releases/character-studio-v1/skills/strategy/funnel/SKILL.md"
-    },
-    {
-      "source": "skills/strategy/test/SKILL.md",
-      "target": "releases/character-studio-v1/skills/strategy/test/SKILL.md"
-    },
-    {
       "source": "app/role-skills.js",
       "target": "releases/character-studio-v1/dist/role-skills.js"
     },
@@ -130,6 +106,14 @@
     {
       "source": "skills/licenses/documents-MIT.txt",
       "target": "releases/character-studio-v1/skills/licenses/documents-MIT.txt"
+    },
+    {
+      "source": "skills/licenses/marketing-strategy-MIT.txt",
+      "target": "releases/character-studio-v1/skills/licenses/marketing-strategy-MIT.txt"
+    },
+    {
+      "source": "skills/licenses/product-strategy-MIT.txt",
+      "target": "releases/character-studio-v1/skills/licenses/product-strategy-MIT.txt"
     },
     {
       "source": "skills/roles/sns/SKILL.md",
@@ -490,6 +474,78 @@
     {
       "source": "skills/roles/diff/references/LICENSE.txt",
       "target": "releases/character-studio-v1/skills/roles/diff/references/LICENSE.txt"
+    },
+    {
+      "source": "skills/roles/position/SKILL.md",
+      "target": "releases/character-studio-v1/skills/roles/position/SKILL.md"
+    },
+    {
+      "source": "skills/roles/position/references/upstream.md",
+      "target": "releases/character-studio-v1/skills/roles/position/references/upstream.md"
+    },
+    {
+      "source": "skills/roles/position/references/LICENSE.txt",
+      "target": "releases/character-studio-v1/skills/roles/position/references/LICENSE.txt"
+    },
+    {
+      "source": "skills/roles/gap/SKILL.md",
+      "target": "releases/character-studio-v1/skills/roles/gap/SKILL.md"
+    },
+    {
+      "source": "skills/roles/gap/references/upstream.md",
+      "target": "releases/character-studio-v1/skills/roles/gap/references/upstream.md"
+    },
+    {
+      "source": "skills/roles/gap/references/LICENSE.txt",
+      "target": "releases/character-studio-v1/skills/roles/gap/references/LICENSE.txt"
+    },
+    {
+      "source": "skills/roles/idea/SKILL.md",
+      "target": "releases/character-studio-v1/skills/roles/idea/SKILL.md"
+    },
+    {
+      "source": "skills/roles/idea/references/upstream.md",
+      "target": "releases/character-studio-v1/skills/roles/idea/references/upstream.md"
+    },
+    {
+      "source": "skills/roles/idea/references/LICENSE.txt",
+      "target": "releases/character-studio-v1/skills/roles/idea/references/LICENSE.txt"
+    },
+    {
+      "source": "skills/roles/sell/SKILL.md",
+      "target": "releases/character-studio-v1/skills/roles/sell/SKILL.md"
+    },
+    {
+      "source": "skills/roles/sell/references/upstream.md",
+      "target": "releases/character-studio-v1/skills/roles/sell/references/upstream.md"
+    },
+    {
+      "source": "skills/roles/sell/references/LICENSE.txt",
+      "target": "releases/character-studio-v1/skills/roles/sell/references/LICENSE.txt"
+    },
+    {
+      "source": "skills/roles/funnel/SKILL.md",
+      "target": "releases/character-studio-v1/skills/roles/funnel/SKILL.md"
+    },
+    {
+      "source": "skills/roles/funnel/references/upstream.md",
+      "target": "releases/character-studio-v1/skills/roles/funnel/references/upstream.md"
+    },
+    {
+      "source": "skills/roles/funnel/references/LICENSE.txt",
+      "target": "releases/character-studio-v1/skills/roles/funnel/references/LICENSE.txt"
+    },
+    {
+      "source": "skills/roles/test/SKILL.md",
+      "target": "releases/character-studio-v1/skills/roles/test/SKILL.md"
+    },
+    {
+      "source": "skills/roles/test/references/upstream.md",
+      "target": "releases/character-studio-v1/skills/roles/test/references/upstream.md"
+    },
+    {
+      "source": "skills/roles/test/references/LICENSE.txt",
+      "target": "releases/character-studio-v1/skills/roles/test/references/LICENSE.txt"
     }
   ]
 }
