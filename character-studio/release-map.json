@@ -60,6 +60,42 @@
       "target": "releases/character-studio-v1/skills/work-execution/SKILL.md"
     },
     {
+      "source": "app/strategy.js",
+      "target": "releases/character-studio-v1/dist/strategy.js"
+    },
+    {
+      "source": "app/board.js",
+      "target": "releases/character-studio-v1/dist/board.js"
+    },
+    {
+      "source": "app/board-samples.js",
+      "target": "releases/character-studio-v1/dist/board-samples.js"
+    },
+    {
+      "source": "skills/strategy/position/SKILL.md",
+      "target": "releases/character-studio-v1/skills/strategy/position/SKILL.md"
+    },
+    {
+      "source": "skills/strategy/gap/SKILL.md",
+      "target": "releases/character-studio-v1/skills/strategy/gap/SKILL.md"
+    },
+    {
+      "source": "skills/strategy/idea/SKILL.md",
+      "target": "releases/character-studio-v1/skills/strategy/idea/SKILL.md"
+    },
+    {
+      "source": "skills/strategy/sell/SKILL.md",
+      "target": "releases/character-studio-v1/skills/strategy/sell/SKILL.md"
+    },
+    {
+      "source": "skills/strategy/funnel/SKILL.md",
+      "target": "releases/character-studio-v1/skills/strategy/funnel/SKILL.md"
+    },
+    {
+      "source": "skills/strategy/test/SKILL.md",
+      "target": "releases/character-studio-v1/skills/strategy/test/SKILL.md"
+    },
+    {
       "source": "app/role-skills.js",
       "target": "releases/character-studio-v1/dist/role-skills.js"
     },

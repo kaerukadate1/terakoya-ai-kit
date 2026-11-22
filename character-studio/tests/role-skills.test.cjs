@@ -2,9 +2,9 @@ const test=require('node:test'),assert=require('node:assert/strict'),fs=require(
 const C=require('../app/core.js'),skills=require('../app/role-skills.js'),lock=require('../skills/roles/sources.lock.json');
 const hash=s=>crypto.createHash('sha256').update(s).digest('hex');
 test('30 roles have pinned, licensed, reproducible specialist workflows',()=>{
-  assert.deepEqual(Object.keys(skills.roles).sort(),C.ROLES.map(r=>r.id).sort());
+  const upstream=C.ROLES.filter(r=>r.category!=='strategy');assert.equal(upstream.length,30);assert.deepEqual(Object.keys(skills.roles).sort(),upstream.map(r=>r.id).sort());
   assert.equal(new Set(lock.files.map(f=>f.url)).size,28);
-  for(const role of C.ROLES){const s=C.skillFor(role.id),f=lock.files.find(x=>x.role===role.id),base=path.join(__dirname,'../skills/roles',role.id);
+  for(const role of upstream){const s=C.skillFor(role.id),f=lock.files.find(x=>x.role===role.id),base=path.join(__dirname,'../skills/roles',role.id);
     assert.match(s.sourceUrl,new RegExp('/'+s.commit+'/'));assert.match(s.commit,/^[a-f0-9]{40}$/);assert.equal(s.license,'MIT');
     assert.equal(hash(fs.readFileSync(path.join(base,'references/upstream.md'),'utf8')),f.sha256);
     assert.equal(hash(s.licenseText),f.licenseSha256);assert.ok(s.licenseText.includes('Permission is hereby granted'));
@@ -27,7 +27,7 @@ test('onboarding stays prominent while optional invocation is collapsed',()=>{
 });
 test('skill display covers all roles and sits between portrait and settings file',()=>{
   const display=require('../skill-display.json');
-  for(const r of C.ROLES){const s=C.skillFor(r.id),raw=fs.readFileSync(path.join(__dirname,'../skills/roles',r.id,'references/upstream.md'),'utf8');
+  for(const r of C.ROLES.filter(r=>r.category!=='strategy')){const s=C.skillFor(r.id),raw=fs.readFileSync(path.join(__dirname,'../skills/roles',r.id,'references/upstream.md'),'utf8');
     assert.equal(s.name,display[r.id].name);assert.equal(s.description,display[r.id].description);assert.ok(s.description.length>10);
     const original=raw.match(/^name:\s*(.+)$/m)[1].trim().replace(/^["']|["']$/g,'');assert.equal(s.name,original);
   }

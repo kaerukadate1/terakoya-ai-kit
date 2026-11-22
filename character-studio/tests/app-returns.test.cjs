@@ -13,12 +13,12 @@ class Element{
 }
 function boot({d=makeDraft(),j=null,fetcher,onOpen}={}){
   const nodes=new Map(),get=id=>{if(!nodes.has(id))nodes.set(id,new Element(id));return nodes.get(id);};
-  const panels=['role','personality','appearance','package','library'].map(get),buttons=panels.map(p=>{const b=new Element();b.dataset.step=p.id;return b;});
-  const doc=new Element();doc.documentElement=new Element();doc.body=new Element();doc.getElementById=get;doc.querySelector=s=>get(s);doc.querySelectorAll=s=>s==='.panel'?panels:s==='[data-step]'?buttons:[];
+  const panels=['role','personality','appearance','package','work','library'].map(get),buttons=panels.map(p=>{const b=new Element();b.dataset.step=p.id;return b;});
+  const doc=new Element();doc.documentElement=new Element();doc.body=new Element();doc.head=new Element();doc.getElementById=get;doc.querySelector=s=>get(s);doc.querySelectorAll=s=>s==='.panel'?panels:s==='[data-step]'?buttons:[];
   doc.createElement=tag=>tag==='canvas'?{getContext:()=>({drawImage(){}}),toDataURL:()=> 'data:image/webp;base64,AAAA'}:new Element();
   const raw={schemaVersion:2,draft:d,assistants:[]},store=new Map([[KEY,JSON.stringify(raw)]]);if(j)store.set(JOB,JSON.stringify(j));
   const fetchImpl=fetcher||(async()=>new Response('',{status:404}));
-  const win=new Element();win.CharacterCore=C;win.AssistantBridge={...B,receive:j=>B.receive(j,fetchImpl)};win.open=()=>{onOpen?.(store);return {};};
+  const win=new Element();win.CharacterCore=C;win.AssistantBoard=require('../app/board.js');win.AssistantBridge={...B,receive:j=>B.receive(j,fetchImpl)};win.open=()=>{onOpen?.(store);return {};};
   const scheduled=new Map();let nextTimer=0;
   const env={window:win,document:doc,localStorage:{getItem:k=>store.get(k)||null,setItem:(k,v)=>store.set(k,v),removeItem:k=>store.delete(k)},location:{origin:SITE,href:SITE+'/#package',hash:'#package'},history:{replaceState(){}},scrollTo(){},navigator:{clipboard:{writeText:async()=>{}}},setTimeout:f=>{const id=++nextTimer;scheduled.set(id,f);return id;},clearTimeout:id=>scheduled.delete(id),setInterval(){},fetch:fetchImpl,Image:class{constructor(){this.width=512;this.height=512;}async decode(){}},URL,Blob,Uint8Array,AbortSignal,Date,Intl,console};
   vm.runInNewContext(fs.readFileSync(require.resolve('../app/app.js'),'utf8'),env);
