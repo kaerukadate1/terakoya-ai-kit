@@ -1,6 +1,6 @@
 (function(root,factory){const node=typeof module==='object'&&module.exports,api=factory(root.AssistantRoleSkills||(node?require('./role-skills.js'):null),root.AssistantStrategy||(node?require('./strategy.js'):null));if(typeof module==='object'&&module.exports)module.exports=api;root.CharacterCore=api;})(typeof globalThis!=='undefined'?globalThis:this,function(skills,strategy){
   'use strict';
-  const VERSION='0.5.0';
+  const VERSION='1.0.0';
   const choices=rows=>rows.map(([id,name,detail])=>({id,name,detail}));
   const CATEGORIES=choices([['strategy','事業の作戦','compass'],['publish','発信・集客','megaphone'],['create','資料・文章制作','files'],['plan','企画・調査','lightbulb'],['organize','仕事の整理','clipboard-list'],['analyze','データ・振り返り','chart-no-axes-combined']]);
   const ROLES=[
